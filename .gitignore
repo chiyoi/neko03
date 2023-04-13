@@ -1,0 +1,12 @@
+.vscode
+
+.DS_Store
+*.swp
+
+local-*
+
+node_modules
+
+.expo
+dist
+yarn-error.log

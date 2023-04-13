@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      ".assets/*": [
+        "./assets/*"
+      ],
+      ".components/*": [
+        "./components/*"
+      ],
+      ".modules/*": [
+        "./modules/*"
+      ],
+    }
+  },
+  "extends": "expo/tsconfig.base"
+}
