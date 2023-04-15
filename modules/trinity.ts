@@ -1,20 +1,18 @@
+export const InvalidReferenceString = "(invalid reference~)"
+
 export type Message = {
   sender_id: string
-  content: Content
+  content: Paragraph[]
   tags: string[]
 
   id: string
   partition: Partition
   _ts: number
-
-  sender_name: Name
 }
-
-export type Content = Paragraph[]
 
 export enum Partition {
   Unknown,
-  Message,
+  Active,
   Archived,
 }
 
@@ -32,44 +30,27 @@ export enum ParagraphType {
   File,
 }
 
-type Name = {
-  display_name: string
-  user_principal_name: string
+export type Name = {
+  display_name: string,
+  user_principal_name: string,
 }
 
 export type Reference = {
-  container_name: string
-  blob_name: string
+  name: string,
+  digest: string,
 }
 
-export function ReferenceMarshal(ref: Reference) {
-  if (ref.container_name.includes("/") || ref.blob_name.includes("/")) {
-    throw new Error("file name should not contain slashes")
+export function unmarshalReferenceString(s: string): [Reference, true] | [undefined, false] {
+  const ss = s.split("/")
+  if (ss.length === 2) {
+    return [{
+      name: ss[0],
+      digest: ss[1],
+    }, true]
   }
-  return [ref.container_name, ref.blob_name].join("/")
+  return [undefined, false]
 }
 
-export function ReferenceUnmarshal(data: string) {
-  const ss = data.split("/")
-  if (ss.length !== 2) {
-    return new Error("format error")
-  }
-  return {
-    container_name: ss[0],
-    blob_name: ss[1],
-  } as Reference
-}
-
-export function text(s: string): Paragraph {
-  return {
-    type: ParagraphType.Text,
-    data: s,
-  }
-}
-
-export function image(ref: Reference): Paragraph {
-  return {
-    type: ParagraphType.Image,
-    data: ReferenceMarshal(ref),
-  }
+export function marshalReferenceString(ref: Reference): string {
+  return [ref.name, ref.digest].join("/")
 }

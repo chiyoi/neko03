@@ -8,13 +8,15 @@ const config: ExpoConfig = {
   scheme: "neko",
   userInterfaceStyle: "automatic",
   assetBundlePatterns: ["**/*"],
-  icon: "./assets/chiyoi.png",
+  icon: "./assets/icons/chiyoi.png",
   primaryColor: tokens.color.pink3Light.val,
   ios: {
     supportsTablet: true,
+    icon: "./assets/icons/chiyoi.png",
   },
   web: {
     bundler: "metro",
+    favicon: "./assets/icons/chiyoi.png",
   },
   extra: {
     ServiceEndpoint: process.env.ENV === "prod" ? (

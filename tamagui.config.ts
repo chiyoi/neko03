@@ -1,7 +1,6 @@
 import { createAnimations } from "@tamagui/animations-react-native"
 import { createInterFont } from "@tamagui/font-inter"
 import { createMedia } from "@tamagui/react-native-media-driver"
-import { shorthands } from "@tamagui/shorthands"
 import { themes, tokens } from "@tamagui/themes"
 import { createFont, createTamagui } from "tamagui"
 
@@ -74,7 +73,6 @@ export default createTamagui({
   defaultTheme: "light",
   shouldAddPrefersColorThemes: false,
   themeClassNameOnRoot: false,
-  shorthands,
   fonts: {
     heading: interFont,
     body: interFont,

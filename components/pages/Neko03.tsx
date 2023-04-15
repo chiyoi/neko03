@@ -1,39 +1,27 @@
-import Constants from "expo-constants"
+import { useAssets } from "expo-asset"
 import { Link } from "expo-router"
 
 import { Button, GetProps, ListItem, Popover, SizableText, Stack, XStack, YGroup, useMedia } from "tamagui"
-import { Flower2 } from "@tamagui/lucide-icons"
+import { Flower2, Cherry, Citrus } from "@tamagui/lucide-icons"
 
 import { centralized, stylePopover, topLeftIconButton } from ".assets/styles"
 import PinkFallbackAvatar from ".components/PinkFallbackAvatar"
+import ErrorDialog from ".components/ErrorDialog"
+import CenterSquare from ".components/CenterSquare"
+import { useMemo } from "react"
 
-const serviceEndpoint: string = Constants.manifest?.extra?.ServiceEndpoint
-
-const pages: Page[] = [{
-  title: "chiyoi",
-  href: "/chiyoi",
-  avatar: new URL("/assets/chiyoi.png", serviceEndpoint).href,
-}, {
-  title: "nacho",
-  href: "/nacho",
-  avatar: new URL("/assets/nacho.png", serviceEndpoint).href,
-}, {
-  title: "shigure",
-  href: "/shigure",
-  avatar: new URL("/assets/shigure.png", serviceEndpoint).href,
-}, {
-  title: "trinity",
-  href: "/trinity",
-  avatar: new URL("/assets/trinity.png", serviceEndpoint).href,
-}, {
-  title: "teapot test",
-  href: "/404",
-}]
-
-const styleMenuButton: GetProps<typeof Button> = {
-  ...topLeftIconButton,
-  color: "$pink8",
-  icon: <Flower2 size={30} />,
+function styleMenuButton(): GetProps<typeof Button> {
+  return {
+    ...topLeftIconButton,
+    color: "$pink8",
+    icon: Math.random() > 0.5 ? (
+      <Citrus size={30} />
+    ) : Math.random() > 0.5 ? (
+      <Cherry size={30} />
+    ) : (
+      <Flower2 size={30} />
+    ),
+  }
 }
 
 function styleCharacter(c: ColoredCharacter): GetProps<typeof SizableText> {
@@ -58,18 +46,46 @@ function styleListItem(page: Page): GetProps<typeof ListItem> {
 }
 
 export default function Neko03() {
+  const [assets, error] = useAssets([
+    require(".assets/icons/chiyoi.png"),
+    require(".assets/icons/nacho.png"),
+    require(".assets/icons/shigure.png"),
+    require(".assets/icons/trinity.png"),
+  ])
+
+  const pages: Page[] = useMemo(() => [{
+    title: "chiyoi",
+    href: "/chiyoi",
+    avatar: assets?.[0].uri,
+  }, {
+    title: "nacho",
+    href: "/nacho",
+    avatar: assets?.[1].uri,
+  }, {
+    title: "shigure",
+    href: "/shigure",
+    avatar: assets?.[2].uri,
+  }, {
+    title: "trinity",
+    href: "/trinity",
+    avatar: assets?.[3].uri,
+  }, {
+    title: "teapot test",
+    href: "/404",
+  }], [assets])
+
   const media = useMedia()
 
   const title = colorLoopCharacters("neko03★moe")
   title[6].star = true
 
-  // return (
-  //   <Stack {...centralized}>
-  //     <Link asChild href={new URL("/", serviceEndpoint).href}>
-  //       <Button>test</Button>
-  //     </Link>
-  //   </Stack>
-  // )
+  if (error !== undefined) {
+    return <ErrorDialog message={error.message} />
+  }
+
+  if (assets === undefined) {
+    return <CenterSquare title="Loading~" />
+  }
 
   return (
     <>
@@ -85,7 +101,7 @@ export default function Neko03() {
 
       <Popover placement="bottom-start">
         <Popover.Trigger asChild>
-          <Button {...styleMenuButton} />
+          <Button {...styleMenuButton()} />
         </Popover.Trigger>
 
         <Popover.Content {...stylePopover} backgroundColor="$pink3">

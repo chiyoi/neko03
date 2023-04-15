@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 
-import { useWindowDimensions, Image, Square, GetProps } from "tamagui"
+import { useWindowDimensions, Square, GetProps, Image } from "tamagui"
 
 function styleSquare(duration: number, width: number, h: number, y: number): GetProps<typeof Square> {
   return {
@@ -19,18 +19,22 @@ export default function FlyingImage({ src, duration }: Props) {
   const [isRerender, setIsRerender] = useState(false)
   useEffect(() => setIsRerender(true), [])
 
-  const ymin = 0.05 * height
-  const ymax = 0.4 * height
-  const hmin = 0.3 * height
+  const minY = 0.05 * height
+  const maxY = 0.4 * height
+  const minH = 0.3 * height
 
-  const { current: y } = useRef(Math.random() * (ymax - ymin) + ymin)
-  const { current: h } = useRef(Math.random() * (height - y - hmin) + hmin)
+  const { current: y } = useRef(Math.random() * (maxY - minY) + minY)
+  const { current: h } = useRef(Math.random() * (height - y - minH) + minH)
 
-  return isRerender ? (
+  if (!isRerender) {
+    return null
+  }
+
+  return (
     <Square {...styleSquare(duration, width, h, y)}>
       <Image resizeMode="contain" src={src} width={h} height={h} />
     </Square>
-  ) : null
+  )
 }
 
 type Props = {

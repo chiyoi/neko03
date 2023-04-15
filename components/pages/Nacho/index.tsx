@@ -9,8 +9,8 @@ import FlyingImage from "./FlyingImage"
 import BackButton from ".components/BackButton"
 
 export default function Nacho() {
-  const interval = 10000
-  const duration = 30000
+  const interval = 20000
+  const duration = 50000
 
   const serviceEndpoint = Constants.manifest?.extra?.ServiceEndpoint
   const imageListEndpoint = new URL("/nacho/image_list.json", serviceEndpoint).href
@@ -20,26 +20,30 @@ export default function Nacho() {
 
   const [images, setImages] = useState<string[]>([])
   const removeImage = useCallback((id: string) => setImages(images => images.filter(image => image !== id)), [])
-  const addImage = useCallback(() => imageList.length > 0 ? (
-    setImages(images => {
-      const m = new Set()
-      images.forEach(image => m.add(image))
+  const addImage = useCallback(() => {
+    if (imageList.length > 0) {
+      setImages(images => {
+        const m = new Set()
+        images.forEach(image => m.add(image))
 
-      const image = pick(imageList.filter(image => !m.has(image)))
-      setTimeout(() => removeImage(image), duration)
+        const image = pick(imageList.filter(image => !m.has(image)))
+        setTimeout(() => removeImage(image), duration)
 
-      return [...images, image]
-    })
-  ) : undefined, [imageList])
-
-  useEffect(() => imageList.length > 0 ? (() => {
-    addImage()
-    const worker = setInterval(addImage, interval)
-    return () => {
-      setImages([])
-      clearInterval(worker)
+        return [...images, image]
+      })
     }
-  })() : undefined, [imageList, addImage])
+  }, [imageList])
+
+  useEffect(() => {
+    if (imageList.length > 0) {
+      addImage()
+      const worker = setInterval(addImage, interval)
+      return () => {
+        setImages([])
+        clearInterval(worker)
+      }
+    }
+  }, [imageList, addImage])
 
   return (
     <>

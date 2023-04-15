@@ -1,22 +1,33 @@
-import Constants from "expo-constants"
+import { useAssets } from "expo-asset"
 import { Link } from "expo-router"
 
-import { Avatar, Button, Paragraph, SizableText, Stack, XStack, YStack, useMedia } from "tamagui"
-import { ChevronLeft, Github, Twitter } from "@tamagui/lucide-icons"
+import { Button, Paragraph, Stack, XStack, YStack, useMedia } from "tamagui"
+import { Github, Twitter } from "@tamagui/lucide-icons"
 
-import { centralized, iconButton, topLeftIconButton } from ".assets/styles"
+import { centralized, iconButton } from ".assets/styles"
 import BackButton from ".components/BackButton"
 import PinkFallbackAvatar from ".components/PinkFallbackAvatar"
+import CenterSquare from ".components/CenterSquare"
+import ErrorDialog from ".components/ErrorDialog"
 
 function sizeMedia({ xs, sm }: { xs?: boolean, sm?: boolean }) {
-  return xs ? 200 : sm ? 250 : 300
+  return sm ? 250 : 300
 }
 
 export default function Chiyoi() {
   const media = useMedia()
 
-  const serviceEndpoint: string = Constants.manifest?.extra?.ServiceEndpoint
-  const iconChiyoi = new URL("/assets/chiyoi.png", serviceEndpoint).href
+  const [assets, error] = useAssets([require(".assets/icons/chiyoi.png")])
+
+  if (error !== undefined) {
+    return <ErrorDialog message={error.message} />
+  }
+
+  if (assets === undefined) {
+    return <CenterSquare title="Loading~" />
+  }
+
+  const [{ uri: iconChiyoi }] = assets
 
   return (
     <>

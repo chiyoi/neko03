@@ -1,21 +1,18 @@
-import { AuthRequest, AuthSessionResult, DiscoveryDocument, TokenResponse, exchangeCodeAsync, makeRedirectUri, useAuthRequest, useAutoDiscovery } from "expo-auth-session"
+import { useEffect } from "react"
+import { Platform } from "react-native"
+import { DiscoveryDocument, Prompt, ResponseType, TokenResponse, exchangeCodeAsync, useAuthRequest, useAutoDiscovery } from "expo-auth-session"
 import { maybeCompleteAuthSession } from "expo-web-browser"
 import Constants from "expo-constants"
 
-import { Button, Paragraph, Stack, YStack, Avatar, GetProps, useMedia, AlertDialog, XStack } from "tamagui"
+import { Button, Paragraph, Stack, YStack, Avatar, GetProps, useMedia, } from "tamagui"
 
 import { centralized } from ".assets/styles"
 import CenterSquare from ".components/CenterSquare"
-import { Link } from "expo-router"
-import { useContext, useEffect } from "react"
-import { createURL, openURL } from "expo-linking"
-import AsyncStorage from "@react-native-async-storage/async-storage"
-import ErrorDialog from ".components/pages/Trinity/pieces/ErrorDialog"
-import { Platform } from "react-native"
+import ErrorDialog from ".components/ErrorDialog"
+import { setCache } from ".components/pages/Trinity/auth"
+import { useAssets } from "expo-asset"
+import PinkFallbackAvatar from ".components/PinkFallbackAvatar"
 
-maybeCompleteAuthSession()
-
-const serviceEndpoint = Constants.manifest?.extra?.ServiceEndpoint
 
 const clientId = Constants.manifest?.extra?.AzureADApplicationClientID
 const discoveryEndpoint = "https://login.microsoftonline.com/common/v2.0"
@@ -24,19 +21,15 @@ const redirectUri = Platform.OS === "web" ? (
   process.env.ENV === "prod" ? (
     "https://neko03.moe/trinity"
   ) : (
-    "http://localhost/trinity"
+    "http://localhost:19000/trinity"
   )
 ) : (
   "exp://silver.local:19000/--/trinity"
 )
 
-const iconMicrosoftURL = new URL("/assets/microsoft.png", serviceEndpoint).href
-
 const styleFrame: GetProps<typeof YStack> = {
-  backgroundColor: "$pink4",
-  borderColor: "$pink5",
+  backgroundColor: "$pink3",
   borderRadius: "$5",
-  borderWidth: 1,
   elevation: 1,
   height: 200,
   width: 500,
@@ -50,30 +43,36 @@ const styleTitle: GetProps<typeof Paragraph> = {
   size: "$9",
 }
 
-const styleLoginButton: GetProps<typeof Button> = {
-  backgroundColor: "$pink5",
-  fontFamily: "$neko",
-  margin: "$4",
-  size: "$3",
-}
-
 export default function Login({ setAuth }: Props) {
+  const [assets, error] = useAssets([require(".assets/icons/microsoft.png")])
+
   const discovery = useAutoDiscovery(discoveryEndpoint)
   const [request, response, promptAsync] = useAuthRequest({
     clientId,
-    scopes: ["User.Read", "offline_access"],
+    scopes: ["User.Read"],
     redirectUri,
-    extraParams: { prompt: "select_account" },
-    usePKCE: false,
+    responseType: ResponseType.Token,
+    prompt: Prompt.SelectAccount,
   }, discovery)
 
   const media = useMedia()
 
   useEffect(() => {
     if (discovery !== null && request !== null && response !== null && response.type === "success") {
-      exchangeCode(response.params.code, discovery, setAuth)
+      response.authentication && setCache(response.authentication)
+      setAuth(response.authentication)
     }
   }, [response])
+
+  maybeCompleteAuthSession()
+
+  if (error !== undefined) {
+    return <ErrorDialog message={error.message} />
+  }
+
+  if (assets === undefined) {
+    return <CenterSquare title="Loading~" />
+  }
 
   if (response !== null) {
     return response.type === "opened" || response.type === "success" || response.type === "locked" ? (
@@ -86,27 +85,20 @@ export default function Login({ setAuth }: Props) {
   }
 
   return (
-    <Stack {...centralized} theme="pink" backgroundColor="$pink3">
+    <Stack {...centralized} theme="pink" backgroundColor="$background">
       <YStack {...styleFrame} scale={media.xs ? 0.7 : 1.0}>
         <Paragraph {...styleTitle}>
           Which cat you are?
         </Paragraph>
         <Stack {...centralized}>
-          <Button {...styleLoginButton} disabled={request === null} onPress={() => { promptAsync() }}>
-            <Avatar size={25}>
-              <Avatar.Image src={iconMicrosoftURL} />
-              <Avatar.Fallback backgroundColor="$pink6" />
-            </Avatar>
+          <Button fontFamily="$neko" disabled={request === null} onPress={() => { promptAsync() }}>
+            <PinkFallbackAvatar imageSrc={assets[0].uri} size={25} />
             Login with Microsoft
           </Button>
         </Stack>
       </YStack>
     </Stack>
   )
-}
-
-async function exchangeCode(code: string, discovery: DiscoveryDocument, setAuth: (auth: TokenResponse) => void) {
-  setAuth(await exchangeCodeAsync({ code, clientId, redirectUri }, discovery))
 }
 
 interface Props {
