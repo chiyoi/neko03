@@ -1,7 +1,7 @@
 import axios from "axios"
+import Constants from "expo-constants"
 
 import { Paragraph, Message, Name } from ".modules/trinity"
-import Constants from "expo-constants"
 
 const serviceEndpoint = Constants.manifest?.extra?.ServiceEndpoint
 
