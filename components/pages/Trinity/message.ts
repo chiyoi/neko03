@@ -1,9 +1,9 @@
 import axios from "axios"
-import Constants from "expo-constants"
 
 import { Paragraph, Message, Name } from ".modules/trinity"
+import { config } from ".modules/config"
 
-const serviceEndpoint = Constants.manifest?.extra?.ServiceEndpoint
+const serviceEndpoint = config.EndpointService()
 
 const fetchEndpoint = new URL("/trinity/fetch", serviceEndpoint).href
 const postEndpoint = new URL("/trinity/post", serviceEndpoint).href

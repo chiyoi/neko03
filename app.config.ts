@@ -19,12 +19,7 @@ const config: ExpoConfig = {
     favicon: "./assets/icons/chiyoi.png",
   },
   extra: {
-    ServiceEndpoint: process.env.ENV === "prod" ? (
-      "https://api.neko03.moe/"
-    ) : (
-      "http://silver.local/"
-    ),
-    AzureADApplicationClientID: "e5a68652-2fed-4508-ad85-02e7a966307f",
+    ENV: process.env.ENV,
   }
 }
 

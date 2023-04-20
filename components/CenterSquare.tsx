@@ -1,4 +1,5 @@
 import { GetProps, Paragraph, Stack } from "tamagui"
+
 import { centralized } from ".assets/styles"
 
 const styleCenterSquare: GetProps<typeof Stack> = {

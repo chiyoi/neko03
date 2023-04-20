@@ -21,7 +21,11 @@ export default function Layout() {
   const colorScheme = useColorScheme()
   const isDark = useMemo(() => colorScheme === "dark", [colorScheme])
 
-  return interLoaded && hachiMaruPopLoaded ? (
+  if (!interLoaded || !hachiMaruPopLoaded) {
+    return null
+  }
+
+  return (
     <TamaguiProvider config={config}>
       <Theme name={isDark ? "dark" : "light"}>
         <Theme name="pink">
@@ -34,5 +38,5 @@ export default function Layout() {
         </Theme>
       </Theme>
     </TamaguiProvider>
-  ) : null
+  )
 }

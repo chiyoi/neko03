@@ -38,13 +38,13 @@ export default function Shigure() {
 
   const { current: speed } = useRef(Math.random() * 100)
 
-  const ymin = 0.1 * height
-  const ymax = 0.7 * height
+  const minY = 0.1 * height
+  const maxY = 0.7 * height
 
   const [state, setState] = useState(State.Ready)
 
   const x = state === State.Ready ? width : media.xs ? -2500 : -1500
-  const { current: y } = useRef(Math.random() * (ymax - ymin) + ymin)
+  const { current: y } = useRef(Math.random() * (maxY - minY) + minY)
 
   const pocchi = useCallback(() => (
     state === State.Ready ? (

@@ -3,15 +3,16 @@
     "strict": true,
     "paths": {
       ".assets/*": [
-        "./assets/*"
+        "./assets/*",
       ],
       ".components/*": [
-        "./components/*"
+        "./components/*",
       ],
       ".modules/*": [
-        "./modules/*"
+        "./modules/*",
       ],
-    }
+    },
+    "noEmit": true,
   },
-  "extends": "expo/tsconfig.base"
+  "extends": "expo/tsconfig.base",
 }

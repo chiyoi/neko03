@@ -1,4 +1,5 @@
 import { Link } from "expo-router"
+
 import { AlertDialog, Button, GetProps, Stack, XStack, YStack } from "tamagui"
 
 const styleErrorAlert: GetProps<typeof AlertDialog.Content> = {

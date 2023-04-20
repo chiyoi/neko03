@@ -1,8 +1,8 @@
+import { config } from ".modules/config"
 import { Reference } from ".modules/trinity"
 import axios from "axios"
-import Constants from "expo-constants"
 
-const serviceEndpoint = Constants.manifest?.extra?.ServiceEndpoint
+const serviceEndpoint = config.EndpointService()
 
 const uploadEndpoint = new URL("/trinity/upload/", serviceEndpoint).href
 

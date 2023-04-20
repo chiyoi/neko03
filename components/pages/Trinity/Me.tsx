@@ -2,6 +2,7 @@ import { stylePopover, topRightIconButton } from ".assets/styles"
 import CenterSquare from ".components/CenterSquare"
 import PinkFallbackAvatar from ".components/PinkFallbackAvatar"
 import { AuthContext, clearCache } from ".components/pages/Trinity/auth"
+import { config } from ".modules/config"
 import { Name } from ".modules/trinity"
 import axios from "axios"
 import Constants from "expo-constants"
@@ -9,7 +10,7 @@ import { createURL, openURL } from "expo-linking"
 import { useContext, useEffect, useState } from "react"
 import { Button, GetProps, Paragraph, Popover, XStack, YStack } from "tamagui"
 
-const serviceEndpoint = Constants.manifest?.extra?.ServiceEndpoint
+const serviceEndpoint = config.EndpointService()
 
 const avatarURL = new URL("/trinity/avatar/me", serviceEndpoint).href
 const nameURL = new URL("/trinity/name", serviceEndpoint).href

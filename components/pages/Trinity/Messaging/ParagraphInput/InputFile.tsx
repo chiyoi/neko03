@@ -1,12 +1,12 @@
-import { iconButton } from ".assets/styles"
-import { StateCompose } from ".components/pages/Trinity/Messaging/compose"
-import { ParagraphType } from ".modules/trinity"
-import { X } from "@tamagui/lucide-icons"
-import { getDocumentAsync } from "expo-document-picker"
-import { readAsStringAsync } from "expo-file-system"
 import { useCallback, useState } from "react"
 import { Platform } from "react-native"
+import { getDocumentAsync } from "expo-document-picker"
+import { readAsStringAsync } from "expo-file-system"
+
 import { Button, XStack } from "tamagui"
+import { X } from "@tamagui/lucide-icons"
+
+import { iconButton } from ".assets/styles"
 
 export default function InputFile({ nameState: [name, setName], dataState: [file, setFile] }: Props) {
   const clear = useCallback(() => {

@@ -1,10 +1,12 @@
-import { downloadEndpoint } from ".components/pages/Trinity/MessageList/download-endpoint"
-import { Reference, unmarshalReferenceString } from ".modules/trinity"
-import { documentDirectory, downloadAsync } from "expo-file-system"
+import { Platform } from "react-native"
 import { Link } from "expo-router"
 import { shareAsync } from "expo-sharing"
-import { Platform } from "react-native"
+import { documentDirectory, downloadAsync } from "expo-file-system"
+
 import { Button } from "tamagui"
+
+import { downloadEndpoint } from ".components/pages/Trinity/MessageList/download-endpoint"
+import { Reference, unmarshalReferenceString } from ".modules/trinity"
 
 export default function FileParagraph({ data: refString }: Props) {
   const [ref, ok] = unmarshalReferenceString(refString)

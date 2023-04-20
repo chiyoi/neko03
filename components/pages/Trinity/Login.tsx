@@ -12,9 +12,10 @@ import ErrorDialog from ".components/ErrorDialog"
 import { setCache } from ".components/pages/Trinity/auth"
 import { useAssets } from "expo-asset"
 import PinkFallbackAvatar from ".components/PinkFallbackAvatar"
+import { config } from ".modules/config"
 
 
-const clientId = Constants.manifest?.extra?.AzureADApplicationClientID
+const clientId = config.ClientIDAzureADApplication
 const discoveryEndpoint = "https://login.microsoftonline.com/common/v2.0"
 
 const redirectUri = Platform.OS === "web" ? (

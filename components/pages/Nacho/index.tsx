@@ -1,18 +1,18 @@
 import axios from "axios"
 import { useCallback, useEffect, useState } from "react"
-import Constants from "expo-constants"
 
 import { Stack } from "tamagui"
 
 import { handle } from ".modules/axios_utils"
 import FlyingImage from "./FlyingImage"
 import BackButton from ".components/BackButton"
+import { config } from ".modules/config"
 
 export default function Nacho() {
   const interval = 20000
   const duration = 50000
 
-  const serviceEndpoint = Constants.manifest?.extra?.ServiceEndpoint
+  const serviceEndpoint = config.EndpointService()
   const imageListEndpoint = new URL("/nacho/image_list.json", serviceEndpoint).href
 
   const [imageList, setImageList] = useState<string[]>([])
