@@ -1,5 +1,10 @@
 # Neko03 Page
 
-[neko03.moe](https://neko03.moe): web page
-- TypeScript + React Native Web + Tamagui
-- Build with Expo
+Web/Native Application for [neko03.moe](https://neko03.moe)
+
+---
+
+- Typescript
+- Framework: Expo
+- UI Library: React, React Native, React Native Web
+- UI Kit: Tamagui
