@@ -1,7 +1,8 @@
+import { Input } from "tamagui"
+
 import InputFile from ".components/pages/Trinity/Messaging/ParagraphInput/InputFile"
 import { StateCompose } from ".components/pages/Trinity/Messaging/compose"
 import { ParagraphType } from ".modules/trinity"
-import { Input } from "tamagui"
 
 export function ParagraphInput({ composeState }: Props) {
   const [compose, setCompose] = composeState

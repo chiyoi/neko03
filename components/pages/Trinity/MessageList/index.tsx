@@ -9,8 +9,9 @@ import PinkFallbackAvatar from ".components/PinkFallbackAvatar"
 import { NamedMessage, fetchOlder, pollNewer } from ".components/pages/Trinity/message"
 import ParagraphImage from ".components/pages/Trinity/MessageList/ParagraphImage"
 import ParagraphFile from ".components/pages/Trinity/MessageList/ParagraphFile"
+import { config } from ".modules/config"
 
-const serviceEndpoint: string = Constants.manifest?.extra?.ServiceEndpoint
+const serviceEndpoint = config.EndpointService()
 
 const avatarEndpoint = new URL("/trinity/avatar/", serviceEndpoint).href
 

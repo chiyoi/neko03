@@ -1,7 +1,7 @@
 module.exports = function (api) {
   api.cache(true)
 
-  let plugins = [
+  const plugins = [
     "@babel/plugin-proposal-export-namespace-from",
     "react-native-reanimated/plugin",
     require.resolve("expo-router/babel"),
@@ -11,7 +11,7 @@ module.exports = function (api) {
       logTimings: true,
     }],
     ["transform-inline-environment-variables", {
-      include: "TAMAGUI_TARGET",
+      include: ["TAMAGUI_TARGET", "ENV"],
     }],
     ["babel-plugin-module-resolver", {
       "alias": {

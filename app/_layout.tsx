@@ -1,5 +1,5 @@
-import React, { useMemo } from "react"
-import { KeyboardAvoidingView, useColorScheme } from "react-native"
+import React, { useEffect, useMemo } from "react"
+import { useColorScheme } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Stack } from "expo-router"
 import { StatusBar } from "expo-status-bar"
@@ -9,7 +9,9 @@ import { useFonts as useHachiMaruPopFonts, HachiMaruPop_400Regular } from "@expo
 import { TamaguiProvider, Theme } from "tamagui"
 import { tokens } from "@tamagui/themes"
 
-import config from "../tamagui.config"
+import tamaguiConfig from "../tamagui.config"
+import { config } from ".modules/config"
+import axios from "axios"
 
 export default function Layout() {
   const [interLoaded] = useFonts({
@@ -21,8 +23,14 @@ export default function Layout() {
   const colorScheme = useColorScheme()
   const isDark = useMemo(() => colorScheme === "dark", [colorScheme])
 
-  return interLoaded && hachiMaruPopLoaded ? (
-    <TamaguiProvider config={config}>
+  useEffect(serviceWarmup, [])
+
+  if (!interLoaded || !hachiMaruPopLoaded) {
+    return null
+  }
+
+  return (
+    <TamaguiProvider config={tamaguiConfig}>
       <Theme name={isDark ? "dark" : "light"}>
         <Theme name="pink">
           <SafeAreaView style={{ flex: 1, backgroundColor: isDark ? tokens.color.pink2Dark.val : tokens.color.pink2Light.val }}>
@@ -34,5 +42,9 @@ export default function Layout() {
         </Theme>
       </Theme>
     </TamaguiProvider>
-  ) : null
+  )
+}
+
+function serviceWarmup() {
+  axios.get(config.EndpointService())
 }

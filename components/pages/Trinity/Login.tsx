@@ -12,13 +12,14 @@ import ErrorDialog from ".components/ErrorDialog"
 import { setCache } from ".components/pages/Trinity/auth"
 import { useAssets } from "expo-asset"
 import PinkFallbackAvatar from ".components/PinkFallbackAvatar"
+import { config, isProd } from ".modules/config"
 
 
-const clientId = Constants.manifest?.extra?.AzureADApplicationClientID
+const clientId = config.ClientIDAzureADApplication
 const discoveryEndpoint = "https://login.microsoftonline.com/common/v2.0"
 
 const redirectUri = Platform.OS === "web" ? (
-  process.env.ENV === "prod" ? (
+  isProd() ? (
     "https://neko03.moe/trinity"
   ) : (
     "http://localhost:19000/trinity"

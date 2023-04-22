@@ -1,5 +1,3 @@
-import Constants from "expo-constants"
+import { config } from ".modules/config"
 
-const serviceEndpoint = Constants.manifest?.extra?.ServiceEndpoint
-
-export const downloadEndpoint = new URL("/trinity/download/", serviceEndpoint).href
+export const downloadEndpoint = new URL("/trinity/download/", config.EndpointService()).href

@@ -1,6 +1,5 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import Constants from "expo-constants"
 import { TokenResponse } from "expo-auth-session"
 
 import MessageList from ".components/pages/Trinity/MessageList"
@@ -12,10 +11,11 @@ import Me from ".components/pages/Trinity/Me"
 import { AuthContext, getCache } from ".components/pages/Trinity/auth"
 import Messaging from ".components/pages/Trinity/Messaging"
 import { KeyboardAvoidingView } from "react-native"
+import { config } from ".modules/config"
 
-const serviceEndpoint = Constants.manifest?.extra?.ServiceEndpoint
+const serviceEndpoint = config.EndpointService()
 
-const clientId = Constants.manifest?.extra?.AzureADApplicationClientID
+const clientId = config.ClientIDAzureADApplication
 
 const checkEndpoint = new URL("/trinity/check", serviceEndpoint).href
 
