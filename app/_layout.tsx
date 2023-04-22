@@ -46,5 +46,5 @@ export default function Layout() {
 }
 
 function serviceWarmup() {
-  axios.get(config.EndpointService())
+  axios.get(new URL("/warmup", config.EndpointService()).href)
 }

@@ -64,7 +64,6 @@ function pick(imageList: string[]): string {
 
 async function fetchImageList(imageListEndpoint: string, setImageList: (imageList: string[]) => void) {
   try {
-    console.debug(imageListEndpoint)
     const resp = await axios.get<string[]>(imageListEndpoint)
     setImageList(resp.data)
   } catch (err) {
