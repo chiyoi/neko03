@@ -10,10 +10,6 @@ import PinkFallbackAvatar from ".components/PinkFallbackAvatar"
 import CenterSquare from ".components/CenterSquare"
 import ErrorDialog from ".components/ErrorDialog"
 
-function sizeMedia({ xs, sm }: { xs?: boolean, sm?: boolean }) {
-  return sm ? 250 : 300
-}
-
 export default function Chiyoi() {
   const media = useMedia()
 
@@ -33,19 +29,19 @@ export default function Chiyoi() {
     <>
       <Stack {...centralized} backgroundColor="$background">
         <YStack {...centralized} space={media.sm ? 20 : 25}>
-          <PinkFallbackAvatar imageSrc={iconChiyoi} size={sizeMedia(media)} />
+          <PinkFallbackAvatar imageSrc={iconChiyoi} size={media.sm ? 250 : 300} />
 
           <Paragraph fontFamily="$neko" color="$pink7" size={media.sm ? "$12" : "$14"} letterSpacing={8}>CHIYOI</Paragraph>
 
           <XStack alignItems="flex-start" space={media.sm ? 50 : 70}>
             <Link asChild href="https://twitter.com/chiyoi2140" >
-              <Button {...iconButton} theme="blue" color="$blue8" icon={
+              <Button {...iconButton} width={45} theme="blue" color="$blue8" icon={
                 <Twitter size={20} />
               } />
             </Link>
 
             <Link asChild href="https://github.com/chiyoi">
-              <Button {...iconButton} color="black" icon={
+              <Button {...iconButton} width={45} color="black" icon={
                 <Github size={20} />
               } />
             </Link>

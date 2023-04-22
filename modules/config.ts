@@ -6,7 +6,7 @@ export const config = {
   EndpointService: () => isProd() ? (
     "https://api.neko03.moe/"
   ) : (
-    "http://silver.local/"
+    "http://silver.local:7203/"
   ),
 }
 
