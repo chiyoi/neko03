@@ -19,7 +19,7 @@ jobs:
           action: "upload"
           app_location: "."
           output_location: "dist"
-          app_build_command: "expo export -p web"
+          app_build_command: "npx expo export -p web"
         env:
           ENV: prod
           TAMAGUI_TARGET: web
