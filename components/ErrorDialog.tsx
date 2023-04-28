@@ -2,14 +2,14 @@ import { Link } from "expo-router"
 
 import { AlertDialog, Button, GetProps, Stack, XStack, YStack } from "tamagui"
 
-const styleErrorAlert: GetProps<typeof AlertDialog.Content> = {
+const styleDialog: GetProps<typeof AlertDialog.Content> = {
   animation: ["bouncy", {
     opacity: {
       overshootClamping: true,
     },
   }],
-  backgroundColor: "$pink3",
-  elevate: true,
+  backgroundColor: "$color3",
+  elevation: 1,
   enterStyle: { x: 0, y: -20, opacity: 0, scale: 0.9 },
   exitStyle: { x: 0, y: 10, opacity: 0, scale: 0.95 },
   key: "content",
@@ -21,23 +21,37 @@ const styleErrorAlert: GetProps<typeof AlertDialog.Content> = {
   y: 0,
 }
 
+const styleTitle: GetProps<typeof AlertDialog.Title> = {
+  fontFamily: "$neko",
+  color: "$color7",
+}
+
+const styleDescription: GetProps<typeof AlertDialog.Description> = {
+  color: "$color8",
+}
+
+const styleButton: GetProps<typeof Button> = {
+  fontFamily: "$neko",
+  color: "$color8",
+}
+
 export default function ErrorDialog({ message }: Props) {
   return (
     <Stack height="100%" backgroundColor="$background">
       <AlertDialog open>
         <AlertDialog.Portal>
-          <AlertDialog.Content {...styleErrorAlert} >
+          <AlertDialog.Content {...styleDialog} theme="pink">
             <YStack space>
-              <AlertDialog.Title fontFamily="$neko" color="$pink8">Error~</AlertDialog.Title>
+              <AlertDialog.Title {...styleTitle}>Error~</AlertDialog.Title>
 
-              <AlertDialog.Description color="$pink8">
+              <AlertDialog.Description {...styleDescription}>
                 {message || "Unknown error~"}
               </AlertDialog.Description>
 
               <XStack justifyContent="flex-end">
                 <AlertDialog.Action asChild>
                   <Link asChild href="/">
-                    <Button fontFamily="$neko" theme="pink">Back</Button>
+                    <Button {...styleButton}>Back</Button>
                   </Link>
                 </AlertDialog.Action>
               </XStack>

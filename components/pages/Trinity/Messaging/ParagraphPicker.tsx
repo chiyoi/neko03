@@ -20,7 +20,7 @@ const styleListItem: GetProps<typeof ListItem> = {
   width: 100,
   hoverTheme: true,
   pressTheme: true,
-  backgroundColor: "$background",
+  backgroundColor: "$color2",
   justifyContent: "flex-start",
 }
 
@@ -28,20 +28,20 @@ export function ParagraphPicker({ setCompose }: Props) {
   return (
     <Popover placement="top-start">
       <Popover.Trigger asChild>
-        <Button {...iconButton} chromeless>
-          <Component />
+        <Button {...iconButton} width={45} chromeless>
+          <Component color="$color8" />
         </Button>
       </Popover.Trigger>
 
-      <Popover.Content {...stylePopoverInverted} size="$3" backgroundColor="$pink4">
-        <Popover.Arrow backgroundColor="$pink4" />
+      <Popover.Content {...stylePopoverInverted} size="$3" theme="pink" backgroundColor="$color3">
+        <Popover.Arrow backgroundColor="$color3" />
 
-        <YGroup pressTheme>
+        <YGroup>
           {data.map(({ type, name }) => (
             <YGroup.Item key={type}>
               <Popover.Close asChild>
                 <ListItem {...styleListItem} onPress={() => pick(type, setCompose)}>
-                  <SizableText color="$pink8" fontFamily="$neko" size="$6">
+                  <SizableText color="$color8" fontFamily="$neko" size="$6">
                     {name}
                   </SizableText>
                 </ListItem>

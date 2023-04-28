@@ -6,7 +6,7 @@ import { Github, Twitter } from "@tamagui/lucide-icons"
 
 import { centralized, iconButton } from ".assets/styles"
 import BackButton from ".components/BackButton"
-import PinkFallbackAvatar from ".components/PinkFallbackAvatar"
+import ColorBackAvatar from ".components/ColorAvatar"
 import CenterSquare from ".components/CenterSquare"
 import ErrorDialog from ".components/ErrorDialog"
 
@@ -29,7 +29,7 @@ export default function Chiyoi() {
     <>
       <Stack {...centralized} backgroundColor="$background">
         <YStack {...centralized} space={media.sm ? 20 : 25}>
-          <PinkFallbackAvatar imageSrc={iconChiyoi} size={media.sm ? 250 : 300} />
+          <ColorBackAvatar imageSrc={iconChiyoi} size={media.sm ? 250 : 300} />
 
           <Paragraph fontFamily="$neko" color="$pink7" size={media.sm ? "$12" : "$14"} letterSpacing={8}>CHIYOI</Paragraph>
 

@@ -1,7 +1,5 @@
-import { useCallback, useState } from "react"
-import { Platform } from "react-native"
+import { useCallback } from "react"
 import { getDocumentAsync } from "expo-document-picker"
-import { readAsStringAsync } from "expo-file-system"
 
 import { Button, XStack } from "tamagui"
 import { X } from "@tamagui/lucide-icons"
@@ -13,27 +11,24 @@ export default function InputFile({ nameState: [name, setName], dataState: [file
     setName("")
     setFile("")
   }, [])
-  console.debug(name)
-  console.debug(file.length)
 
   return (
     <XStack>
-      <Button onPress={() => pickFile(setName, setFile)}>{name || "Choose File"}</Button>
-      <Button {...iconButton} chromeless onPress={clear}><X /></Button>
+      <Button color="$color8" onPress={() => pickFile(setName, setFile)}>{name || "Choose File"}</Button>
+      {file && (
+        <Button {...iconButton} width={45} chromeless onPress={clear}>
+          <X color="$color8" />
+        </Button>
+      )}
     </XStack>
   )
 }
 
-type StateString = [string, (s: string) => void]
 async function pickFile(setName: StateString[1], setFile: StateString[1]) {
   const resp = await getDocumentAsync()
   if (resp.type === "success") {
-    if (Platform.OS === "web" && resp.file !== undefined) {
-      setFile(await resp.file.text())
-    } else if (Platform.OS === "ios") {
-      setFile(await readAsStringAsync(resp.uri))
-    }
     setName(resp.name)
+    setFile(resp.uri)
   }
 }
 
@@ -41,3 +36,5 @@ interface Props {
   nameState: StateString,
   dataState: StateString,
 }
+
+type StateString = [string, (s: string) => void]

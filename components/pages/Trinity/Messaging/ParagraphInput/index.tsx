@@ -11,8 +11,8 @@ export function ParagraphInput({ composeState }: Props) {
     <Input flex={1} value={compose.text} onChangeText={v => setCompose({ ...compose, text: v })} />
   ) : compose.type === ParagraphType.File ? (
     <InputFile
-      nameState={[compose.name, (name: string) => setCompose({ ...compose, name })]}
-      dataState={[compose.data, (data: string) => setCompose({ ...compose, data })]}
+      nameState={[compose.name, (name: string) => setCompose(compose => { return { ...compose, name } })]}
+      dataState={[compose.data, (data: string) => setCompose(compose => { return { ...compose, data } })]}
     />
   ) : null
 }

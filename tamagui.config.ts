@@ -15,41 +15,40 @@ const animations = createAnimations({
   }
 })
 
+const fontSize = {
+  1: 11,
+  2: 12,
+  3: 13,
+  4: 14,
+  true: 14,
+  5: 16,
+  6: 18,
+  7: 20,
+  8: 23,
+  9: 30,
+  10: 46,
+  11: 55,
+  12: 62,
+  13: 72,
+  14: 92,
+  15: 114,
+  16: 134,
+} as const
+
 const interFont = createInterFont()
 
-const hachiMaruPopFont = createFont((() => {
-  const size = {
-    1: 11,
-    2: 12,
-    3: 13,
-    4: 14,
-    true: 14,
-    5: 16,
-    6: 18,
-    7: 20,
-    8: 23,
-    9: 30,
-    10: 46,
-    11: 55,
-    12: 62,
-    13: 72,
-    14: 92,
-    15: 114,
-    16: 134,
-  } as const
-
-  return {
-    family: "HachiMaruPop_400Regular",
-    size,
-    lineHeight: size,
-    weight: {
-      4: '300',
-    },
-    letterSpacing: {
-      4: 0,
-    },
-  }
-})())
+const hachiMaruPopFont = createFont({
+  family: "HachiMaruPop_400Regular",
+  size: fontSize,
+  lineHeight: fontSize,
+  weight: {
+    4: '300',
+  },
+  letterSpacing: {
+    4: 0,
+  },
+}
+)
 
 const media = createMedia({
   xs: { maxWidth: 660 },

@@ -2,84 +2,81 @@ import axios from "axios"
 
 import { Paragraph, Message, Name } from ".modules/trinity"
 import { config } from ".modules/config"
+import { uploadAsync } from "expo-file-system"
+import { handle } from ".modules/axios_utils"
 
-const serviceEndpoint = config.EndpointService()
+const endpointService = config.EndpointService()
 
-const fetchEndpoint = new URL("/trinity/fetch", serviceEndpoint).href
-const postEndpoint = new URL("/trinity/post", serviceEndpoint).href
+const endpointFetchLatest = new URL("/trinity/fetch/latest", endpointService).href
+const endpointFetchEarlier = new URL("/trinity/fetch/earlier", endpointService).href
+const endpointFetchUpdate = new URL("/trinity/fetch/update", endpointService).href
+const endpointPost = new URL("/trinity/post", endpointService).href
+const endpointUpload = new URL("/trinity/upload/", endpointService).href
 
-const fetchBatchSize = 10
+export async function fetchLatest(setMessages: StateNamedMessageArray[1]) {
+  console.log("fetching latest messages")
 
-let mu = 1
-
-export async function fetchOlder([messages, setMessages]: StateNamedMessageArray) {
-  mu--
-  console.log("fetching older history")
-
-  const oldestTimestamp = messages.length && messages[messages.length - 1]._ts
-  const req: FetchRequest = {
-    before_timestamp: oldestTimestamp,
-    count: fetchBatchSize,
-    after_timestamp: 0,
-  }
-
-  const resp = await axios.post<FetchResponse>(fetchEndpoint, req)
-  setMessages([...messages, ...resp.data.messages])
-
-  mu++
+  const resp = await axios.get<ResponseFetch>(endpointFetchLatest)
+  setMessages(resp.data.messages)
 }
 
-export async function pollNewer([messages, setMessages]: StateNamedMessageArray) {
+export async function fetchEarlier([messages, setMessages]: StateNamedMessageArray) {
   if (messages.length === 0) {
     return
   }
+  console.log("fetching earlier history")
 
-  mu--
-  if (mu < 0) {
-    mu++
-    return
-  }
-  console.log("polling newer update")
-
-  const newestTimestamp = messages[0]._ts
-  const req: FetchRequest = {
-    before_timestamp: 0,
-    count: 0,
-    after_timestamp: newestTimestamp,
+  const oldestTimestamp = messages.length && messages[messages.length - 1].timestamp
+  const req: RequestFetchEarlier = {
+    before_timestamp: oldestTimestamp,
   }
 
-
-  const m = new Set<string>()
-  for (const message of messages.filter(message => message._ts === newestTimestamp)) {
-    m.add(message.id)
-  }
-
-  const resp = await axios.post<FetchResponse>(fetchEndpoint, req)
-  setMessages([...resp.data.messages.filter(message => message._ts !== newestTimestamp || !m.has(message.id)), ...messages])
-
-  mu++
+  const resp = await axios.post<ResponseFetch>(endpointFetchEarlier, req)
+  setMessages([...messages, ...resp.data.messages])
 }
 
-export async function post(content: Paragraph[]) {
+export function polling(setMessages: StateNamedMessageArray[1]): () => void {
+  console.log("polling update")
+
+  const source = axios.CancelToken.source()
+  axios.get<ResponseFetch>(endpointFetchUpdate, { cancelToken: source.token }).then(resp => (
+    setMessages(messages => [...resp.data.messages, ...messages])
+  )).catch(err => axios.isCancel(err) ? (
+    console.log(err.message)
+  ) : (
+    handle(err)
+  ))
+
+  return () => source.cancel("cancel polling")
+}
+
+export function post(content: Paragraph[]) {
   if (content.length === 0) {
     console.warn("empty post")
     return
   }
-  const req: PostRequest = { content }
-  await axios.post(postEndpoint, req)
+
+  const req: RequestPost = { content }
+  axios.post(endpointPost, req)
 }
 
-type FetchRequest = {
+export async function upload(name: string, uri: string): Promise<string> {
+  const resp = await uploadAsync(endpointUpload + name, uri, { httpMethod: "PUT" })
+  if (resp.status != 200) {
+    console.warn("upload failed")
+  }
+  return JSON.parse(resp.body)
+}
+
+type RequestFetchEarlier = {
   before_timestamp: number,
-  count: number,
-  after_timestamp: number,
 }
 
-type FetchResponse = {
+type ResponseFetch = {
   messages: NamedMessage[],
 }
 
-type PostRequest = {
+type RequestPost = {
   content: Paragraph[],
 }
 

@@ -9,7 +9,7 @@ export const centralized: GetProps<typeof Stack> = {
 export const iconButton: GetProps<typeof Button> = {
   animation: "bouncy",
   circular: true,
-  color: "$pink8",
+  color: "$color7",
   pressStyle: {
     scale: 0.9,
   },

@@ -5,7 +5,7 @@ import { Button, GetProps, ListItem, Popover, SizableText, Stack, XStack, YGroup
 import { Flower2, Cherry, Citrus } from "@tamagui/lucide-icons"
 
 import { centralized, stylePopover, topLeftIconButton } from ".assets/styles"
-import PinkFallbackAvatar from ".components/PinkFallbackAvatar"
+import ColorAvatar from ".components/ColorAvatar"
 import ErrorDialog from ".components/ErrorDialog"
 import CenterSquare from ".components/CenterSquare"
 import { useMemo } from "react"
@@ -13,7 +13,6 @@ import { useMemo } from "react"
 function styleMenuButton(): GetProps<typeof Button> {
   return {
     ...topLeftIconButton,
-    color: "$pink8",
     icon: Math.random() > 0.5 ? (
       <Citrus size={30} />
     ) : Math.random() > 0.5 ? (
@@ -35,12 +34,12 @@ function styleCharacter(c: ColoredCharacter): GetProps<typeof SizableText> {
 
 function styleListItem(page: Page): GetProps<typeof ListItem> {
   return {
-    icon: <PinkFallbackAvatar imageSrc={page.avatar} size={25} />,
+    icon: <ColorAvatar imageSrc={page.avatar} size={25} />,
     size: "$4",
     width: 170,
     hoverTheme: true,
     pressTheme: true,
-    backgroundColor: "$background",
+    backgroundColor: "$color2",
     justifyContent: "flex-start",
   }
 }
@@ -53,26 +52,28 @@ export default function Neko03() {
     require(".assets/icons/trinity.png"),
   ])
 
-  const pages: Page[] = useMemo(() => [{
-    title: "chiyoi",
-    href: "/chiyoi",
-    avatar: assets?.[0].uri,
-  }, {
-    title: "nacho",
-    href: "/nacho",
-    avatar: assets?.[1].uri,
-  }, {
-    title: "shigure",
-    href: "/shigure",
-    avatar: assets?.[2].uri,
-  }, {
-    title: "trinity",
-    href: "/trinity",
-    avatar: assets?.[3].uri,
-  }, {
-    title: "teapot test",
-    href: "/404",
-  }], [assets])
+  const pages: Page[] = useMemo(() => [
+    {
+      title: "chiyoi",
+      href: "/chiyoi",
+      avatar: assets?.[0].uri,
+    }, {
+      title: "nacho",
+      href: "/nacho",
+      avatar: assets?.[1].uri,
+    }, {
+      title: "shigure",
+      href: "/shigure",
+      avatar: assets?.[2].uri,
+    }, {
+      title: "trinity",
+      href: "/trinity",
+      avatar: assets?.[3].uri,
+    }, {
+      title: "teapot test",
+      href: "/404",
+    },
+  ], [assets])
 
   const media = useMedia()
 
@@ -104,14 +105,14 @@ export default function Neko03() {
           <Button {...styleMenuButton()} />
         </Popover.Trigger>
 
-        <Popover.Content {...stylePopover} backgroundColor="$pink3">
+        <Popover.Content {...stylePopover} backgroundColor="$color4">
           <YGroup>
             {pages.map((page, i) => (
               <YGroup.Item key={i}>
                 <Popover.Close asChild>
                   <Link asChild href={page.href}>
                     <ListItem {...styleListItem(page)}>
-                      <SizableText color="$pink8" fontFamily="$neko" size="$8">
+                      <SizableText color="$color7" fontFamily="$neko" size="$8">
                         {page.title}
                       </SizableText>
                     </ListItem>

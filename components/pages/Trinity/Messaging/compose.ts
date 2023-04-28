@@ -14,8 +14,6 @@ export type Compose = ({
   type: ParagraphType.Image | ParagraphType.Record | ParagraphType.Video | ParagraphType.File,
   name: string,
   data: string,
-} | {
-  type: ParagraphType.Unknown,
 }) & {
   sendState: SendState,
 }

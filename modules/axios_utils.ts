@@ -19,5 +19,5 @@ export function errorMessage(err: unknown): string {
 }
 
 export function handle(err: unknown) {
-  console.error(errorMessage(err))
+  console.error(`axios error: ${errorMessage(err)}`)
 }

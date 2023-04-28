@@ -32,7 +32,7 @@ export default function FlyingImage({ src, duration }: Props) {
 
   return (
     <Square {...styleSquare(duration, width, h, y)}>
-      <Image resizeMode="contain" src={src} width={h} height={h} />
+      <Image resizeMode="contain" source={{ uri: src }} width={h} height={h} />
     </Square>
   )
 }

@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { Button, GetProps, ListItem, Paragraph, Sheet, Image, Spinner, Stack, XGroup, XStack, YGroup } from "tamagui"
+import { Button, GetProps, Sheet, Spinner, XGroup, XStack } from "tamagui"
 import { Pencil, Send } from "@tamagui/lucide-icons"
 
 import { bottomIconButton, iconButton } from ".assets/styles"
@@ -8,8 +8,7 @@ import { ParagraphInput } from ".components/pages/Trinity/Messaging/ParagraphInp
 import { Compose, SendState, StateCompose, emptyCompose } from ".components/pages/Trinity/Messaging/compose"
 import { ParagraphPicker } from ".components/pages/Trinity/Messaging/ParagraphPicker"
 import { ParagraphType } from ".modules/trinity"
-import { post } from ".components/pages/Trinity/message"
-import { upload } from ".components/pages/Trinity/reference"
+import { post, upload } from ".components/pages/Trinity/message"
 import { handle } from ".modules/axios_utils"
 
 
@@ -31,7 +30,7 @@ export default function Messaging() {
   const openState = useState(false)
   const [, setOpen] = openState
   const positionState = useState(1)
-  const [snapPoint, setSnapPoint] = useState(13)
+  const [snapPoint] = useState(13)
 
   const composeState = useState<Compose>(emptyCompose)
   const [compose, setCompose] = composeState
@@ -39,7 +38,7 @@ export default function Messaging() {
   return (
     <>
       <Button {...bottomIconButton} onPress={() => setOpen(true)}>
-        <Pencil />
+        <Pencil color="$color8" />
       </Button>
 
       <Sheet {...styleSheet(openState, positionState, snapPoint)}>
@@ -47,19 +46,19 @@ export default function Messaging() {
         <Sheet.Handle />
 
         <Sheet.Frame>
-          <XStack padding="$3" backgroundColor="$pink3">
+          <XStack padding="$3" backgroundColor="$color3">
             <Sheet.ScrollView>
-              <XGroup backgroundColor="$pink3">
+              <XGroup backgroundColor="$color3">
                 <ParagraphPicker setCompose={setCompose} />
                 <ParagraphInput composeState={composeState} />
               </XGroup>
             </Sheet.ScrollView>
 
-            <Button {...iconButton} disabled={compose.sendState !== SendState.Composing} onPress={() => uploadAndPost(composeState)} marginStart="$3">
+            <Button {...iconButton} width={45} marginStart="$3" disabled={compose.sendState !== SendState.Composing} onPress={() => uploadAndPost(composeState)}>
               {compose.sendState === SendState.Composing ? (
-                <Send />
+                <Send color="$color8" />
               ) : (
-                <Spinner size="small" />
+                <Spinner size="small" color="$color8" />
               )}
             </Button>
           </XStack>
@@ -70,11 +69,6 @@ export default function Messaging() {
 }
 
 async function uploadAndPost([compose, setCompose]: StateCompose) {
-  if (compose.type === ParagraphType.Unknown) {
-    console.warn("unknown paragraph type")
-    return
-  }
-
   if (compose.type === ParagraphType.Text && compose.text === "" || compose.type !== ParagraphType.Text && compose.name === "") {
     console.warn("empty content or filename")
     return
@@ -83,7 +77,7 @@ async function uploadAndPost([compose, setCompose]: StateCompose) {
   setCompose({ ...compose, sendState: SendState.Sending })
 
   try {
-    await post([{
+    post([{
       type: compose.type,
       data: compose.type === ParagraphType.Text ? compose.text : (
         await upload(compose.name, compose.data)

@@ -1,14 +1,14 @@
+import axios from "axios"
+import { useContext, useEffect, useState } from "react"
+import { createURL, openURL } from "expo-linking"
+
+import { Button, GetProps, Paragraph, Popover, XStack, YStack } from "tamagui"
+
 import { stylePopover, topRightIconButton } from ".assets/styles"
-import CenterSquare from ".components/CenterSquare"
-import PinkFallbackAvatar from ".components/PinkFallbackAvatar"
+import ColorBackAvatar from ".components/ColorAvatar"
 import { AuthContext, clearCache } from ".components/pages/Trinity/auth"
 import { config } from ".modules/config"
 import { Name } from ".modules/trinity"
-import axios from "axios"
-import Constants from "expo-constants"
-import { createURL, openURL } from "expo-linking"
-import { useContext, useEffect, useState } from "react"
-import { Button, GetProps, Paragraph, Popover, XStack, YStack } from "tamagui"
 
 const serviceEndpoint = config.EndpointService()
 
@@ -19,7 +19,7 @@ function styleAvatarButton(avatarSrc: string): GetProps<typeof Button> {
   return {
     ...topRightIconButton,
     color: "$pink8",
-    icon: <PinkFallbackAvatar imageSrc={avatarSrc} size={30} />
+    icon: <ColorBackAvatar imageSrc={avatarSrc} size={30} />
   }
 }
 
@@ -43,15 +43,15 @@ export default function Me() {
         <Button {...styleAvatarButton(avatarURL)} />
       </Popover.Trigger>
 
-      <Popover.Content {...stylePopover} backgroundColor="$pink3">
-        <Popover.Arrow backgroundColor="$pink3" />
+      <Popover.Content {...stylePopover} backgroundColor="$color3">
+        <Popover.Arrow backgroundColor="$color3" />
 
         <YStack space>
-          <Paragraph size="$6" fontFamily="$neko" paddingEnd={30}>{name.display_name}</Paragraph>
-          <Paragraph size="$3" fontFamily="$neko" paddingEnd={30}>{name.user_principal_name}</Paragraph>
+          <Paragraph size="$6" fontFamily="$neko" color="$color8" paddingEnd={30}>{name.display_name}</Paragraph>
+          <Paragraph size="$3" fontFamily="$neko" color="$color7" paddingEnd={30}>{name.user_principal_name}</Paragraph>
 
           <XStack justifyContent="flex-end">
-            <Button fontFamily="$neko" onPress={logout}>logout</Button>
+            <Button fontFamily="$neko" color="$color8" onPress={logout}>logout</Button>
           </XStack>
         </YStack>
       </Popover.Content>

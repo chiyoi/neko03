@@ -1,6 +1,11 @@
+import axios from "axios"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { TokenResponse } from "expo-auth-session"
 import { createContext } from "react"
+
+import { config } from ".modules/config"
+
+const serviceEndpoint = config.EndpointService()
 
 const keyAccessToken = "access-token"
 const keyExpiresAt = "expires-at"
@@ -24,4 +29,21 @@ export async function getCache() {
 export async function clearCache() {
   AsyncStorage.removeItem(keyAccessToken)
   AsyncStorage.removeItem(keyExpiresAt)
+}
+
+export async function sync(token: string, setSyncState: (state: boolean | string) => void) {
+  const req = {
+    access_token: token
+  }
+
+  type VerifyResponse = {
+    passed: boolean,
+    message?: string,
+  }
+  const resp = await axios.post<VerifyResponse>(new URL("/trinity/sync", serviceEndpoint).href, req)
+  if (resp.data.passed) {
+    setSyncState(true)
+  } else {
+    setSyncState(resp.data.message || "")
+  }
 }
