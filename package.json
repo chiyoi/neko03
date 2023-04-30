@@ -7,10 +7,11 @@
   "dependencies": {
     "@expo-google-fonts/hachi-maru-pop": "^0.2.3",
     "@react-native-async-storage/async-storage": "1.17.11",
-    "@tamagui/animations-react-native": "^1.11.1",
-    "@tamagui/font-inter": "^1.11.1",
-    "@tamagui/lucide-icons": "^1.11.1",
-    "@tamagui/themes": "^1.11.1",
+    "@tamagui/animations-react-native": "1.11.1",
+    "@tamagui/font-inter": "1.11.1",
+    "@tamagui/lucide-icons": "1.11.1",
+    "@tamagui/themes": "1.11.1",
+    "@tamagui/toast": "1.11.1",
     "axios": "^1.3.5",
     "burnt": "^0.10.0",
     "expo": "^48.0.10",
@@ -39,7 +40,7 @@
     "react-native-screens": "~3.20.0",
     "react-native-svg": "13.4.0",
     "react-native-web": "~0.18.10",
-    "tamagui": "^1.11.1"
+    "tamagui": "1.11.1"
   },
   "devDependencies": {
     "@tamagui/babel-plugin": "^1.11.1",

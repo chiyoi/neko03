@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { FlatList } from "react-native"
 
-import { ListItem, Paragraph, Stack, YGroup, GetProps, SizableText } from "tamagui"
+import { ListItem, Paragraph, Stack, YGroup, GetProps, SizableText, Button, ScrollView, ToastProvider, ToastViewport } from "tamagui"
 
 import { ParagraphType } from ".modules/trinity"
 import ColorBackAvatar from ".components/ColorAvatar"
@@ -9,10 +9,18 @@ import { NamedMessage, fetchEarlier, fetchLatest, polling } from ".components/pa
 import ParagraphImage from ".components/pages/Trinity/MessageList/ParagraphImage"
 import ParagraphFile from ".components/pages/Trinity/MessageList/ParagraphFile"
 import { config } from ".modules/config"
+import { styleBounceDown, styleIconButton } from ".assets/styles"
+import axios from "axios"
+import { Trash } from "@tamagui/lucide-icons"
+import Remove from ".components/pages/Trinity/MessageList/Remove"
+import { Toast } from "@tamagui/toast"
+import { documentDirectory, downloadAsync } from "expo-file-system"
+import { shareAsync } from "expo-sharing"
 
-const serviceEndpoint = config.EndpointService()
+const endpointService = config.EndpointService()
 
-const avatarEndpoint = new URL("/trinity/avatar/", serviceEndpoint).href
+const endpointAvatar = new URL("/trinity/avatar/", endpointService).href
+const endpointRemove = new URL("/trinity/remove/", endpointService).href
 
 function styleMessage(senderAvatarSrc: string, message: NamedMessage): GetProps<typeof ListItem> {
   const formatTimestamp: Intl.DateTimeFormatOptions = {
@@ -49,40 +57,100 @@ export default function MessageList() {
   const messagesState = useState<NamedMessage[]>([])
   const [messages, setMessages] = messagesState
 
+  const [toast, setToast] = useState<string>("")
+  const toastOpen = useMemo(() => toast !== "", [toast])
+  const setToastOpen = useCallback((toastOpen: boolean) => setToast(toastOpen ? "Unknown notice~" : ""), [])
+
+  const shareMu = useRef(1)
+  const sharing = useMemo(() => shareMu.current <= 0, [])
+
+  const share = useCallback((filename: string, uri: string) => {
+    (async () => {
+      shareMu.current--
+      if (shareMu.current < 0) {
+        shareMu.current++
+        setToast("Already downloading, please wait~")
+        return
+      }
+
+      try {
+        setToast("Downloading~")
+        const file = documentDirectory + filename
+        console.log(`download ${filename}`)
+        await downloadAsync(uri, file)
+        await shareAsync(file)
+      } catch (err) {
+        console.error(err)
+        setToast("Download failed~")
+      }
+      shareMu.current++
+    })()
+  }, [])
+
+  const removeMessage = useCallback((mid: string) => {
+    (async () => {
+      try {
+        setToast("Removing~")
+        await axios.delete(endpointRemove + mid)
+        setMessages(messages => messages.filter(m => m.id !== mid))
+      } catch (err) {
+        setToast("Remove failed~")
+        console.error(err)
+      }
+    })()
+  }, [])
+
+  const fetchEarlierMessages = useCallback(() => {
+    setToast("Fetching earlier messages~")
+    fetchEarlier(messagesState)
+  }, [])
+
   useEffect(() => {
+    setToast("Fetching latest messages~")
     fetchLatest(setMessages)
     return () => setMessages([])
   }, [])
 
-  useEffect(() => {
-    return polling(setMessages)
-  }, [messages])
+  useEffect(() => polling(setMessages))
 
   return (
-    <Stack height="100%" backgroundColor="$background">
-      <FlatList inverted onEndReached={() => fetchEarlier(messagesState)} data={messages} renderItem={({ item: message }) => (
-        <ListItem {...styleMessage(avatarEndpoint + message.sender_id, message)}>
-          <YGroup paddingHorizontal="$2">
-            {message.content.map((paragraph, i) => (
-              <Stack key={i}>
-                {paragraph.type === ParagraphType.Text ? (
-                  <Paragraph>{paragraph.data}</Paragraph>
-                ) : paragraph.type === ParagraphType.Image ? (
-                  <ParagraphImage data={paragraph.data} />
-                ) : paragraph.type === ParagraphType.Record ? (
-                  <Paragraph color="grey">(Unsupported paragraph type~)</Paragraph>
-                ) : paragraph.type === ParagraphType.Video ? (
-                  <Paragraph color="grey">(Unsupported paragraph type~)</Paragraph>
-                ) : paragraph.type === ParagraphType.File ? (
-                  <ParagraphFile data={paragraph.data} />
-                ) : (
-                  <Paragraph color="grey">(Unknown paragraph type~)</Paragraph>
-                )}
-              </Stack>
-            ))}
-          </YGroup>
-        </ListItem>
-      )} />
-    </Stack>
+    <>
+      <Stack height="100%" backgroundColor="$background">
+        <FlatList inverted onEndReached={fetchEarlierMessages} data={messages} renderItem={({ item: message }) => (
+          <ListItem {...styleMessage(endpointAvatar + message.sender_id, message)} key={message.id}>
+            <YGroup paddingHorizontal="$2">
+              {message.content.map((paragraph, i) => (
+                <Stack key={i}>
+                  {paragraph.type === ParagraphType.Text ? (
+                    <Paragraph>{paragraph.data}</Paragraph>
+                  ) : paragraph.type === ParagraphType.Image ? (
+                    <ParagraphImage data={paragraph.data} sharing={sharing} share={share} />
+                  ) : paragraph.type === ParagraphType.Record ? (
+                    <Paragraph color="grey">(Unsupported paragraph type~)</Paragraph>
+                  ) : paragraph.type === ParagraphType.Video ? (
+                    <Paragraph color="grey">(Unsupported paragraph type~)</Paragraph>
+                  ) : paragraph.type === ParagraphType.File ? (
+                    <ParagraphFile data={paragraph.data} sharing={sharing} share={share} />
+                  ) : (
+                    <Paragraph color="grey">(Unknown paragraph type~)</Paragraph>
+                  )}
+                </Stack>
+              ))}
+            </YGroup>
+
+            <Remove onConfirm={() => removeMessage(message.id)} />
+          </ListItem>
+        )} />
+      </Stack >
+
+
+      <ToastProvider duration={2000}>
+        <Toast {...styleBounceDown} top={30} open={toastOpen} onOpenChange={setToastOpen}>
+          <Toast.Title color="$color8">{toast}</Toast.Title>
+        </Toast>
+
+        <ToastViewport alignSelf="center" />
+      </ToastProvider>
+    </>
   )
 }

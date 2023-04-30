@@ -6,41 +6,40 @@ export const centralized: GetProps<typeof Stack> = {
   alignItems: "center",
 }
 
-export const iconButton: GetProps<typeof Button> = {
+export const styleIconButton: GetProps<typeof Button> = {
   animation: "bouncy",
   circular: true,
   color: "$color7",
+  width: 45,
+  height: 45,
   pressStyle: {
     scale: 0.9,
   },
 }
 
-export const topLeftIconButton: GetProps<typeof Button> = {
-  ...iconButton,
+export const styleTopLeftIconButton: GetProps<typeof Button> = {
+  ...styleIconButton,
   position: "absolute",
   top: 30,
   left: 30,
-  chromeless: true,
 }
 
-export const topRightIconButton: GetProps<typeof Button> = {
-  ...iconButton,
+export const styleTopRightIconButton: GetProps<typeof Button> = {
+  ...styleIconButton,
   position: "absolute",
   top: 30,
   right: 30,
-  chromeless: true,
 }
 
-export const bottomIconButton: GetProps<typeof Button> = {
-  ...iconButton,
+export const styleBottomIconButton: GetProps<typeof Button> = {
+  ...styleIconButton,
   position: "absolute",
   bottom: 10,
   alignSelf: "center",
-  chromeless: true,
 }
 
 
-export const stylePopover: GetProps<typeof Popover.Content> = {
+export const styleBounceDown: GetProps<typeof Popover.Content> = {
   animation: ["bouncy", {
     opacity: {
       overshootClamping: true,
@@ -54,7 +53,7 @@ export const stylePopover: GetProps<typeof Popover.Content> = {
   elevate: true,
 }
 
-export const stylePopoverInverted: GetProps<typeof Popover.Content> = {
+export const styleBounceUp: GetProps<typeof Popover.Content> = {
   animation: ["bouncy", {
     opacity: {
       overshootClamping: true,

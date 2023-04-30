@@ -4,7 +4,7 @@ import { createURL, openURL } from "expo-linking"
 
 import { Button, GetProps, Paragraph, Popover, XStack, YStack } from "tamagui"
 
-import { stylePopover, topRightIconButton } from ".assets/styles"
+import { styleBounceDown, styleTopRightIconButton } from ".assets/styles"
 import ColorBackAvatar from ".components/ColorAvatar"
 import { AuthContext, clearCache } from ".components/pages/Trinity/auth"
 import { config } from ".modules/config"
@@ -14,14 +14,6 @@ const serviceEndpoint = config.EndpointService()
 
 const avatarURL = new URL("/trinity/avatar/me", serviceEndpoint).href
 const nameURL = new URL("/trinity/name", serviceEndpoint).href
-
-function styleAvatarButton(avatarSrc: string): GetProps<typeof Button> {
-  return {
-    ...topRightIconButton,
-    color: "$pink8",
-    icon: <ColorBackAvatar imageSrc={avatarSrc} size={30} />
-  }
-}
 
 export default function Me() {
   const auth = useContext(AuthContext)
@@ -40,10 +32,12 @@ export default function Me() {
   return (
     <Popover placement="bottom-end">
       <Popover.Trigger asChild>
-        <Button {...styleAvatarButton(avatarURL)} />
+        <Button {...styleTopRightIconButton} chromeless icon={
+          <ColorBackAvatar imageSrc={avatarURL} size={35} />
+        } />
       </Popover.Trigger>
 
-      <Popover.Content {...stylePopover} backgroundColor="$color3">
+      <Popover.Content {...styleBounceDown} backgroundColor="$color3">
         <Popover.Arrow backgroundColor="$color3" />
 
         <YStack space>

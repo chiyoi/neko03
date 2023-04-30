@@ -15,8 +15,8 @@ const endpointUpload = new URL("/trinity/upload/", endpointService).href
 
 export async function fetchLatest(setMessages: StateNamedMessageArray[1]) {
   console.log("fetching latest messages")
-
   const resp = await axios.get<ResponseFetch>(endpointFetchLatest)
+  console.log("latest messages fetched")
   setMessages(resp.data.messages)
 }
 
@@ -24,24 +24,24 @@ export async function fetchEarlier([messages, setMessages]: StateNamedMessageArr
   if (messages.length === 0) {
     return
   }
-  console.log("fetching earlier history")
 
+  console.log("fetching earlier history")
   const oldestTimestamp = messages.length && messages[messages.length - 1].timestamp
   const req: RequestFetchEarlier = {
     before_timestamp: oldestTimestamp,
   }
-
   const resp = await axios.post<ResponseFetch>(endpointFetchEarlier, req)
+  console.log("earlier history fetched")
   setMessages([...messages, ...resp.data.messages])
 }
 
 export function polling(setMessages: StateNamedMessageArray[1]): () => void {
   console.log("polling update")
-
   const source = axios.CancelToken.source()
-  axios.get<ResponseFetch>(endpointFetchUpdate, { cancelToken: source.token }).then(resp => (
+  axios.get<ResponseFetch>(endpointFetchUpdate, { cancelToken: source.token }).then(resp => {
+    console.log("received update")
     setMessages(messages => [...resp.data.messages, ...messages])
-  )).catch(err => axios.isCancel(err) ? (
+  }).catch(err => axios.isCancel(err) ? (
     console.log(err.message)
   ) : (
     handle(err)
@@ -50,20 +50,24 @@ export function polling(setMessages: StateNamedMessageArray[1]): () => void {
   return () => source.cancel("cancel polling")
 }
 
-export function post(content: Paragraph[]) {
+export async function post(content: Paragraph[]) {
   if (content.length === 0) {
     console.warn("empty post")
     return
   }
 
   const req: RequestPost = { content }
-  axios.post(endpointPost, req)
+  const resp = await axios.post(endpointPost, req)
+  resp.status !== 200 && (
+    console.warn("upload failed")
+  )
 }
 
-export async function upload(name: string, uri: string): Promise<string> {
+export async function upload(name: string, uri: string): Promise<string | undefined> {
   const resp = await uploadAsync(endpointUpload + name, uri, { httpMethod: "PUT" })
   if (resp.status != 200) {
     console.warn("upload failed")
+    return
   }
   return JSON.parse(resp.body)
 }

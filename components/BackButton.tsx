@@ -1,18 +1,16 @@
 import { Link } from "expo-router"
 
-import { Button, GetProps } from "tamagui"
+import { Button } from "tamagui"
 import { ChevronLeft } from "@tamagui/lucide-icons"
 
-import { topLeftIconButton } from ".assets/styles"
-
-const styleIcon: GetProps<typeof Button> = {
-  icon: <ChevronLeft size={30} />,
-}
+import { styleTopLeftIconButton } from ".assets/styles"
 
 export default function BackButton() {
   return (
     <Link asChild href="/">
-      <Button {...topLeftIconButton} {...styleIcon} />
+      <Button {...styleTopLeftIconButton} chromeless icon={
+        <ChevronLeft size={30} />
+      } />
     </Link>
   )
 }

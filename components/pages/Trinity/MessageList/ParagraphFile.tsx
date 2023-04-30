@@ -16,9 +16,8 @@ const styleButton: GetProps<typeof Button> = {
   marginEnd: "auto",
 }
 
-export default function FileParagraph({ data: refString }: Props) {
+export default function FileParagraph({ data: refString, sharing, share }: Props) {
   const [ref, ok] = referenceUnmarshalString(refString)
-  const [downloading, setDownloading] = useState(false)
 
   if (!ok) {
     return <Button disabled>(invalid file~)</Button>
@@ -29,21 +28,14 @@ export default function FileParagraph({ data: refString }: Props) {
       <Button>{ref.name}</Button>
     </Link>
   ) : Platform.OS === "ios" ? (
-    <Button {...styleButton} disabled={downloading} onPress={() => download(refString, ref.name, setDownloading)}>
+    <Button {...styleButton} disabled={sharing} onPress={() => share(refString, ref.name)}>
       {ref.name}
     </Button>
   ) : null
 }
 
-async function download(refString: string, filename: string, setDownloading: (downloading: boolean) => void) {
-  const file = documentDirectory + filename
-  console.log(`downloading ${filename}`)
-  setDownloading(true)
-  await downloadAsync(downloadEndpoint + refString, file)
-  await shareAsync(file)
-  setDownloading(false)
-}
-
 interface Props {
   data: string,
+  sharing: boolean,
+  share: (filename: string, uri: string) => void,
 }

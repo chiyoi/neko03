@@ -1,7 +1,7 @@
 import { Button, GetProps, ListItem, Popover, SizableText, YGroup } from "tamagui"
 import { Component } from "@tamagui/lucide-icons"
 
-import { iconButton, stylePopoverInverted } from ".assets/styles"
+import { styleIconButton, styleBounceUp } from ".assets/styles"
 import { ParagraphType } from ".modules/trinity"
 import { SendState, StateCompose, emptyCompose } from ".components/pages/Trinity/Messaging/compose"
 
@@ -28,12 +28,12 @@ export function ParagraphPicker({ setCompose }: Props) {
   return (
     <Popover placement="top-start">
       <Popover.Trigger asChild>
-        <Button {...iconButton} width={45} chromeless>
-          <Component color="$color8" />
-        </Button>
+        <Button {...styleIconButton} width={45} chromeless icon={
+          <Component size={25} />
+        } />
       </Popover.Trigger>
 
-      <Popover.Content {...stylePopoverInverted} size="$3" theme="pink" backgroundColor="$color3">
+      <Popover.Content {...styleBounceUp} size="$3" theme="pink" backgroundColor="$color3">
         <Popover.Arrow backgroundColor="$color3" />
 
         <YGroup>

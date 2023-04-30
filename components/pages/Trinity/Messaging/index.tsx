@@ -1,47 +1,67 @@
-import { useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 
-import { Button, GetProps, Sheet, Spinner, XGroup, XStack } from "tamagui"
+import { Button, GetProps, Sheet, Spinner, Toast, ToastProvider, ToastViewport, XGroup, XStack } from "tamagui"
 import { Pencil, Send } from "@tamagui/lucide-icons"
 
-import { bottomIconButton, iconButton } from ".assets/styles"
+import { styleBottomIconButton, styleBounceDown, styleIconButton } from ".assets/styles"
 import { ParagraphInput } from ".components/pages/Trinity/Messaging/ParagraphInput"
-import { Compose, SendState, StateCompose, emptyCompose } from ".components/pages/Trinity/Messaging/compose"
+import { Compose, SendState, emptyCompose } from ".components/pages/Trinity/Messaging/compose"
 import { ParagraphPicker } from ".components/pages/Trinity/Messaging/ParagraphPicker"
 import { ParagraphType } from ".modules/trinity"
 import { post, upload } from ".components/pages/Trinity/message"
-import { handle } from ".modules/axios_utils"
 
-
-type StateBoolean = [boolean, React.Dispatch<React.SetStateAction<boolean>>]
-type StateNumber = [number, React.Dispatch<React.SetStateAction<number>>]
-function styleSheet([open, setOpen]: StateBoolean, [position, setPosition]: StateNumber, snapPoint: number): GetProps<typeof Sheet> {
-  return {
-    animation: "bouncy",
-    dismissOnSnapToBottom: true,
-    onOpenChange: setOpen,
-    onPositionChange: setPosition,
-    open: open,
-    position: position,
-    snapPoints: [snapPoint],
-  }
+const styleSheet: GetProps<typeof Sheet> = {
+  animation: "bouncy",
+  dismissOnSnapToBottom: true,
 }
 
 export default function Messaging() {
   const openState = useState(false)
-  const [, setOpen] = openState
-  const positionState = useState(1)
-  const [snapPoint] = useState(13)
+  const [open, setOpen] = openState
+
+  const [toast, setToast] = useState<string>("")
+  const toastOpen = useMemo(() => toast !== "", [toast])
+  const setToastOpen = useCallback((toastOpen: boolean) => setToast(toastOpen ? "Unknown notice~" : ""), [])
 
   const composeState = useState<Compose>(emptyCompose)
   const [compose, setCompose] = composeState
 
+  const send = useCallback(() => {
+    (async () => {
+      setOpen(false)
+      if (compose.type === ParagraphType.Text && compose.text === "" || compose.type !== ParagraphType.Text && compose.name === "") {
+        console.warn("empty content or filename")
+        return
+      }
+
+      try {
+        setToast("Sending~")
+        setCompose({ ...compose, sendState: SendState.Sending })
+        await post([{
+          type: compose.type,
+          data: compose.type === ParagraphType.Text ? (
+            compose.text
+          ) : (
+            await upload(compose.name, compose.data) || ""
+          )
+        }])
+        setToast("Sent. Waiting server push back.")
+        setCompose(emptyCompose)
+      } catch (err) {
+        console.error(err)
+        setToast("Send failed~")
+        setCompose({ ...compose, sendState: SendState.Composing })
+      }
+    })()
+  }, [composeState])
+
   return (
     <>
-      <Button {...bottomIconButton} onPress={() => setOpen(true)}>
-        <Pencil color="$color8" />
-      </Button>
+      <Button {...styleBottomIconButton} onPress={() => setOpen(true)} icon={
+        <Pencil size={25} />
+      } />
 
-      <Sheet {...styleSheet(openState, positionState, snapPoint)}>
+      <Sheet {...styleSheet} snapPoints={[13]} open={open} onOpenChange={setOpen}>
         <Sheet.Overlay />
         <Sheet.Handle />
 
@@ -54,38 +74,24 @@ export default function Messaging() {
               </XGroup>
             </Sheet.ScrollView>
 
-            <Button {...iconButton} width={45} marginStart="$3" disabled={compose.sendState !== SendState.Composing} onPress={() => uploadAndPost(composeState)}>
-              {compose.sendState === SendState.Composing ? (
-                <Send color="$color8" />
+            <Button {...styleIconButton} width={45} marginStart="$3" disabled={compose.sendState !== SendState.Composing} onPress={send} icon={
+              compose.sendState === SendState.Composing ? (
+                <Send size={25} />
               ) : (
-                <Spinner size="small" color="$color8" />
-              )}
-            </Button>
+                <Spinner size="small" />
+              )
+            } />
           </XStack>
         </Sheet.Frame>
       </Sheet>
+
+      <ToastProvider duration={2000}>
+        <Toast {...styleBounceDown} top={30} open={toastOpen} onOpenChange={setToastOpen}>
+          <Toast.Title color="$color8">{toast}</Toast.Title>
+        </Toast>
+
+        <ToastViewport alignSelf="center" />
+      </ToastProvider>
     </>
   )
-}
-
-async function uploadAndPost([compose, setCompose]: StateCompose) {
-  if (compose.type === ParagraphType.Text && compose.text === "" || compose.type !== ParagraphType.Text && compose.name === "") {
-    console.warn("empty content or filename")
-    return
-  }
-
-  setCompose({ ...compose, sendState: SendState.Sending })
-
-  try {
-    post([{
-      type: compose.type,
-      data: compose.type === ParagraphType.Text ? compose.text : (
-        await upload(compose.name, compose.data)
-      )
-    }])
-    setCompose(emptyCompose)
-  } catch (err) {
-    handle(err)
-    setCompose({ ...compose, sendState: SendState.Composing })
-  }
 }

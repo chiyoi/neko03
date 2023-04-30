@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react"
+import React, { useMemo } from "react"
 import { useColorScheme } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Stack } from "expo-router"
@@ -10,8 +10,6 @@ import { TamaguiProvider, Theme } from "tamagui"
 import { tokens } from "@tamagui/themes"
 
 import tamaguiConfig from "../tamagui.config"
-import { config } from ".modules/config"
-import axios from "axios"
 
 export default function Layout() {
   const [interLoaded] = useFonts({
@@ -22,8 +20,6 @@ export default function Layout() {
 
   const colorScheme = useColorScheme()
   const isDark = useMemo(() => colorScheme === "dark", [colorScheme])
-
-  useEffect(serviceWarmup, [])
 
   if (!interLoaded || !hachiMaruPopLoaded) {
     return null
@@ -43,8 +39,4 @@ export default function Layout() {
       </Theme>
     </TamaguiProvider>
   )
-}
-
-function serviceWarmup() {
-  axios.get(new URL("/warmup", config.EndpointService()).href)
 }

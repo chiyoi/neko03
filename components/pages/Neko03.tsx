@@ -1,27 +1,14 @@
 import { useAssets } from "expo-asset"
 import { Link } from "expo-router"
 
-import { Button, GetProps, ListItem, Popover, SizableText, Stack, XStack, YGroup, useMedia } from "tamagui"
+import { Button, Circle, GetProps, ListItem, Popover, SizableText, Stack, Toast, ToastProvider, ToastViewport, XStack, YGroup, useMedia } from "tamagui"
 import { Flower2, Cherry, Citrus } from "@tamagui/lucide-icons"
 
-import { centralized, stylePopover, topLeftIconButton } from ".assets/styles"
+import { centralized, styleIconButton, styleBounceDown, styleTopLeftIconButton } from ".assets/styles"
 import ColorAvatar from ".components/ColorAvatar"
 import ErrorDialog from ".components/ErrorDialog"
 import CenterSquare from ".components/CenterSquare"
-import { useMemo } from "react"
-
-function styleMenuButton(): GetProps<typeof Button> {
-  return {
-    ...topLeftIconButton,
-    icon: Math.random() > 0.5 ? (
-      <Citrus size={30} />
-    ) : Math.random() > 0.5 ? (
-      <Cherry size={30} />
-    ) : (
-      <Flower2 size={30} />
-    ),
-  }
-}
+import { useMemo, useState } from "react"
 
 function styleCharacter(c: ColoredCharacter): GetProps<typeof SizableText> {
   return {
@@ -102,10 +89,18 @@ export default function Neko03() {
 
       <Popover placement="bottom-start">
         <Popover.Trigger asChild>
-          <Button {...styleMenuButton()} />
+          <Button {...styleTopLeftIconButton} chromeless icon={
+            Math.random() > 0.5 ? (
+              <Citrus size={30} />
+            ) : Math.random() > 0.5 ? (
+              <Cherry size={30} />
+            ) : (
+              <Flower2 size={30} />
+            )
+          } />
         </Popover.Trigger>
 
-        <Popover.Content {...stylePopover} backgroundColor="$color4">
+        <Popover.Content {...styleBounceDown} backgroundColor="$color4">
           <YGroup>
             {pages.map((page, i) => (
               <YGroup.Item key={i}>

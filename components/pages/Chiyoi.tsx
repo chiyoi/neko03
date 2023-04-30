@@ -4,7 +4,7 @@ import { Link } from "expo-router"
 import { Button, Paragraph, Stack, XStack, YStack, useMedia } from "tamagui"
 import { Github, Twitter } from "@tamagui/lucide-icons"
 
-import { centralized, iconButton } from ".assets/styles"
+import { centralized, styleIconButton } from ".assets/styles"
 import BackButton from ".components/BackButton"
 import ColorBackAvatar from ".components/ColorAvatar"
 import CenterSquare from ".components/CenterSquare"
@@ -35,13 +35,13 @@ export default function Chiyoi() {
 
           <XStack alignItems="flex-start" space={media.sm ? 50 : 70}>
             <Link asChild href="https://twitter.com/chiyoi2140" >
-              <Button {...iconButton} width={45} theme="blue" color="$blue8" icon={
+              <Button {...styleIconButton} width={45} color="$blue8" icon={
                 <Twitter size={20} />
               } />
             </Link>
 
             <Link asChild href="https://github.com/chiyoi">
-              <Button {...iconButton} width={45} color="black" icon={
+              <Button {...styleIconButton} width={45} color="$gray12" icon={
                 <Github size={20} />
               } />
             </Link>

@@ -4,7 +4,7 @@ import { getDocumentAsync } from "expo-document-picker"
 import { Button, XStack } from "tamagui"
 import { X } from "@tamagui/lucide-icons"
 
-import { iconButton } from ".assets/styles"
+import { styleIconButton } from ".assets/styles"
 
 export default function InputFile({ nameState: [name, setName], dataState: [file, setFile] }: Props) {
   const clear = useCallback(() => {
@@ -16,7 +16,7 @@ export default function InputFile({ nameState: [name, setName], dataState: [file
     <XStack>
       <Button color="$color8" onPress={() => pickFile(setName, setFile)}>{name || "Choose File"}</Button>
       {file && (
-        <Button {...iconButton} width={45} chromeless onPress={clear}>
+        <Button {...styleIconButton} width={45} chromeless onPress={clear}>
           <X color="$color8" />
         </Button>
       )}

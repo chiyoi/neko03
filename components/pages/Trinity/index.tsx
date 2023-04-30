@@ -15,7 +15,15 @@ export default function Trinity() {
   const [loading, setLoading] = useState(true)
 
   const [auth, setAuth] = useState<TokenResponse | null>(null)
-  useEffect(() => { initiate(auth, setAuth, setLoading) }, [auth])
+  useEffect(() => {
+    (async () => {
+      if (auth === null) {
+        const auth = await getCache()
+        auth !== null && setAuth(auth)
+      }
+      setLoading(false)
+    })()
+  }, [auth])
 
   const [syncState, setSyncState] = useState<boolean | string>(false)
   useEffect(() => {
@@ -54,13 +62,4 @@ export default function Trinity() {
       </KeyboardAvoidingView>
     </AuthContext.Provider>
   )
-}
-
-async function initiate(auth: TokenResponse | null, setAuth: (auth: TokenResponse) => void, setLoading: (loading: boolean) => void) {
-  if (auth === null) {
-    auth = await getCache()
-    auth !== null && setAuth(auth)
-  }
-  setLoading(false)
-  return
 }
