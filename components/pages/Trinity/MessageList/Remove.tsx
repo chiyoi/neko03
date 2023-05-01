@@ -1,7 +1,9 @@
-import { styleIconButton, styleBounceUp } from ".assets/styles"
-import { Trash, X, Circle } from "@tamagui/lucide-icons"
-import { useCallback, useState } from "react"
-import { Button, Paragraph, Popover, Sheet, XStack, YStack } from "tamagui"
+import { useState } from "react"
+
+import { Button, Paragraph, Sheet, XStack, YStack } from "tamagui"
+import { Trash } from "@tamagui/lucide-icons"
+
+import { styleIconButton } from ".assets/styles"
 
 export default function Remove({ onConfirm }: Props) {
   const [open, setOpen] = useState(false)
@@ -24,7 +26,6 @@ export default function Remove({ onConfirm }: Props) {
               <Button fontFamily="$neko" color="$color8" onPress={() => [setOpen(false), setRemoving(true), onConfirm()]}>
                 confirm
               </Button>
-
               <Button fontFamily="$neko" theme="gray" chromeless onPress={() => setOpen(false)}>
                 cancel
               </Button>

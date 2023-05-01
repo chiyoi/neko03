@@ -29,6 +29,7 @@
     "expo-sharing": "~11.2.2",
     "expo-splash-screen": "~0.18.2",
     "expo-status-bar": "~1.4.4",
+    "expo-updates": "~0.16.4",
     "expo-web-browser": "~12.1.1",
     "next": "^13.3.1",
     "react": "^18.2.0",
@@ -43,9 +44,9 @@
     "tamagui": "1.11.1"
   },
   "devDependencies": {
-    "@tamagui/babel-plugin": "^1.11.1",
     "@babel/core": "^7.21.4",
     "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
+    "@tamagui/babel-plugin": "^1.11.1",
     "@types/react": "^18.0.33",
     "babel-plugin-module-resolver": "^5.0.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",

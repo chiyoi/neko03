@@ -4,16 +4,11 @@ import InputFile from ".components/pages/Trinity/Messaging/ParagraphInput/InputF
 import { StateCompose } from ".components/pages/Trinity/Messaging/compose"
 import { ParagraphType } from ".modules/trinity"
 
-export function ParagraphInput({ composeState }: Props) {
-  const [compose, setCompose] = composeState
-
+export function ParagraphInput({ composeState: [compose, setCompose] }: Props) {
   return compose.type === ParagraphType.Text ? (
-    <Input flex={1} value={compose.text} onChangeText={v => setCompose({ ...compose, text: v })} />
+    <Input flex={1} value={compose.text} onChangeText={text => setCompose({ ...compose, text })} />
   ) : compose.type === ParagraphType.File ? (
-    <InputFile
-      nameState={[compose.name, (name: string) => setCompose(compose => { return { ...compose, name } })]}
-      dataState={[compose.data, (data: string) => setCompose(compose => { return { ...compose, data } })]}
-    />
+    <InputFile composeState={[compose, setCompose]} />
   ) : null
 }
 

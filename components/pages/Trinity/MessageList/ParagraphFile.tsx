@@ -1,15 +1,14 @@
 import { Platform } from "react-native"
 import { Link } from "expo-router"
-import { shareAsync } from "expo-sharing"
-import { documentDirectory, downloadAsync } from "expo-file-system"
 
 import { Button, GetProps } from "tamagui"
 
 import { referenceUnmarshalString } from ".modules/trinity"
 import { config } from ".modules/config"
-import { useState } from "react"
+import { useContext } from "react"
+import { AuthContext, query } from ".components/pages/Trinity/auth"
 
-const downloadEndpoint = new URL("/trinity/download/", config.EndpointService()).href
+const downloadEndpoint = new URL("/trinity/download/", config.EndpointService).href
 
 const styleButton: GetProps<typeof Button> = {
   color: "$color8",
@@ -17,14 +16,16 @@ const styleButton: GetProps<typeof Button> = {
 }
 
 export default function FileParagraph({ data: refString, sharing, share }: Props) {
+  const auth = useContext(AuthContext)
+
   const [ref, ok] = referenceUnmarshalString(refString)
 
   if (!ok) {
-    return <Button disabled>(invalid file~)</Button>
+    return <Button {...styleButton} disabled>(invalid file~)</Button>
   }
 
   return Platform.OS === "web" ? (
-    <Link asChild href={downloadEndpoint + refString}>
+    <Link asChild href={downloadEndpoint + refString + "?" + query(auth)}>
       <Button>{ref.name}</Button>
     </Link>
   ) : Platform.OS === "ios" ? (

@@ -1,9 +1,11 @@
+import { useCallback } from "react"
+
 import { Button, GetProps, ListItem, Popover, SizableText, YGroup } from "tamagui"
 import { Component } from "@tamagui/lucide-icons"
 
 import { styleIconButton, styleBounceUp } from ".assets/styles"
 import { ParagraphType } from ".modules/trinity"
-import { SendState, StateCompose, emptyCompose } from ".components/pages/Trinity/Messaging/compose"
+import { StateCompose, emptyFile, emptyText } from ".components/pages/Trinity/Messaging/compose"
 
 const data: ParagraphTypeListItem[] = [
   {
@@ -25,6 +27,14 @@ const styleListItem: GetProps<typeof ListItem> = {
 }
 
 export function ParagraphPicker({ setCompose }: Props) {
+  const pick = useCallback((type: ParagraphType) => setCompose(
+    type === ParagraphType.File ? (
+      emptyFile
+    ) : (
+      emptyText
+    )
+  ), [])
+
   return (
     <Popover placement="top-start">
       <Popover.Trigger asChild>
@@ -40,7 +50,7 @@ export function ParagraphPicker({ setCompose }: Props) {
           {data.map(({ type, name }) => (
             <YGroup.Item key={type}>
               <Popover.Close asChild>
-                <ListItem {...styleListItem} onPress={() => pick(type, setCompose)}>
+                <ListItem {...styleListItem} onPress={() => pick(type)}>
                   <SizableText color="$color8" fontFamily="$neko" size="$6">
                     {name}
                   </SizableText>
@@ -52,14 +62,6 @@ export function ParagraphPicker({ setCompose }: Props) {
       </Popover.Content>
     </Popover>
   )
-}
-
-async function pick(type: ParagraphType, setCompose: StateCompose[1]) {
-  if (type === ParagraphType.Text) {
-    setCompose(emptyCompose)
-  } else if (type === ParagraphType.File) {
-    setCompose({ type, name: "", data: "", sendState: SendState.Composing })
-  }
 }
 
 interface Props {

@@ -1,21 +1,20 @@
 import { ParagraphType } from ".modules/trinity"
 
-export enum SendState {
-  Composing,
-  Sending,
-}
+export const emptyText: ComposeText = { type: ParagraphType.Text, text: "" }
+export const emptyFile: ComposeReference = { type: ParagraphType.File, filename: "", uri: "" }
 
-export const emptyCompose = { type: ParagraphType.Text as const, text: "", sendState: SendState.Composing }
-
-export type Compose = ({
+export type ComposeText = {
   type: ParagraphType.Text,
   text: string,
-} | {
-  type: ParagraphType.Image | ParagraphType.Record | ParagraphType.Video | ParagraphType.File,
-  name: string,
-  data: string,
-}) & {
-  sendState: SendState,
 }
 
+export type ComposeReference = {
+  type: ParagraphType.Image | ParagraphType.Record | ParagraphType.Video | ParagraphType.File,
+  filename: string,
+  uri: string,
+}
+
+export type Compose = ComposeText | ComposeReference
+
 export type StateCompose = [Compose, React.Dispatch<React.SetStateAction<Compose>>]
+export type StateComposeReference = [ComposeReference, React.Dispatch<React.SetStateAction<Compose>>]

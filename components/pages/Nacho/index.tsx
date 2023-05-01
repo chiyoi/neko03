@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useContext, useEffect, useMemo, useState } from "react"
 
 import { Stack } from "tamagui"
 
@@ -7,19 +7,27 @@ import { handle } from ".modules/axios_utils"
 import FlyingImage from "./FlyingImage"
 import BackButton from ".components/BackButton"
 import { config } from ".modules/config"
+import { ToastContext } from ".modules/toast"
+
+const endpointImageList = new URL("/nacho/image_list.json", config.EndpointService).href
 
 export default function Nacho() {
-  const interval = 20000
-  const duration = 50000
+  const toast = useContext(ToastContext)
 
-  const serviceEndpoint = config.EndpointService()
-  const imageListEndpoint = new URL("/nacho/image_list.json", serviceEndpoint).href
+  const interval = useMemo(() => 20000, [])
+  const duration = useMemo(() => 50000, [])
 
   const [imageList, setImageList] = useState<string[]>([])
-  useEffect(() => { fetchImageList(imageListEndpoint, setImageList) }, [imageListEndpoint])
-
   const [images, setImages] = useState<string[]>([])
-  const removeImage = useCallback((id: string) => setImages(images => images.filter(image => image !== id)), [])
+
+  const pick = useCallback((imageList: string[]) => (
+    imageList.length > 0 ? (
+      imageList[Math.floor(Math.random() * imageList.length)]
+    ) : (
+      "なちょ逃げた"
+    )
+  ), [])
+
   const addImage = useCallback(() => {
     if (imageList.length > 0) {
       setImages(images => {
@@ -33,6 +41,28 @@ export default function Nacho() {
       })
     }
   }, [imageList])
+
+  const removeImage = useCallback((id: string) => (
+    setImages(images => images.filter(image => image !== id))
+  ), [])
+
+  useEffect(() => {
+    toast("Scrolling images~")
+    setTimeout(() => {
+      console.log("fetching image list")
+      toast("Fetching image list~")
+      axios.get<string[]>(endpointImageList).then(resp => {
+        setTimeout(() => {
+          console.log("image list fetched")
+          toast("Image list fetched~")
+          setImageList(resp.data)
+        }, 500)
+      }).catch(err => {
+        console.warn(err)
+        toast("Connection error~")
+      })
+    }, 1000)
+  }, [toast])
 
   useEffect(() => {
     if (imageList.length > 0) {
@@ -49,7 +79,7 @@ export default function Nacho() {
     <>
       <Stack height="100%" backgroundColor="$background">
         {images.map(image => (
-          <FlyingImage key={image} src={new URL(image, serviceEndpoint).href} duration={duration} />
+          <FlyingImage key={image} src={new URL(image, config.EndpointService).href} duration={duration} />
         ))}
       </Stack>
 
@@ -60,13 +90,4 @@ export default function Nacho() {
 
 function pick(imageList: string[]): string {
   return imageList.length > 0 ? imageList[Math.floor(Math.random() * imageList.length)] : "なちょ逃げた"
-}
-
-async function fetchImageList(imageListEndpoint: string, setImageList: (imageList: string[]) => void) {
-  try {
-    const resp = await axios.get<string[]>(imageListEndpoint)
-    setImageList(resp.data)
-  } catch (err) {
-    handle(err)
-  }
 }

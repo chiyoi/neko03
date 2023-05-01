@@ -1,14 +1,19 @@
+import axios from "axios"
+import { useContext, useEffect, useMemo } from "react"
 import { useAssets } from "expo-asset"
 import { Link } from "expo-router"
 
-import { Button, Circle, GetProps, ListItem, Popover, SizableText, Stack, Toast, ToastProvider, ToastViewport, XStack, YGroup, useMedia } from "tamagui"
+import { Button, GetProps, ListItem, Popover, SizableText, Stack, XStack, YGroup, useMedia } from "tamagui"
 import { Flower2, Cherry, Citrus } from "@tamagui/lucide-icons"
 
-import { centralized, styleIconButton, styleBounceDown, styleTopLeftIconButton } from ".assets/styles"
+import { centralized, styleBounceDown, styleTopLeftIconButton } from ".assets/styles"
 import ColorAvatar from ".components/ColorAvatar"
 import ErrorDialog from ".components/ErrorDialog"
 import CenterSquare from ".components/CenterSquare"
-import { useMemo, useState } from "react"
+import { ToastContext } from ".modules/toast"
+import { config } from ".modules/config"
+
+const endpointWarmup = new URL("/warmup", config.EndpointService).href
 
 function styleCharacter(c: ColoredCharacter): GetProps<typeof SizableText> {
   return {
@@ -32,6 +37,8 @@ function styleListItem(page: Page): GetProps<typeof ListItem> {
 }
 
 export default function Neko03() {
+  const toast = useContext(ToastContext)
+
   const [assets, error] = useAssets([
     require(".assets/icons/chiyoi.png"),
     require(".assets/icons/nacho.png"),
@@ -56,9 +63,6 @@ export default function Neko03() {
       title: "trinity",
       href: "/trinity",
       avatar: assets?.[3].uri,
-    }, {
-      title: "teapot test",
-      href: "/404",
     },
   ], [assets])
 
@@ -66,6 +70,18 @@ export default function Neko03() {
 
   const title = colorLoopCharacters("neko03★moe")
   title[6].star = true
+
+  useEffect(() => {
+    toast(`Connecting to service~ (${config.EndpointService})`)
+    console.log("service warmup")
+    axios.get(endpointWarmup).then(() => {
+      toast("Service connected~")
+      console.log("service ok")
+    }).catch(err => {
+      toast(`Connection error~`)
+      console.warn(err)
+    })
+  }, [])
 
   if (error !== undefined) {
     return <ErrorDialog message={error.message} />

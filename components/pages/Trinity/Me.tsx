@@ -1,29 +1,30 @@
 import axios from "axios"
-import { useContext, useEffect, useState } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 import { createURL, openURL } from "expo-linking"
 
 import { Button, GetProps, Paragraph, Popover, XStack, YStack } from "tamagui"
 
 import { styleBounceDown, styleTopRightIconButton } from ".assets/styles"
 import ColorBackAvatar from ".components/ColorAvatar"
-import { AuthContext, clearCache } from ".components/pages/Trinity/auth"
+import { AuthContext, clearCache, header, query } from ".components/pages/Trinity/auth"
 import { config } from ".modules/config"
 import { Name } from ".modules/trinity"
 
-const serviceEndpoint = config.EndpointService()
-
-const avatarURL = new URL("/trinity/avatar/me", serviceEndpoint).href
-const nameURL = new URL("/trinity/name", serviceEndpoint).href
+const avatarURL = new URL("/trinity/avatar/me", config.EndpointService).href
+const nameURL = new URL("/trinity/name", config.EndpointService).href
 
 export default function Me() {
   const auth = useContext(AuthContext)
 
   const [name, setName] = useState<Name | null>(null)
-  useEffect(() => {
+  const getName = useCallback(async () => {
     if (auth !== null) {
-      getName(setName)
+      const resp = await axios.get<Name>(nameURL, { headers: header(auth) })
+      setName(resp.data)
     }
   }, [auth])
+
+  useEffect(() => { getName() }, [getName])
 
   if (name === null) {
     return null
@@ -33,7 +34,7 @@ export default function Me() {
     <Popover placement="bottom-end">
       <Popover.Trigger asChild>
         <Button {...styleTopRightIconButton} chromeless icon={
-          <ColorBackAvatar imageSrc={avatarURL} size={35} />
+          <ColorBackAvatar imageSrc={avatarURL + "?" + query(auth)} size={35} />
         } />
       </Popover.Trigger>
 

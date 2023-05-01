@@ -5,36 +5,29 @@ import { Button, XStack } from "tamagui"
 import { X } from "@tamagui/lucide-icons"
 
 import { styleIconButton } from ".assets/styles"
+import { StateComposeReference, emptyFile } from ".components/pages/Trinity/Messaging/compose"
 
-export default function InputFile({ nameState: [name, setName], dataState: [file, setFile] }: Props) {
-  const clear = useCallback(() => {
-    setName("")
-    setFile("")
+export default function InputFile({ composeState: [compose, setCompose] }: Props) {
+  const pickFile = useCallback(async () => {
+    const resp = await getDocumentAsync()
+    if (resp.type === "success") {
+      setCompose(compose => { return { ...compose, filename: resp.name, uri: resp.uri } })
+    }
   }, [])
 
   return (
     <XStack>
-      <Button color="$color8" onPress={() => pickFile(setName, setFile)}>{name || "Choose File"}</Button>
-      {file && (
-        <Button {...styleIconButton} width={45} chromeless onPress={clear}>
+      <Button color="$color8" onPress={pickFile}>{compose.filename || "Choose File"}</Button>
+
+      {compose.filename !== "" && (
+        <Button {...styleIconButton} width={45} chromeless onPress={() => setCompose(emptyFile)}>
           <X color="$color8" />
         </Button>
       )}
-    </XStack>
+    </XStack >
   )
 }
 
-async function pickFile(setName: StateString[1], setFile: StateString[1]) {
-  const resp = await getDocumentAsync()
-  if (resp.type === "success") {
-    setName(resp.name)
-    setFile(resp.uri)
-  }
-}
-
 interface Props {
-  nameState: StateString,
-  dataState: StateString,
+  composeState: StateComposeReference,
 }
-
-type StateString = [string, (s: string) => void]

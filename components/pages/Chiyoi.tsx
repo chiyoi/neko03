@@ -9,11 +9,18 @@ import BackButton from ".components/BackButton"
 import ColorBackAvatar from ".components/ColorAvatar"
 import CenterSquare from ".components/CenterSquare"
 import ErrorDialog from ".components/ErrorDialog"
+import { ToastContext } from ".modules/toast"
+import { useContext, useEffect } from "react"
 
 export default function Chiyoi() {
+  const toast = useContext(ToastContext)
   const media = useMedia()
 
   const [assets, error] = useAssets([require(".assets/icons/chiyoi.png")])
+
+  useEffect(() => {
+    toast("Nyan~")
+  }, [])
 
   if (error !== undefined) {
     return <ErrorDialog message={error.message} />
