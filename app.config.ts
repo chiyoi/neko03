@@ -22,7 +22,6 @@ const config: ExpoConfig = {
     "eas": {
       "projectId": "360e6d2f-5998-4090-84a5-b690edc803cf",
     },
-    ENV: process.env.ENV,
   },
   updates: {
     url: "https://u.expo.dev/360e6d2f-5998-4090-84a5-b690edc803cf",

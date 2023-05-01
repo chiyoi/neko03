@@ -1,5 +1,3 @@
-import Constants from "expo-constants"
-
 export const config = {
   ClientIDAzureADApplication: "e5a68652-2fed-4508-ad85-02e7a966307f",
 
@@ -11,5 +9,5 @@ export const config = {
 }
 
 export function isProd() {
-  return Constants.manifest?.extra?.ENV === "prod"
+  return true
 }

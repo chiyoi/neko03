@@ -12,6 +12,7 @@ import ErrorDialog from ".components/ErrorDialog"
 import CenterSquare from ".components/CenterSquare"
 import { ToastContext } from ".modules/toast"
 import { config } from ".modules/config"
+import { errorMessage } from ".modules/axios_utils"
 
 const endpointWarmup = new URL("/warmup", config.EndpointService).href
 
@@ -72,14 +73,19 @@ export default function Neko03() {
   title[6].star = true
 
   useEffect(() => {
-    toast(`Connecting to service~ (${config.EndpointService})`)
     console.log("service warmup")
+    toast(`Connecting to service~ (${config.EndpointService})`)
     axios.get(endpointWarmup).then(() => {
-      toast("Service connected~")
       console.log("service ok")
+      toast("Service connected~")
     }).catch(err => {
-      toast(`Connection error~`)
       console.warn(err)
+      setTimeout(() => {
+        toast("Connection error~")
+      }, 1000)
+      setTimeout(() => {
+        toast(errorMessage(err))
+      }, 1000)
     })
   }, [])
 
