@@ -21,42 +21,42 @@ const endpointSync = new URL("/trinity/sync", config.EndpointService).href
 export default function Trinity() {
   const toast = useContext(ToastContext)
 
-  const [loading, setLoading] = useState(true)
   const [auth, setAuth] = useState<TokenResponse | null>(null)
+  const [gettingAuthCache, setGettingAuthCache] = useState(true)
   const [syncState, setSyncState] = useState<boolean | string>(false)
 
-  const getAuthCache = useCallback(async () => {
-    if (auth === null) {
-      console.log("getting auth cache")
-      const auth = await getCache()
-      if (auth !== null) {
-        console.log("got auth cache")
-        setAuth(auth)
+  const getAuthCache = useCallback(() => {
+    if (gettingAuthCache) {
+      if (auth === null) {
+        getCache().then(auth => {
+          if (auth !== null) {
+            setAuth(auth)
+          }
+        })
       }
+      setGettingAuthCache(false)
     }
-    setLoading(false)
-  }, [auth])
+  }, [auth, gettingAuthCache])
 
   const sync = useCallback(async () => {
     if (auth !== null) {
       console.log("syncing")
-
-      type ResponseSync = {
-        passed: boolean,
-        message?: string,
-      }
-      axios.post<ResponseSync>(endpointSync, JSON.stringify({ access_token: auth.accessToken })).then(resp => {
+      toast("Logging in~")
+      axios.post<{ passed: boolean, message?: string }>(endpointSync, JSON.stringify({ access_token: auth.accessToken })).then(resp => {
         if (resp.data.passed) {
           console.log("sync result: passed")
-          toast("Successfully login~")
+          toast("Logged in~")
           setSyncState(true)
         } else {
           console.log(`sync result: failed (${resp.data.message})`)
+          toast("Login failed~")
           setSyncState(resp.data.message || "")
         }
       }).catch(err => {
+        const message = "Unknown error~"
         console.warn(err)
-        setSyncState(errorMessage(err))
+        toast(message)
+        setSyncState(message)
       })
     }
   }, [auth])
@@ -66,8 +66,8 @@ export default function Trinity() {
 
   maybeCompleteAuthSession()
 
-  if (loading) {
-    return <CenterSquare title="Loading~" />
+  if (gettingAuthCache) {
+    return null
   }
 
   if (auth === null) {

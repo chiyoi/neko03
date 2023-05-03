@@ -4,7 +4,7 @@ import { FlatList, View } from "react-native"
 import { ListItem, Paragraph, Stack, YGroup, GetProps, SizableText, ToastProvider, ToastViewport, ScrollView } from "tamagui"
 
 import { Message, Name, ParagraphType } from ".modules/trinity"
-import ColorBackAvatar from ".components/ColorAvatar"
+import ColorAvatar from ".components/ColorAvatar"
 import ParagraphImage from ".components/pages/Trinity/MessageList/ParagraphImage"
 import ParagraphFile from ".components/pages/Trinity/MessageList/ParagraphFile"
 import { config } from ".modules/config"
@@ -15,7 +15,7 @@ import { Toast } from "@tamagui/toast"
 import { documentDirectory, downloadAsync } from "expo-file-system"
 import { shareAsync } from "expo-sharing"
 import { errorMessage } from ".modules/axios_utils"
-import { AuthContext, header, query } from ".components/pages/Trinity/auth"
+import { AuthContext, query } from ".components/pages/Trinity/auth"
 import CenterSquare from ".components/CenterSquare"
 import { ToastContext } from ".modules/toast"
 
@@ -56,9 +56,11 @@ export default function MessageList() {
   const fetchLatest = useCallback(() => {
     console.log("fetching latest messages")
     toast("Fetching latest messages~")
-    axios.get<ResponseFetch>(endpointFetchLatest, { headers: header(auth) }).then(resp => {
+
+    axios.get<ResponseFetch>(endpointFetchLatest + "?" + query(auth)).then(resp => {
       console.log("latest messages fetched")
       toast("Latest messages fetched~")
+
       setMessages(resp.data.messages)
       setSynced(true)
     }).catch(err => {
@@ -72,15 +74,12 @@ export default function MessageList() {
       return
     }
 
-    toast("Fetching earlier messages~")
     console.log("fetching earlier messages")
-
+    toast("Fetching earlier messages~")
     const oldestTimestamp = messages.length && messages[messages.length - 1].timestamp
-    const req: RequestFetchEarlier = {
+    axios.post<ResponseFetch>(endpointFetchEarlier + "?" + query(auth), JSON.stringify({
       before_timestamp: oldestTimestamp,
-    }
-
-    axios.post<ResponseFetch>(endpointFetchEarlier, JSON.stringify(req), { headers: header(auth) }).then(resp => {
+    })).then(resp => {
       console.log("earlier messages fetched")
       toast("Earlier messages fetched~")
       setMessages([...messages, ...resp.data.messages])
@@ -95,9 +94,10 @@ export default function MessageList() {
       return
     }
 
+    // TODO: polling not working properly
     const source = axios.CancelToken.source()
     console.log("polling update")
-    axios.get<ResponseFetch>(endpointFetchUpdate, { cancelToken: source.token, headers: header(auth) }).then(resp => {
+    axios.get<ResponseFetch>(endpointFetchUpdate + "?" + query(auth), { cancelToken: source.token }).then(resp => {
       console.log("received update")
       setMessages(messages => [...resp.data.messages, ...messages])
     }).catch(err => {
@@ -110,36 +110,37 @@ export default function MessageList() {
     return () => source.cancel("cancel polling")
   }, [auth])
 
-  const share = useCallback(async (filename: string, uri: string) => {
+  const share = useCallback((filename: string, uri: string) => {
     shareMu.current--
     if (shareMu.current < 0) {
       shareMu.current++
+      console.log("already downloading")
       toast("Already downloading, please wait~")
       return
     }
 
-    try {
-      const file = documentDirectory + filename
-      console.log(`download ${filename}`)
-      toast("Downloading~")
-      await downloadAsync(uri, file, { headers: header(auth) })
-      await shareAsync(file)
-    } catch (err) {
+    const file = documentDirectory + filename
+    console.log(`download ${filename}`)
+    toast("Downloading~")
+    downloadAsync(uri + "?" + query(auth), file).then(() => {
+      return shareAsync(file)
+    }).catch(err => {
       console.warn(err)
       toast("Download failed~")
-    }
-    shareMu.current++
+    }).finally(() => {
+      shareMu.current++
+    })
   }, [auth])
 
-  const removeMessage = useCallback(async (mid: string) => {
-    try {
-      toast("Removing~")
-      await axios.delete(endpointRemove + mid, { headers: header(auth) })
+  const removeMessage = useCallback((mid: string) => {
+    toast("Removing~")
+    axios.delete(endpointRemove + mid + "?" + query(auth)).then(() => {
+      toast("Removed.")
       setMessages(messages => messages.filter(m => m.id !== mid))
-    } catch (err) {
+    }).catch(err => {
       toast("Remove failed~")
       console.error(err)
-    }
+    })
   }, [auth])
 
   useEffect(() => {
@@ -148,7 +149,7 @@ export default function MessageList() {
       setMessages([])
       setSynced(false)
     }
-  }, [])
+  }, [fetchLatest])
 
   useEffect(polling)
 
@@ -156,7 +157,7 @@ export default function MessageList() {
     <Stack height="100%" backgroundColor="$background">
       <FlatList inverted onEndReached={fetchEarlier} data={messages} keyExtractor={item => item.id} renderItem={({ item: message }) => (
         <ListItem {...styleMessage} icon={(
-          <ColorBackAvatar imageSrc={endpointAvatar + message.sender_id + "?" + query(auth)} size={25} />
+          <ColorAvatar size={25} uri={endpointAvatar + message.sender_id + "?" + query(auth)} />
         )} title={(
           <Paragraph fontFamily="$neko" size="$6" color="$color8">
             {message.sender_name.display_name}

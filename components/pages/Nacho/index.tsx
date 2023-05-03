@@ -3,7 +3,6 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "react"
 
 import { Stack } from "tamagui"
 
-import { handle } from ".modules/axios_utils"
 import FlyingImage from "./FlyingImage"
 import BackButton from ".components/BackButton"
 import { config } from ".modules/config"
@@ -48,20 +47,19 @@ export default function Nacho() {
 
   useEffect(() => {
     toast("Scrolling images~")
-    setTimeout(() => {
-      console.log("fetching image list")
-      toast("Fetching image list~")
-      axios.get<string[]>(endpointImageList).then(resp => {
-        setTimeout(() => {
-          console.log("image list fetched")
-          toast("Image list fetched~")
-          setImageList(resp.data)
-        }, 500)
-      }).catch(err => {
-        console.warn(err)
-        toast("Connection error~")
-      })
-    }, 1000)
+
+    console.log("fetching image list")
+    toast("Fetching image list~")
+    axios.get<string[]>(endpointImageList).then(resp => {
+      setTimeout(() => {
+        console.log("image list fetched")
+        toast("Image list fetched~")
+        setImageList(resp.data)
+      }, 500)
+    }).catch(err => {
+      console.warn(err)
+      toast("Connection error~")
+    })
   }, [toast])
 
   useEffect(() => {
@@ -88,6 +86,3 @@ export default function Nacho() {
   )
 }
 
-function pick(imageList: string[]): string {
-  return imageList.length > 0 ? imageList[Math.floor(Math.random() * imageList.length)] : "なちょ逃げた"
-}

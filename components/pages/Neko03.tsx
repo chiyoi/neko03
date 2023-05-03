@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useContext, useEffect, useMemo } from "react"
+import { Image } from "react-native"
 import { useAssets } from "expo-asset"
 import { Link } from "expo-router"
 
@@ -16,25 +17,18 @@ import { errorMessage } from ".modules/axios_utils"
 
 const endpointWarmup = new URL("/warmup", config.EndpointService).href
 
-function styleCharacter(c: ColoredCharacter): GetProps<typeof SizableText> {
-  return {
-    fontFamily: "$neko",
-    size: c.star ? "$10" : "$16",
-    color: `$${c.color}8`,
-    padding: 1,
-  }
+const styleCharacter: GetProps<typeof SizableText> = {
+  fontFamily: "$neko",
+  padding: 1,
 }
 
-function styleListItem(page: Page): GetProps<typeof ListItem> {
-  return {
-    icon: <ColorAvatar imageSrc={page.avatar} size={25} />,
-    size: "$4",
-    width: 170,
-    hoverTheme: true,
-    pressTheme: true,
-    backgroundColor: "$color2",
-    justifyContent: "flex-start",
-  }
+const styleListItem: GetProps<typeof ListItem> = {
+  size: "$4",
+  width: 170,
+  hoverTheme: true,
+  pressTheme: true,
+  backgroundColor: "$color2",
+  justifyContent: "flex-start",
 }
 
 export default function Neko03() {
@@ -51,26 +45,25 @@ export default function Neko03() {
     {
       title: "chiyoi",
       href: "/chiyoi",
-      avatar: assets?.[0].uri,
+      avatar: assets?.[0].localUri ?? undefined,
     }, {
       title: "nacho",
       href: "/nacho",
-      avatar: assets?.[1].uri,
+      avatar: assets?.[1].localUri ?? undefined,
     }, {
       title: "shigure",
       href: "/shigure",
-      avatar: assets?.[2].uri,
+      avatar: assets?.[2].localUri ?? undefined,
     }, {
       title: "trinity",
       href: "/trinity",
-      avatar: assets?.[3].uri,
+      avatar: assets?.[3].localUri ?? undefined,
     },
   ], [assets])
 
   const media = useMedia()
 
   const title = colorLoopCharacters("neko03★moe")
-  title[6].star = true
 
   useEffect(() => {
     console.log("service warmup")
@@ -80,12 +73,7 @@ export default function Neko03() {
       toast("Service connected~")
     }).catch(err => {
       console.warn(err)
-      setTimeout(() => {
-        toast("Connection error~")
-      }, 1000)
-      setTimeout(() => {
-        toast(errorMessage(err))
-      }, 1000)
+      toast("Connection error~")
     })
   }, [])
 
@@ -102,7 +90,7 @@ export default function Neko03() {
       <Stack {...centralized} backgroundColor="$background">
         <XStack alignItems="flex-end" scale={media.xs ? 0.3 : media.sm ? 0.8 : 1}>
           {title.map((c, i) => (
-            <SizableText {...styleCharacter(c)} key={i}>
+            <SizableText {...styleCharacter} color={`$${c.color}8`} size={i == 6 ? "$10" : "$16"} key={i}>
               {c.char}
             </SizableText>
           ))}
@@ -128,7 +116,9 @@ export default function Neko03() {
               <YGroup.Item key={i}>
                 <Popover.Close asChild>
                   <Link asChild href={page.href}>
-                    <ListItem {...styleListItem(page)}>
+                    <ListItem {...styleListItem} icon={(
+                      <ColorAvatar size={25} uri={page.avatar} />
+                    )}>
                       <SizableText color="$color7" fontFamily="$neko" size="$8">
                         {page.title}
                       </SizableText>

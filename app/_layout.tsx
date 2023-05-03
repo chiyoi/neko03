@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react"
+import React, { useCallback, useMemo, useRef, useState } from "react"
 import { useColorScheme } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Stack } from "expo-router"
@@ -6,12 +6,11 @@ import { StatusBar } from "expo-status-bar"
 import { useFonts } from "expo-font"
 import { useFonts as useHachiMaruPopFonts, HachiMaruPop_400Regular } from "@expo-google-fonts/hachi-maru-pop"
 
-import { TamaguiProvider, Theme, Toast, ToastProvider, ToastViewport } from "tamagui"
+import { TamaguiProvider, Theme } from "tamagui"
 import { tokens } from "@tamagui/themes"
 
 import tamaguiConfig from "../tamagui.config"
-import { styleBounceDown } from ".assets/styles"
-import { ToastContext } from ".modules/toast"
+import { IDString, ToastContext } from ".modules/toast"
 import { QuickToast } from ".components/QuickToast"
 
 export default function Layout() {
@@ -21,8 +20,10 @@ export default function Layout() {
   })
   const [hachiMaruPopLoaded] = useHachiMaruPopFonts({ HachiMaruPop_400Regular })
 
-  const toastState = useState("")
-  const [, setToast] = toastState
+  const toastsState = useState<IDString[]>([])
+  const [, setToasts] = toastsState
+  const toastCount = useRef(0)
+  const setToast = useCallback((toast: string) => setToasts(toasts => [...toasts, { str: toast, id: toastCount.current++ }]), [])
 
   const colorScheme = useColorScheme()
   const isDark = useMemo(() => colorScheme === "dark", [colorScheme])
@@ -43,7 +44,7 @@ export default function Layout() {
 
               <StatusBar style="auto" />
 
-              <QuickToast toastState={toastState} />
+              <QuickToast toastsState={toastsState} />
             </SafeAreaView>
           </Theme>
         </Theme>

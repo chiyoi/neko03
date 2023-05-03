@@ -7,12 +7,6 @@ const keyExpiresAt = "/trinity/auth/expires-at"
 
 export const AuthContext = createContext<TokenResponse | null>(null)
 
-export function header(auth: TokenResponse | null) {
-  if (auth !== null) {
-    return { "Authorization": `Bearer ${auth.accessToken}` }
-  }
-}
-
 export function query(auth: TokenResponse | null) {
   if (auth !== null) {
     return `token=${auth.accessToken}`

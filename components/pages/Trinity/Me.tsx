@@ -6,7 +6,7 @@ import { Button, GetProps, Paragraph, Popover, XStack, YStack } from "tamagui"
 
 import { styleBounceDown, styleTopRightIconButton } from ".assets/styles"
 import ColorBackAvatar from ".components/ColorAvatar"
-import { AuthContext, clearCache, header, query } from ".components/pages/Trinity/auth"
+import { AuthContext, clearCache, query } from ".components/pages/Trinity/auth"
 import { config } from ".modules/config"
 import { Name } from ".modules/trinity"
 
@@ -19,7 +19,7 @@ export default function Me() {
   const [name, setName] = useState<Name | null>(null)
   const getName = useCallback(async () => {
     if (auth !== null) {
-      const resp = await axios.get<Name>(nameURL, { headers: header(auth) })
+      const resp = await axios.get<Name>(nameURL + "?" + query(auth))
       setName(resp.data)
     }
   }, [auth])
@@ -34,7 +34,7 @@ export default function Me() {
     <Popover placement="bottom-end">
       <Popover.Trigger asChild>
         <Button {...styleTopRightIconButton} chromeless icon={
-          <ColorBackAvatar imageSrc={avatarURL + "?" + query(auth)} size={35} />
+          <ColorBackAvatar size={35} uri={avatarURL + "?" + query(auth)} />
         } />
       </Popover.Trigger>
 

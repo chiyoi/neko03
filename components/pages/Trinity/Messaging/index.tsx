@@ -11,7 +11,7 @@ import { Paragraph, ParagraphType } from ".modules/trinity"
 import { config } from ".modules/config"
 import { errorMessage } from ".modules/axios_utils"
 import { uploadAsync } from "expo-file-system"
-import { AuthContext, header } from ".components/pages/Trinity/auth"
+import { AuthContext, query } from ".components/pages/Trinity/auth"
 import axios from "axios"
 import { ToastContext } from ".modules/toast"
 
@@ -44,7 +44,7 @@ export default function Messaging() {
 
     try {
       const req: RequestPost = { content }
-      const resp = await axios.post(endpointPost, JSON.stringify(req), { headers: { ...header(auth) } })
+      const resp = await axios.post(endpointPost + "?" + query(auth), JSON.stringify(req))
       resp.status !== 200 && (
         console.warn("upload failed")
       )
@@ -54,7 +54,7 @@ export default function Messaging() {
   }, [auth])
 
   const upload = useCallback(async (filename: string, uri: string): Promise<string | undefined> => {
-    const resp = await uploadAsync(endpointUpload + filename, uri, { httpMethod: "PUT", headers: { ...header(auth) } })
+    const resp = await uploadAsync(endpointUpload + filename + "?" + query(auth), uri, { httpMethod: "PUT" })
     if (resp.status != 200) {
       console.warn("upload failed")
       return

@@ -1,15 +1,15 @@
-import { Avatar, SizeTokens } from "tamagui"
+import { Avatar } from "tamagui"
 
-export default function ColorAvatar({ imageSrc, size }: Props) {
+export default function ColorAvatar({ size, uri }: Props) {
   return (
     <Avatar size={size} circular>
-      {imageSrc ? <Avatar.Image source={{ uri: imageSrc }} /> : null}
+      {uri && <Avatar.Image src={{ uri }} />}
       <Avatar.Fallback backgroundColor="$color5" />
     </Avatar>
   )
 }
 
 type Props = {
-  imageSrc: string | undefined,
-  size: SizeTokens,
+  size: number,
+  uri?: string,
 }

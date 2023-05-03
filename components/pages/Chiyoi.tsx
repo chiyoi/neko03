@@ -6,7 +6,7 @@ import { Github, Twitter } from "@tamagui/lucide-icons"
 
 import { centralized, styleIconButton } from ".assets/styles"
 import BackButton from ".components/BackButton"
-import ColorBackAvatar from ".components/ColorAvatar"
+import ColorAvatar from ".components/ColorAvatar"
 import CenterSquare from ".components/CenterSquare"
 import ErrorDialog from ".components/ErrorDialog"
 import { ToastContext } from ".modules/toast"
@@ -30,13 +30,11 @@ export default function Chiyoi() {
     return <CenterSquare title="Loading~" />
   }
 
-  const [{ uri: iconChiyoi }] = assets
-
   return (
     <>
       <Stack {...centralized} backgroundColor="$background">
         <YStack {...centralized} space={media.sm ? 20 : 25}>
-          <ColorBackAvatar imageSrc={iconChiyoi} size={media.sm ? 250 : 300} />
+          <ColorAvatar uri={assets[0].localUri ?? undefined} size={media.sm ? 250 : 300} />
 
           <Paragraph fontFamily="$neko" color="$pink7" size={media.sm ? "$12" : "$14"} letterSpacing={8}>CHIYOI</Paragraph>
 

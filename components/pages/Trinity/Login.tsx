@@ -9,7 +9,7 @@ import CenterSquare from ".components/CenterSquare"
 import ErrorDialog from ".components/ErrorDialog"
 import { setCache } from ".components/pages/Trinity/auth"
 import { useAssets } from "expo-asset"
-import ColorBackAvatar from ".components/ColorAvatar"
+import ColorAvatar from ".components/ColorAvatar"
 import { config, isProd } from ".modules/config"
 
 const clientId = config.ClientIDAzureADApplication
@@ -92,7 +92,7 @@ export default function Login() {
         </Paragraph>
         <Stack {...centralized}>
           <Button {...styleButton} disabled={request === null} onPress={() => { promptAsync() }}>
-            <ColorBackAvatar imageSrc={assets[0].uri} size={25} />
+            <ColorAvatar uri={assets[0].localUri ?? undefined} size={25} />
             Login with Microsoft
           </Button>
         </Stack>
