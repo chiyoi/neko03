@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { Platform } from "react-native"
-import { Prompt, ResponseType, useAuthRequest, useAutoDiscovery } from "expo-auth-session"
+import { Prompt, ResponseType, TokenResponse, useAuthRequest, useAutoDiscovery } from "expo-auth-session"
 
 import { Button, Paragraph, Stack, YStack, GetProps, useMedia, } from "tamagui"
 
@@ -46,7 +46,7 @@ const styleButton: GetProps<typeof Button> = {
   fontFamily: "$neko",
 }
 
-export default function Login() {
+export default function Login({ setAuth }: Props) {
   const [assets, error] = useAssets([require(".assets/icons/microsoft.png")])
 
   const discovery = useAutoDiscovery(discoveryEndpoint)
@@ -61,8 +61,9 @@ export default function Login() {
   const media = useMedia()
 
   useEffect(() => {
-    if (discovery !== null && request !== null && response !== null && response.type === "success") {
-      response.authentication && setCache(response.authentication)
+    if (discovery !== null && request !== null && response !== null && response.type === "success" && response.authentication !== null) {
+      setAuth(response.authentication)
+      setCache(response.authentication)
     }
   }, [discovery, request, response])
 
@@ -99,4 +100,8 @@ export default function Login() {
       </YStack>
     </Stack>
   )
+}
+
+interface Props {
+  setAuth: React.Dispatch<React.SetStateAction<TokenResponse | null>>,
 }

@@ -71,7 +71,7 @@ export default function Trinity() {
   }
 
   if (auth === null) {
-    return <Login />
+    return <Login setAuth={setAuth} />
   }
 
   if (syncState === false) {

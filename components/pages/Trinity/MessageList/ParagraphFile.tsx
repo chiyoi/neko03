@@ -19,17 +19,14 @@ export default function FileParagraph({ data: refString, sharing, share }: Props
   const auth = useContext(AuthContext)
 
   const [ref, ok] = referenceUnmarshalString(refString)
+  const uri = downloadEndpoint + refString
 
   if (!ok) {
     return <Button {...styleButton} disabled>(invalid file~)</Button>
   }
 
-  return Platform.OS === "web" ? (
-    <Link asChild href={downloadEndpoint + refString + "?" + query(auth)}>
-      <Button>{ref.name}</Button>
-    </Link>
-  ) : Platform.OS === "ios" ? (
-    <Button {...styleButton} disabled={sharing} onPress={() => share(refString, ref.name)}>
+  return Platform.OS === "ios" ? (
+    <Button {...styleButton} disabled={sharing} onPress={() => share(ref.name, uri)}>
       {ref.name}
     </Button>
   ) : null

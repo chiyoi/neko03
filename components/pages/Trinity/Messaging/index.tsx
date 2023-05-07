@@ -81,7 +81,7 @@ export default function Messaging() {
           await upload(compose.filename, compose.uri) || ""
         )
       }])
-      toast("Sent. Waiting for server push back.")
+      toast("Sent.")
       setCompose(emptyText)
     } catch (err) {
       console.error(err)

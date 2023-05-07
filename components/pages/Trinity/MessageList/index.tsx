@@ -9,7 +9,7 @@ import ParagraphImage from ".components/pages/Trinity/MessageList/ParagraphImage
 import ParagraphFile from ".components/pages/Trinity/MessageList/ParagraphFile"
 import { config } from ".modules/config"
 import { styleBounceDown } from ".assets/styles"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import Remove from ".components/pages/Trinity/MessageList/Remove"
 import { Toast } from "@tamagui/toast"
 import { documentDirectory, downloadAsync } from "expo-file-system"
@@ -89,26 +89,33 @@ export default function MessageList() {
     })
   }, [auth, messages])
 
-  const polling = useCallback(() => {
+  const pollUpdate = useCallback(() => {
     if (!synced) {
       return
     }
 
-    // TODO: polling not working properly
     const source = axios.CancelToken.source()
-    console.log("polling update")
-    axios.get<ResponseFetch>(endpointFetchUpdate + "?" + query(auth), { cancelToken: source.token }).then(resp => {
-      console.log("received update")
-      setMessages(messages => [...resp.data.messages, ...messages])
-    }).catch(err => {
-      if (axios.isCancel(err)) {
-        console.log(err.message)
-      } else {
-        console.warn(err)
+    setTimeout(async () => {
+      while (true) {
+        try {
+          console.log("polling update")
+          const resp = await axios.get<ResponseFetch>(endpointFetchUpdate + "?" + query(auth), { cancelToken: source.token })
+          console.log("received update")
+          setMessages(messages => [...resp.data.messages, ...messages])
+        } catch (err) {
+          if (axios.isCancel(err)) {
+            console.log(err.message)
+            break
+          } else if (err instanceof AxiosError && err.response !== undefined && err.response.status === axios.HttpStatusCode.GatewayTimeout) {
+            console.log("poll timeout")
+          } else {
+            console.warn(err)
+          }
+        }
       }
     })
     return () => source.cancel("cancel polling")
-  }, [auth])
+  }, [synced, auth])
 
   const share = useCallback((filename: string, uri: string) => {
     shareMu.current--
@@ -151,7 +158,7 @@ export default function MessageList() {
     }
   }, [fetchLatest])
 
-  useEffect(polling)
+  useEffect(pollUpdate)
 
   return (
     <Stack height="100%" backgroundColor="$background">
@@ -195,10 +202,6 @@ export default function MessageList() {
       )} />
     </Stack >
   )
-}
-
-type RequestFetchEarlier = {
-  before_timestamp: number,
 }
 
 type ResponseFetch = {
