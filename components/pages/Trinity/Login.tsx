@@ -1,6 +1,5 @@
-import { useEffect } from "react"
-import { Platform } from "react-native"
-import { Prompt, ResponseType, TokenResponse, useAuthRequest, useAutoDiscovery } from "expo-auth-session"
+import { useEffect, useState } from "react"
+import { Prompt, TokenResponse, exchangeCodeAsync, makeRedirectUri, useAuthRequest, useAutoDiscovery } from "expo-auth-session"
 
 import { Button, Paragraph, Stack, YStack, GetProps, useMedia, } from "tamagui"
 
@@ -10,20 +9,11 @@ import ErrorDialog from ".components/ErrorDialog"
 import { setCache } from ".components/pages/Trinity/auth"
 import { useAssets } from "expo-asset"
 import ColorAvatar from ".components/ColorAvatar"
-import { config, isProd } from ".modules/config"
+import { config } from ".modules/config"
 
 const clientId = config.ClientIDAzureADApplication
-const discoveryEndpoint = "https://login.microsoftonline.com/common/v2.0"
-
-const redirectUri = Platform.OS === "web" ? (
-  isProd() ? (
-    "https://neko03.moe/trinity"
-  ) : (
-    "http://localhost:19000/trinity"
-  )
-) : (
-  "exp://silver.local:19000/--/trinity"
-)
+const authorizationEndpoint = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize"
+const tokenEndpoint = "https://login.microsoftonline.com/common/oauth2/v2.0/token"
 
 const styleFrame: GetProps<typeof YStack> = {
   backgroundColor: "$color3",
@@ -47,41 +37,51 @@ const styleButton: GetProps<typeof Button> = {
 }
 
 export default function Login({ setAuth }: Props) {
-  const [assets, error] = useAssets([require(".assets/icons/microsoft.png")])
-
-  const discovery = useAutoDiscovery(discoveryEndpoint)
-  const [request, response, promptAsync] = useAuthRequest({
-    clientId,
-    scopes: ["User.Read"],
-    redirectUri,
-    responseType: ResponseType.Token,
-    prompt: Prompt.SelectAccount,
-  }, discovery)
-
   const media = useMedia()
-
-  useEffect(() => {
-    if (discovery !== null && request !== null && response !== null && response.type === "success" && response.authentication !== null) {
-      setAuth(response.authentication)
-      setCache(response.authentication)
-    }
-  }, [discovery, request, response])
-
-  if (error !== undefined) {
-    return <ErrorDialog message={error.message} />
+  const [assets, err] = useAssets([require(".assets/icons/microsoft.png")])
+  if (err !== undefined) {
+    console.error(err)
   }
 
-  if (assets === undefined) {
-    return <CenterSquare title="Loading~" />
+  const [request, response, promptAsync] = useAuthRequest({
+    clientId,
+    scopes: ["User.Read", "offline_access"],
+    redirectUri: makeRedirectUri({ path: "trinity" }),
+    prompt: Prompt.SelectAccount,
+    usePKCE: false,
+  }, { authorizationEndpoint })
+
+  const [codeState, setCodeState] = useState<boolean | string>(false)
+
+  useEffect(() => {
+    if (request !== null && response !== null && response.type === "success") {
+      exchangeCodeAsync({
+        clientId,
+        code: response.params["code"],
+        redirectUri: makeRedirectUri({ path: "trinity" }),
+      }, {
+        tokenEndpoint,
+      }).then(auth => {
+        setAuth(auth)
+        setCache(auth)
+      }).catch(err => {
+        console.error(err)
+        setCodeState(`${err}`)
+      })
+    }
+  }, [request, response])
+
+  if (typeof codeState === "string") {
+    return <ErrorDialog message={codeState} />
   }
 
   if (response !== null) {
     return response.type === "opened" || response.type === "success" || response.type === "locked" ? (
-      <CenterSquare title="Logging in~" />
+      <CenterSquare title="Resolving~" />
     ) : response.type === "error" ? (
       <ErrorDialog message={response.error?.description || ""} />
     ) : response.type === "cancel" || response.type === "dismiss" ? (
-      <CenterSquare title="Login canceled~" />
+      <ErrorDialog message="Login canceled~" />
     ) : null
   }
 
@@ -93,7 +93,7 @@ export default function Login({ setAuth }: Props) {
         </Paragraph>
         <Stack {...centralized}>
           <Button {...styleButton} disabled={request === null} onPress={() => { promptAsync() }}>
-            <ColorAvatar uri={assets[0].localUri ?? undefined} size={25} />
+            <ColorAvatar uri={assets?.[0].localUri ?? undefined} size={25} />
             Login with Microsoft
           </Button>
         </Stack>

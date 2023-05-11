@@ -9,6 +9,7 @@ import ColorBackAvatar from ".components/ColorAvatar"
 import { AuthContext, clearCache, query } from ".components/pages/Trinity/auth"
 import { config } from ".modules/config"
 import { Name } from ".modules/trinity"
+import { Link } from "expo-router"
 
 const avatarURL = new URL("/trinity/avatar/me", config.EndpointService).href
 const nameURL = new URL("/trinity/name", config.EndpointService).href
@@ -46,20 +47,12 @@ export default function Me() {
           <Paragraph size="$3" fontFamily="$neko" color="$color7" paddingEnd={30}>{name.user_principal_name}</Paragraph>
 
           <XStack justifyContent="flex-end">
-            <Button fontFamily="$neko" color="$color8" onPress={logout}>logout</Button>
+            <Link asChild href="/">
+              <Button fontFamily="$neko" color="$color8" onPress={clearCache}>logout</Button>
+            </Link>
           </XStack>
         </YStack>
       </Popover.Content>
     </Popover>
   )
-}
-
-async function getName(setName: (name: Name) => void) {
-  const resp = await axios.get<Name>(nameURL)
-  setName(resp.data)
-}
-
-async function logout() {
-  await clearCache()
-  openURL(createURL("/"))
 }

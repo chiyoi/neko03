@@ -67,7 +67,7 @@ export default function Neko03() {
 
   useEffect(() => {
     console.log("service warmup")
-    toast(`Connecting to service~ (${config.EndpointService})`)
+    toast(`Connecting to service~`)
     axios.get(endpointWarmup).then(() => {
       console.log("service ok")
       toast("Service connected~")

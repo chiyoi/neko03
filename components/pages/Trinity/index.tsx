@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useCallback, useContext, useEffect, useMemo, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { KeyboardAvoidingView } from "react-native"
 import { TokenResponse } from "expo-auth-session"
 import { maybeCompleteAuthSession } from "expo-web-browser"
@@ -10,10 +10,9 @@ import Login from ".components/pages/Trinity/Login"
 import BackButton from ".components/BackButton"
 import ErrorDialog from ".components/ErrorDialog"
 import Me from ".components/pages/Trinity/Me"
-import { AuthContext, getCache } from ".components/pages/Trinity/auth"
+import { AuthContext, clearCache, getCache } from ".components/pages/Trinity/auth"
 import Messaging from ".components/pages/Trinity/Messaging"
 import { config } from ".modules/config"
-import { errorMessage } from ".modules/axios_utils"
 import { ToastContext } from ".modules/toast"
 
 const endpointSync = new URL("/trinity/sync", config.EndpointService).href
@@ -22,23 +21,24 @@ export default function Trinity() {
   const toast = useContext(ToastContext)
 
   const [auth, setAuth] = useState<TokenResponse | null>(null)
-  const [gettingAuthCache, setGettingAuthCache] = useState(true)
+  const [loading, setLoading] = useState(true)
   const [syncState, setSyncState] = useState<boolean | string>(false)
 
-  const getAuthCache = useCallback(() => {
-    if (gettingAuthCache) {
-      if (auth === null) {
-        getCache().then(auth => {
+  useEffect(() => {
+    (async () => {
+      if (loading) {
+        if (auth === null) {
+          const auth = await getCache()
           if (auth !== null) {
             setAuth(auth)
           }
-        })
+        }
+        setLoading(false)
       }
-      setGettingAuthCache(false)
-    }
-  }, [auth, gettingAuthCache])
+    })()
+  }, [auth, loading])
 
-  const sync = useCallback(async () => {
+  useEffect(() => {
     if (auth !== null) {
       console.log("syncing")
       toast("Logging in~")
@@ -51,6 +51,7 @@ export default function Trinity() {
           console.log(`sync result: failed (${resp.data.message})`)
           toast("Login failed~")
           setSyncState(resp.data.message || "")
+          clearCache()
         }
       }).catch(err => {
         const message = "Unknown error~"
@@ -61,13 +62,10 @@ export default function Trinity() {
     }
   }, [auth])
 
-  useEffect(() => { getAuthCache() }, [getAuthCache])
-  useEffect(() => { sync() }, [sync])
-
   maybeCompleteAuthSession()
 
-  if (gettingAuthCache) {
-    return null
+  if (loading) {
+    return <CenterSquare title="Loading~" />
   }
 
   if (auth === null) {
