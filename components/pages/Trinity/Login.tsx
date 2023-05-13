@@ -11,7 +11,8 @@ import { useAssets } from "expo-asset"
 import ColorAvatar from ".components/ColorAvatar"
 import { config } from ".modules/config"
 
-const clientId = config.ClientIDAzureADApplication
+const clientId = config.ClientIDAzureAD
+const scopes = ["User.Read", "offline_access"]
 const authorizationEndpoint = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize"
 const tokenEndpoint = "https://login.microsoftonline.com/common/oauth2/v2.0/token"
 
@@ -44,8 +45,7 @@ export default function Login({ setAuth }: Props) {
   }
 
   const [request, response, promptAsync] = useAuthRequest({
-    clientId,
-    scopes: ["User.Read", "offline_access"],
+    clientId, scopes,
     redirectUri: makeRedirectUri({ path: "trinity" }),
     prompt: Prompt.SelectAccount,
     usePKCE: false,

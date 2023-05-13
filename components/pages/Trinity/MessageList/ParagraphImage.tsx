@@ -7,7 +7,7 @@ import { referenceUnmarshalString } from ".modules/trinity"
 import { useContext, useState } from "react"
 import { AuthContext, query } from ".components/pages/Trinity/auth"
 
-const endpointDownload = new URL("/trinity/download/", config.EndpointService).href
+const endpointDownload = new URL("/trinity/download/", config.EndpointNeko03).href
 
 export default function ImageParagraph({ data: refString, sharing, share }: Props) {
   const auth = useContext(AuthContext)

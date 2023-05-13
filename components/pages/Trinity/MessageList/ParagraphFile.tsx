@@ -8,7 +8,7 @@ import { config } from ".modules/config"
 import { useContext } from "react"
 import { AuthContext, query } from ".components/pages/Trinity/auth"
 
-const downloadEndpoint = new URL("/trinity/download/", config.EndpointService).href
+const downloadEndpoint = new URL("/trinity/download/", config.EndpointNeko03).href
 
 const styleButton: GetProps<typeof Button> = {
   color: "$color8",

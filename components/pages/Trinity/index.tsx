@@ -15,7 +15,7 @@ import Messaging from ".components/pages/Trinity/Messaging"
 import { config } from ".modules/config"
 import { ToastContext } from ".modules/toast"
 
-const endpointSync = new URL("/trinity/sync", config.EndpointService).href
+const endpointSync = new URL("/trinity/sync", config.EndpointNeko03).href
 
 export default function Trinity() {
   const toast = useContext(ToastContext)

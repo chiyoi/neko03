@@ -11,8 +11,8 @@ import { config } from ".modules/config"
 import { Name } from ".modules/trinity"
 import { Link } from "expo-router"
 
-const avatarURL = new URL("/trinity/avatar/me", config.EndpointService).href
-const nameURL = new URL("/trinity/name", config.EndpointService).href
+const avatarURL = new URL("/trinity/avatar/me", config.EndpointNeko03).href
+const nameURL = new URL("/trinity/name", config.EndpointNeko03).href
 
 export default function Me() {
   const auth = useContext(AuthContext)

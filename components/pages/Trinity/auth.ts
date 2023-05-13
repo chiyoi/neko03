@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import { TokenResponse, refreshAsync } from "expo-auth-session"
 import { createContext } from "react"
 
-const clientId = config.ClientIDAzureADApplication
+const clientId = config.ClientIDAzureAD
 const tokenEndpoint = "https://login.microsoftonline.com/common/oauth2/v2.0/token"
 
 const keyAccessToken = "/trinity/auth/access-token"

@@ -19,12 +19,12 @@ import { AuthContext, query } from ".components/pages/Trinity/auth"
 import CenterSquare from ".components/CenterSquare"
 import { ToastContext } from ".modules/toast"
 
-const endpointFetchLatest = new URL("/trinity/fetch/latest", config.EndpointService).href
-const endpointFetchEarlier = new URL("/trinity/fetch/earlier", config.EndpointService).href
-const endpointFetchUpdate = new URL("/trinity/fetch/update", config.EndpointService).href
+const endpointFetchLatest = new URL("/trinity/fetch/latest", config.EndpointNeko03).href
+const endpointFetchEarlier = new URL("/trinity/fetch/earlier", config.EndpointNeko03).href
+const endpointFetchUpdate = new URL("/trinity/fetch/update", config.EndpointNeko03).href
 
-const endpointAvatar = new URL("/trinity/avatar/", config.EndpointService).href
-const endpointRemove = new URL("/trinity/remove/", config.EndpointService).href
+const endpointAvatar = new URL("/trinity/avatar/", config.EndpointNeko03).href
+const endpointRemove = new URL("/trinity/remove/", config.EndpointNeko03).href
 
 const formatTimestamp: Intl.DateTimeFormatOptions = {
   hourCycle: "h24",

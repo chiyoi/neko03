@@ -1,6 +1,5 @@
 import axios from "axios"
 import { useContext, useEffect, useMemo } from "react"
-import { Image } from "react-native"
 import { useAssets } from "expo-asset"
 import { Link } from "expo-router"
 
@@ -13,9 +12,8 @@ import ErrorDialog from ".components/ErrorDialog"
 import CenterSquare from ".components/CenterSquare"
 import { ToastContext } from ".modules/toast"
 import { config } from ".modules/config"
-import { errorMessage } from ".modules/axios_utils"
 
-const endpointWarmup = new URL("/warmup", config.EndpointService).href
+const endpointWarmup = new URL("/warmup", config.EndpointNeko03).href
 
 const styleCharacter: GetProps<typeof SizableText> = {
   fontFamily: "$neko",

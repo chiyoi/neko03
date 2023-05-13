@@ -15,7 +15,7 @@ import { AuthContext, query } from ".components/pages/Trinity/auth"
 import axios from "axios"
 import { ToastContext } from ".modules/toast"
 
-const endpointService = config.EndpointService
+const endpointService = config.EndpointNeko03
 
 const endpointPost = new URL("/trinity/post", endpointService).href
 const endpointUpload = new URL("/trinity/upload/", endpointService).href

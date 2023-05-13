@@ -8,7 +8,7 @@ import BackButton from ".components/BackButton"
 import { config } from ".modules/config"
 import { ToastContext } from ".modules/toast"
 
-const endpointImageList = new URL("/nacho/image_list.json", config.EndpointService).href
+const endpointImageList = new URL("/nacho/image_list.json", config.EndpointNeko03).href
 
 export default function Nacho() {
   const toast = useContext(ToastContext)
@@ -77,7 +77,7 @@ export default function Nacho() {
     <>
       <Stack height="100%" backgroundColor="$background">
         {images.map(image => (
-          <FlyingImage key={image} src={new URL(image, config.EndpointService).href} duration={duration} />
+          <FlyingImage key={image} src={new URL(image, config.EndpointNeko03).href} duration={duration} />
         ))}
       </Stack>
 
