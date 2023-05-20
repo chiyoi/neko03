@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
-import { FlatList, View } from "react-native"
+import { FlatList } from "react-native"
 
 import { ListItem, Paragraph, Stack, YGroup, GetProps, SizableText, ToastProvider, ToastViewport, ScrollView } from "tamagui"
 
@@ -8,15 +8,11 @@ import ColorAvatar from ".components/ColorAvatar"
 import ParagraphImage from ".components/pages/Trinity/MessageList/ParagraphImage"
 import ParagraphFile from ".components/pages/Trinity/MessageList/ParagraphFile"
 import { config } from ".modules/config"
-import { styleBounceDown } from ".assets/styles"
 import axios, { AxiosError } from "axios"
 import Remove from ".components/pages/Trinity/MessageList/Remove"
-import { Toast } from "@tamagui/toast"
 import { documentDirectory, downloadAsync } from "expo-file-system"
 import { shareAsync } from "expo-sharing"
-import { errorMessage } from ".modules/axios_utils"
 import { AuthContext, query } from ".components/pages/Trinity/auth"
-import CenterSquare from ".components/CenterSquare"
 import { ToastContext } from ".modules/toast"
 
 const endpointFetchLatest = new URL("/trinity/fetch/latest", config.EndpointNeko03).href
