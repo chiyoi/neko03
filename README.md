@@ -1,6 +1,5 @@
 # Neko03 Page
-
-Web/Native application for [neko03.moe](https://neko03.moe).
+Web/Native application.
 
 ---
 
