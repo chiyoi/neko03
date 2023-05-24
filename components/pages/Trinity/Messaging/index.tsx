@@ -1,9 +1,9 @@
-import { useCallback, useContext, useMemo, useState } from "react"
+import { useCallback, useContext, useState } from "react"
 
-import { Button, GetProps, Sheet, Spinner, Toast, ToastProvider, ToastViewport, XGroup, XStack } from "tamagui"
+import { Button, GetProps, Sheet, Spinner, XGroup, XStack } from "tamagui"
 import { Pencil, Send } from "@tamagui/lucide-icons"
 
-import { styleBottomIconButton, styleBounceDown, styleIconButton } from ".assets/styles"
+import { styleBottomIconButton, styleIconButton } from ".assets/styles"
 import { ParagraphInput } from ".components/pages/Trinity/Messaging/ParagraphInput"
 import { emptyText, ComposeReference, ComposeText } from ".components/pages/Trinity/Messaging/compose"
 import { ParagraphPicker } from ".components/pages/Trinity/Messaging/ParagraphPicker"
@@ -61,7 +61,6 @@ export default function Messaging() {
     }
     return JSON.parse(resp.body)
   }, [auth])
-
 
   const send = useCallback(async () => {
     setOpen(false)
