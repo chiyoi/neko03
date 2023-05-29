@@ -44,6 +44,7 @@ export default function Messaging() {
 
     try {
       const req: RequestPost = { content }
+      // TODO: optimize auth query attaching
       const resp = await axios.post(endpointPost + "?" + query(auth), JSON.stringify(req))
       resp.status !== 200 && (
         console.warn("upload failed")
