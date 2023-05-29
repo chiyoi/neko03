@@ -1,9 +1,5 @@
 # Neko03 Page
-Web/Native application.
-
----
-
-- Typescript
+Web/Native app.
+- Library: React, React Native
 - Framework: Expo
-- UI Library: React, React Native, React Native Web
 - UI Kit: Tamagui
