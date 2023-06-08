@@ -8,7 +8,7 @@ import ColorAvatar from ".components/ColorAvatar"
 import ParagraphImage from ".components/pages/Trinity/MessageList/ParagraphImage"
 import ParagraphFile from ".components/pages/Trinity/MessageList/ParagraphFile"
 import { config } from ".modules/config"
-import axios, { AxiosError } from "axios"
+import axios, { AxiosError, CancelToken } from "axios"
 import Remove from ".components/pages/Trinity/MessageList/Remove"
 import { documentDirectory, downloadAsync } from "expo-file-system"
 import { shareAsync } from "expo-sharing"
@@ -85,36 +85,25 @@ export default function MessageList() {
     })
   }, [auth, messages])
 
-  const pollUpdate = useCallback(() => {
-    if (!synced) {
-      return
-    }
-
-    const source = axios.CancelToken.source()
-    setTimeout(async () => {
-      while (true) {
-        try {
-          console.log("polling update")
-          const resp = await axios.get<ResponseFetch>(endpointFetchUpdate + "?" + query(auth), { cancelToken: source.token })
-          console.log("received update")
-          setMessages(messages => [...resp.data.messages, ...messages])
-        } catch (err) {
-          if (axios.isCancel(err)) {
-            console.log(err.message)
-            toast("Polling cancelled~")
-            break
-          } else if (err instanceof AxiosError && err.response !== undefined && err.response.status === axios.HttpStatusCode.GatewayTimeout) {
-            console.log("poll timeout")
-            toast("Polling timeout~")
-          } else {
-            console.warn(err)
-            toast("Something went wrong~")
-          }
-        }
+  const pollUpdate = useCallback(async (cancelToken: CancelToken) => {
+    try {
+      console.log("polling update")
+      const resp = await axios.get<ResponseFetch>(endpointFetchUpdate + "?" + query(auth), { cancelToken })
+      console.log("received update")
+      setMessages(messages => [...resp.data.messages, ...messages])
+    } catch (err) {
+      if (axios.isCancel(err)) {
+        console.log(`polling canceled: ${err.message}`)
+        toast("Polling cancelled~")
+      } else if (err instanceof AxiosError && err.response !== undefined && err.response.status === axios.HttpStatusCode.GatewayTimeout) {
+        console.log("poll timeout")
+        toast("Polling timeout~")
+      } else {
+        console.warn(err)
+        toast("Something went wrong~")
       }
-    })
-    return () => source.cancel("cancel polling")
-  }, [synced, auth])
+    }
+  }, [auth])
 
   const share = useCallback((filename: string, uri: string) => {
     shareMu.current--
@@ -157,7 +146,25 @@ export default function MessageList() {
     }
   }, [fetchLatest])
 
-  useEffect(pollUpdate)
+  useEffect(() => {
+    if (!synced) return
+
+    const source = axios.CancelToken.source()
+    let ok = true
+    let worker: ReturnType<typeof setTimeout>
+
+    const work = async () => {
+      await pollUpdate(source.token)
+      if (ok) worker = setTimeout(work)
+    }
+
+    worker = setTimeout(work)
+
+    return () => {
+      ok = false
+      source.cancel("cancel polling")
+    }
+  }, [synced])
 
   return (
     <Stack height="100%" backgroundColor="$background">
