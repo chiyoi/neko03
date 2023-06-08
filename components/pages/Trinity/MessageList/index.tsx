@@ -101,11 +101,14 @@ export default function MessageList() {
         } catch (err) {
           if (axios.isCancel(err)) {
             console.log(err.message)
+            toast("Polling cancelled~")
             break
           } else if (err instanceof AxiosError && err.response !== undefined && err.response.status === axios.HttpStatusCode.GatewayTimeout) {
             console.log("poll timeout")
+            toast("Polling timeout~")
           } else {
             console.warn(err)
+            toast("Something went wrong~")
           }
         }
       }
