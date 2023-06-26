@@ -3,7 +3,7 @@ import { ExpoConfig } from 'expo/config'
 const config: ExpoConfig = {
   name: "Neko03",
   slug: "neko03",
-  description: "Neko03 User Interface - web/iOS",
+  description: "Nyan~",
   scheme: "neko",
   userInterfaceStyle: "automatic",
   assetBundlePatterns: ["**/*"],
