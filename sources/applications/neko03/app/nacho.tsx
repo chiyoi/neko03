@@ -1,3 +1,3 @@
-import Nacho from ".components/pages/Nacho"
+import Nacho from ".components/Nacho"
 
 export default Nacho

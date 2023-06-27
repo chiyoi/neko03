@@ -5,11 +5,14 @@ AZURE_CONTAINERS_GROUP := neko03
 
 ARTIFACTS += services/nacho
 
-.PHONY: all services/% services/%-deploy
+.PHONY: all services/%-container services/%-deploy
 
-all: $(ARTIFACTS);
+all: $(ARTIFACTS:%=%-container);
 
-services/%:
+services/%-dev:
+	go run $(SOURCES)/services/$*
+
+services/%-container:
 	docker build -t $(DOCKER_SCOPE)/$* $(SOURCES)/services/$*
 	docker push $(DOCKER_SCOPE)/$*
 

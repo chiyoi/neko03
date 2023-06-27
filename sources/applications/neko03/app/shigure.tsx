@@ -1,3 +1,3 @@
-import Shigure from ".components/pages/Shigure"
+import Shigure from ".components/Shigure"
 
 export default Shigure

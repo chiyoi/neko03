@@ -1,3 +1,3 @@
-import Neko03 from ".components/pages/Neko03"
+import Neko03 from ".components/Neko03"
 
 export default Neko03

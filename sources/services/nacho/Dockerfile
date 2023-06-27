@@ -1,17 +1,17 @@
 FROM golang:1.20
 
 WORKDIR /nacho
-COPY sources/services/nacho/go.* .
+COPY go.* .
 RUN go mod download
 
-COPY sources/services/nacho .
-RUN CGO_ENABLED=0 go build -o app .
+COPY . .
+RUN CGO_ENABLED=0 go build -o a.out ./main
 
 FROM alpine:3.16
 
 WORKDIR /nacho
-COPY --from=0 /nacho/app /bin/app
+COPY --from=0 /nacho/a.out /bin/nacho
 
 EXPOSE 80
 
-CMD ["app"]
+CMD ["nacho"]

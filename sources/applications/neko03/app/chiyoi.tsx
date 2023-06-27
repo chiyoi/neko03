@@ -1,3 +1,3 @@
-import Chiyoi from ".components/pages/Chiyoi"
+import Chiyoi from ".components/Chiyoi"
 
 export default Chiyoi
