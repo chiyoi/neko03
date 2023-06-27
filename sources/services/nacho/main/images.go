@@ -1,4 +1,4 @@
-package nacho
+package main
 
 import (
 	"context"
@@ -14,7 +14,7 @@ import (
 	"github.com/chiyoi/go/pkg/kitsune"
 	"github.com/chiyoi/go/pkg/logs"
 	"github.com/chiyoi/go/pkg/neko"
-	"github.com/chiyoi/neko03/internal/app/neko03/config"
+	"github.com/chiyoi/neko03/sources/services/nacho/config"
 )
 
 func ListImageHandler(refPrefix string, nacho *azblob.Client) http.Handler {

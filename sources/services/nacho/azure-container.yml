@@ -1,0 +1,18 @@
+name: nacho
+resourceGroup: neko03_group
+type: Microsoft.App/containerApps
+
+properties:
+  template:
+    containers:
+      - image: chiyoi/nacho:latest
+        name: nacho
+        env:
+          - name: ENV
+            value: prod
+        resources:
+          cpu: 0.25
+          memory: 0.5Gi
+    scale:
+      minReplicas: 0
+      maxReplicas: 1
