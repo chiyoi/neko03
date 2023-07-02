@@ -5,9 +5,10 @@
   "private": true,
   "scripts": {
     "start": "expo start",
-    "start-c": "expo start -c",
-    "eas-update": "eas update -p ios --branch=main",
-    "swa-upload": "expo export -p web && swa deploy ./dist --env production"
+    "dev-native": "TAMAGUI_TARGET=native expo start -c",
+    "dev-web": "TAMAGUI_TARGET=web expo start -c",
+    "eas-update": "TAMAGUI_TARGET=native expo export -c -p ios && eas update -p ios --branch=main --skip-bundler",
+    "swa-upload": "TAMAGUI_TARGET=web expo export -c -p web && swa deploy ./dist --env production"
   },
   "dependencies": {
     "@expo-google-fonts/hachi-maru-pop": "^0.2.3",
@@ -54,8 +55,8 @@
     "@types/react": "^18.0.33",
     "babel-plugin-module-resolver": "^5.0.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
-    "metro": "^0.76.2",
-    "metro-resolver": "0.76.0",
+    "metro": "^0.76.0",
+    "metro-resolver": "^0.76.0",
     "typescript": "^4.9.4"
   },
   "resolutions": {

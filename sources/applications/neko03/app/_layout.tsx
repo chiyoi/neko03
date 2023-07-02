@@ -9,7 +9,7 @@ import { useFonts as useHachiMaruPopFonts, HachiMaruPop_400Regular } from "@expo
 import { TamaguiProvider, Theme } from "tamagui"
 import { tokens } from "@tamagui/themes"
 
-import tamaguiConfig from ".modules/tamagui.config"
+import tamaguiConfig from "../tamagui.config"
 import { IDString, ToastContext } from ".modules/toast"
 import { QuickToast } from ".components/QuickToast"
 

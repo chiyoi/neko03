@@ -3,7 +3,6 @@ package main
 import (
 	"net/http"
 
-	"github.com/chiyoi/go/pkg/az/blob"
 	"github.com/chiyoi/go/pkg/logs"
 	"github.com/chiyoi/go/pkg/neko"
 	"github.com/chiyoi/neko03/sources/services/nacho/config"
@@ -12,7 +11,7 @@ import (
 func main() {
 	srv := &http.Server{
 		Addr:    config.Addr(),
-		Handler: Handler(),
+		Handler: neko.AllowCrossOrigin(Handler()),
 	}
 
 	go neko.StartServer(srv, false)
@@ -24,13 +23,14 @@ func main() {
 func Handler() http.Handler {
 	mux := http.NewServeMux()
 
-	nacho, err := blob.Client(config.EndpointAzureBlob)
+	blob, err := BlobClient(config.EndpointAzureBlob)
 	if err != nil {
 		logs.Panic(err)
 	}
 
 	mux.Handle("/warmup", neko.WarmupHandler())
-	mux.Handle("/image_list.json", ListImageHandler("/images/", nacho))
-	mux.Handle(GetImagePatternHandler("/images/", nacho))
+	mux.Handle("/image_list.json", ListImageHandler("/images/", blob))
+	mux.Handle(GetImagePatternHandler("/images/", blob))
+	mux.Handle("/", neko.TeapotHandler("Nyan~"))
 	return mux
 }

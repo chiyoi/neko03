@@ -23,9 +23,9 @@ function styleMessageSquare(speed: number): GetProps<typeof Square> {
   }
 }
 
-function scaleMedia(media: { xs?: boolean, sm?: boolean }) {
+function scaleMedia(media: ReturnType<typeof useMedia>) {
   return {
-    scale: media.xs ? 0.3 : media.sm ? 0.6 : 1,
+    scale: media.xs ? 0.3 : media.md ? 0.6 : media.lg ? 0.8 : 1,
   }
 }
 

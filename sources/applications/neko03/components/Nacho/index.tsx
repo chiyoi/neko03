@@ -8,8 +8,6 @@ import BackButton from ".components/BackButton"
 import { config } from ".modules/config"
 import { ToastContext } from ".modules/toast"
 
-const endpointImageList = new URL("/nacho/image_list.json", config.EndpointNeko03).href
-
 export default function Nacho() {
   const toast = useContext(ToastContext)
 
@@ -50,7 +48,7 @@ export default function Nacho() {
 
     console.log("fetching image list")
     toast("Fetching image list~")
-    axios.get<string[]>(endpointImageList).then(resp => {
+    axios.get<string[]>(new URL("/image_list.json", config.ServiceEndpoint.nacho).href).then(resp => {
       setTimeout(() => {
         console.log("image list fetched")
         toast("Image list fetched~")
@@ -77,7 +75,7 @@ export default function Nacho() {
     <>
       <Stack height="100%" backgroundColor="$background">
         {images.map(image => (
-          <FlyingImage key={image} src={new URL(image, config.EndpointNeko03).href} duration={duration} />
+          <FlyingImage key={image} src={new URL(image, config.ServiceEndpoint.nacho).href} duration={duration} />
         ))}
       </Stack>
 

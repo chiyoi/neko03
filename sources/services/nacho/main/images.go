@@ -17,10 +17,11 @@ import (
 	"github.com/chiyoi/neko03/sources/services/nacho/config"
 )
 
-func ListImageHandler(refPrefix string, nacho *azblob.Client) http.Handler {
+func ListImageHandler(refPrefix string, blob *azblob.Client) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		logs.Info("list images")
 		imageList := []string{}
-		pager := nacho.NewListBlobsFlatPager(config.NameBlobContainerNachoImages, nil)
+		pager := blob.NewListBlobsFlatPager(config.NameBlobContainerNachoImages, nil)
 		for pager.More() {
 			ctx, cancel := context.WithTimeout(context.Background(), config.Timeout)
 			defer cancel()
@@ -40,7 +41,7 @@ func ListImageHandler(refPrefix string, nacho *azblob.Client) http.Handler {
 	})
 }
 
-func GetImagePatternHandler(pattern string, nacho *azblob.Client) (string, http.Handler) {
+func GetImagePatternHandler(pattern string, blob *azblob.Client) (string, http.Handler) {
 	return pattern, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		filename := neko.TrimPattern(r.URL.Path, pattern)
 		if strings.Contains(filename, "/") {
@@ -50,7 +51,8 @@ func GetImagePatternHandler(pattern string, nacho *azblob.Client) (string, http.
 			return
 		}
 
-		resp, err := nacho.DownloadStream(context.Background(), config.NameBlobContainerNachoImages, filename, nil)
+		logs.Info(fmt.Sprintf("get image (%s)", filename))
+		resp, err := blob.DownloadStream(context.Background(), config.NameBlobContainerNachoImages, filename, nil)
 		if err != nil {
 			var re *azcore.ResponseError
 			if errors.As(err, &re) && re.StatusCode == http.StatusNotFound {

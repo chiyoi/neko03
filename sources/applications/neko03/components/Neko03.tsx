@@ -13,8 +13,6 @@ import CenterSquare from ".components/CenterSquare"
 import { ToastContext } from ".modules/toast"
 import { config } from ".modules/config"
 
-const endpointWarmup = new URL("/warmup", config.EndpointNeko03).href
-
 const styleCharacter: GetProps<typeof SizableText> = {
   fontFamily: "$neko",
   padding: 1,
@@ -52,28 +50,12 @@ export default function Neko03() {
       title: "shigure",
       href: "/shigure",
       avatar: assets?.[2].localUri ?? undefined,
-    }, {
-      title: "trinity",
-      href: "/trinity",
-      avatar: assets?.[3].localUri ?? undefined,
     },
   ], [assets])
 
   const media = useMedia()
 
   const title = colorLoopCharacters("neko03★moe")
-
-  useEffect(() => {
-    console.log("service warmup")
-    toast(`Connecting to service~`)
-    axios.get(endpointWarmup).then(() => {
-      console.log("service ok")
-      toast("Service connected~")
-    }).catch(err => {
-      console.warn(err)
-      toast("Connection error~")
-    })
-  }, [])
 
   if (error !== undefined) {
     return <ErrorDialog message={error.message} />
