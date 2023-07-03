@@ -1,10 +1,40 @@
 #!/usr/bin/env sh
 usage() {
     echo "scripts:"
-    echo "./scripts.sh test-run"
+    echo "./scripts.sh test_run"
+    echo "    Run the main package locally."
+    echo "./scripts.sh build"
+    echo "    Build image and push to Docker Hub."
+    echo "./scripts.sh deploy"
+    echo "    Deploy container to Azure Container Apps from Docker Hub."
+    echo "./scripts.sh update"
+    echo "    Build and Deploy."
 }
 
-if test $# -ne 1; then
+test_run() {
+    go run ./main
+}
+
+build() {
+    docker build -t $DOCKER_SCOPE/$ARTIFACT_NAME . || return
+    docker push $DOCKER_SCOPE/$ARTIFACT_NAME
+}
+
+deploy() {
+	az containerapp update -g $AZURE_CONTAINERS_GROUP -n $ARTIFACT_NAME --yaml azure-container.yml
+}
+
+update() {
+    build && deploy
+}
+
+DOCKER_SCOPE=chiyoi
+ARTIFACT_NAME=nacho
+AZURE_CONTAINERS_GROUP=neko03_group
+
+SCRIPTS="test_run build deploy update"
+
+if test $# -ne 1 || test ! "$(echo $SCRIPTS | sed 's/ /\n/g' | grep -Ex "$1")"; then
 usage
 exit 1
 fi
@@ -14,21 +44,4 @@ usage
 exit
 fi
 
-if test "$1" = "test-run"; then
-go run ./main
-fi
-
-DOCKER_SCOPE=chiyoi
-ARTIFACT_NAME=nacho
-
-if test $1 = "build"; then
-docker build -t $DOCKER_SCOPE/$ARTIFACT_NAME . || exit
-docker push $DOCKER_SCOPE/$ARTIFACT_NAME
-exit
-fi
-
-AZURE_CONTAINERS_GROUP=neko03_group
-
-if test $1 = "deploy"; then
-	az containerapp update -g $AZURE_CONTAINERS_GROUP -n $ARTIFACT_NAME --yaml azure-container.yml
-fi
+$1
