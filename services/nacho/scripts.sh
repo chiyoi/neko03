@@ -11,6 +11,10 @@ usage() {
     echo "    Build and Deploy."
 }
 
+DOCKER_SCOPE=chiyoi
+ARTIFACT_NAME=nacho
+AZURE_CONTAINERS_GROUP=neko03_group
+
 test_run() {
     go run ./main
 }
@@ -28,20 +32,9 @@ update() {
     build && deploy
 }
 
-DOCKER_SCOPE=chiyoi
-ARTIFACT_NAME=nacho
-AZURE_CONTAINERS_GROUP=neko03_group
-
-SCRIPTS="test_run build deploy update"
-
-if test $# -ne 1 || test ! "$(echo $SCRIPTS | sed 's/ /\n/g' | grep -Ex "$1")"; then
-usage
-exit 1
-fi
-
-if test "$(echo "$1" | grep -Ex '\-{0,2}h(elp)?')"; then
+if test -z "$1" -o -n "$(echo "$1" | grep -Ex '\-{0,2}h(elp)?')"; then
 usage
 exit
 fi
 
-$1
+$@
