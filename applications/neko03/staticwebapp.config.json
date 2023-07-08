@@ -1,9 +1,5 @@
 {
   "navigationFallback": {
-    "rewrite": "/index.html",
-    "exclude": [
-      "/assets/*",
-      "/bundles/*"
-    ]
+    "rewrite": "/index.html"
   }
 }

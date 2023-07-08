@@ -22,7 +22,6 @@ const config: ExpoConfig = {
     "eas": {
       "projectId": "360e6d2f-5998-4090-84a5-b690edc803cf",
     },
-    "isProd": process.env["ENV"] === "prod",
   },
   updates: {
     url: "https://u.expo.dev/360e6d2f-5998-4090-84a5-b690edc803cf",
@@ -31,5 +30,9 @@ const config: ExpoConfig = {
     policy: "sdkVersion",
   },
 }
+
+// TODO:
+// at develop environment,
+// SERVICE_ENDPOINT_NACHO should be "http://silver.local:7147/"
 
 export default config

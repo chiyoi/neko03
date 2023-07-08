@@ -5,8 +5,9 @@ import { Stack } from "tamagui"
 
 import FlyingImage from "./FlyingImage"
 import BackButton from ".components/BackButton"
-import { config } from ".modules/config"
 import { ToastContext } from ".modules/toast"
+
+const ServiceEndpointNacho = process.env["SERVICE_ENDPOINT_NACHO"]
 
 export default function Nacho() {
   const toast = useContext(ToastContext)
@@ -46,16 +47,16 @@ export default function Nacho() {
   useEffect(() => {
     toast("Scrolling images~")
 
-    console.log("fetching image list")
+    console.log("Fetching image list.")
     toast("Fetching image list~")
-    axios.get<string[]>(new URL("/image_list.json", config.ServiceEndpoint.nacho).href).then(resp => {
+    axios.get<string[]>(new URL("/image/list.json", ServiceEndpointNacho).href).then(resp => {
       setTimeout(() => {
-        console.log("image list fetched")
+        console.log("Image list fetched.")
         toast("Image list fetched~")
         setImageList(resp.data)
       }, 500)
     }).catch(err => {
-      console.warn(err)
+      console.warn(`Connection error: (${err}).`)
       toast("Connection error~")
     })
   }, [toast])
@@ -75,7 +76,7 @@ export default function Nacho() {
     <>
       <Stack height="100%" backgroundColor="$background">
         {images.map(image => (
-          <FlyingImage key={image} src={new URL(image, config.ServiceEndpoint.nacho).href} duration={duration} />
+          <FlyingImage key={image} src={new URL(image, ServiceEndpointNacho).href} duration={duration} />
         ))}
       </Stack>
 
@@ -83,4 +84,3 @@ export default function Nacho() {
     </>
   )
 }
-
