@@ -7,7 +7,9 @@ import FlyingImage from "./FlyingImage"
 import BackButton from ".components/BackButton"
 import { ToastContext } from ".modules/toast"
 
-const ServiceEndpointNacho = process.env["SERVICE_ENDPOINT_NACHO"]
+const ServiceEndpointNacho = process.env["ENV"] == "prod"
+  ? "https://nacho.greentree-6daa7305.japaneast.azurecontainerapps.io/"
+  : "http://silver.local:7147/"
 
 export default function Nacho() {
   const toast = useContext(ToastContext)

@@ -31,8 +31,4 @@ const config: ExpoConfig = {
   },
 }
 
-// TODO:
-// at develop environment,
-// SERVICE_ENDPOINT_NACHO should be "http://silver.local:7147/"
-
 export default config
