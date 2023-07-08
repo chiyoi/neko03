@@ -8,11 +8,6 @@ import (
 	"github.com/chiyoi/neko03/sources/services/nacho/api/image"
 )
 
-var (
-	EndpointAzureBlob = os.Getenv("ENDPOINT_AZURE_BLOB")
-	IsProd            = os.Getenv("ENV") == "prod"
-)
-
 func Main() {
 	srv := &http.Server{
 		Addr:    Addr(),
@@ -26,7 +21,7 @@ func Main() {
 }
 
 func Addr() string {
-	if IsProd {
+	if os.Getenv("ENV") == "prod" {
 		return ":http"
 	}
 	return ":7147"

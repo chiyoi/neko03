@@ -8,10 +8,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 )
 
-var (
-	EndpointAzureBlob = os.Getenv("ENDPOINT_AZURE_BLOB")
-	IsProd            = os.Getenv("ENV") == "prod"
-)
+const EndpointAzureBlob = "https://neko03storage.blob.core.windows.net/"
 
 func Client() (c *azblob.Client, err error) {
 	cred, err := credential()
@@ -22,7 +19,7 @@ func Client() (c *azblob.Client, err error) {
 }
 
 func credential() (azcore.TokenCredential, error) {
-	if IsProd {
+	if os.Getenv("ENV") == "prod" {
 		return azidentity.NewManagedIdentityCredential(nil)
 	}
 	return azidentity.NewAzureCLICredential(nil)
