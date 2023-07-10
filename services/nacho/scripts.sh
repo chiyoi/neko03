@@ -15,10 +15,8 @@ DOCKER_SCOPE=chiyoi
 ARTIFACT_NAME=nacho
 AZURE_CONTAINERS_GROUP=neko03_group
 
-export ENV=dev
-
 test_run() {
-    go run ./main
+    ENV=dev go run ./main
 }
 
 build() {
