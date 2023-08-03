@@ -4,11 +4,11 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/chiyoi/go/pkg/neko"
-	"github.com/chiyoi/neko03/sources/services/nacho/api/image"
+	"github.com/chiyoi/apricot/neko"
+	"github.com/chiyoi/neko03/services/nacho/api/image"
 )
 
-func Main() {
+func Run() {
 	srv := &http.Server{
 		Addr:    Addr(),
 		Handler: neko.AllowCrossOrigin(Handler()),

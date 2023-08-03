@@ -8,7 +8,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/chiyoi/go/pkg/test"
+	"github.com/chiyoi/apricot/test"
 )
 
 func TestHandler(t *testing.T) {

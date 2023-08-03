@@ -12,10 +12,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
-	"github.com/chiyoi/go/pkg/kitsune"
-	"github.com/chiyoi/go/pkg/logs"
-	"github.com/chiyoi/go/pkg/neko"
-	"github.com/chiyoi/neko03/sources/services/nacho/pkg/blob"
+	"github.com/chiyoi/apricot/kitsune"
+	"github.com/chiyoi/apricot/logs"
+	"github.com/chiyoi/apricot/neko"
+	"github.com/chiyoi/neko03/services/nacho/blob"
 )
 
 const (
@@ -24,8 +24,8 @@ const (
 )
 
 func PatternHandler(pattern string) (string, http.Handler) {
-	if neko.IsWideCast(pattern) {
-		logs.Panic(neko.ErrWideCastPatternNeeded)
+	if !neko.IsWildcard(pattern) {
+		logs.Panic(neko.ErrWildcardPatternNeeded)
 	}
 
 	c, err := blob.Client()
