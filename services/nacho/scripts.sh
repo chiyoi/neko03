@@ -1,8 +1,9 @@
 #!/usr/bin/env sh
 usage() {
+    dirname $(realpath $0)
     echo "scripts:"
-    echo "./scripts.sh test_run"
-    echo "    Run the main package locally."
+    echo "./scripts.sh run"
+    echo "    Run the main package."
     echo "./scripts.sh build"
     echo "    Build image and push to Docker Hub."
     echo "./scripts.sh deploy"
@@ -17,7 +18,7 @@ AZURE_CONTAINERS_GROUP=neko03_group
 
 export ENV=dev
 
-test_run() {
+run() {
     go run .
 }
 
