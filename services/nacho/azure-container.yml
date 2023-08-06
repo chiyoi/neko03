@@ -7,9 +7,6 @@ properties:
     containers:
       - image: chiyoi/nacho:latest
         name: nacho
-        env:
-          - name: ENV
-            value: prod
         resources:
           cpu: 0.25
           memory: 0.5Gi
