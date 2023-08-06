@@ -19,7 +19,7 @@ import (
 
 const (
 	BlobContainerNachoImages = "neko03-nacho-images"
-	TimeoutBlobQuery         = time.Second * 5
+	TimeoutBlobQuery         = time.Second * 25
 )
 
 // PatternHandler:
