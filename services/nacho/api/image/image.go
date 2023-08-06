@@ -3,7 +3,6 @@ package image
 import (
 	"context"
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 	"path"
@@ -23,6 +22,9 @@ const (
 	TimeoutBlobQuery         = time.Second * 5
 )
 
+// PatternHandler:
+// * /list.json
+// * /<filename>
 func PatternHandler(pattern string) (string, http.Handler) {
 	if !neko.IsWildcard(pattern) {
 		logs.Panic(neko.ErrWildcardPatternNeeded)
@@ -34,8 +36,8 @@ func PatternHandler(pattern string) (string, http.Handler) {
 	}
 
 	return pattern, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		sub := neko.TrimPattern(r.URL.Path, pattern)
-		if sub == "list.json" {
+		p := neko.TrimPattern(r.URL.Path, pattern)
+		if p == "list.json" {
 			list, err := ListImages(pattern, c)
 			if err != nil {
 				logs.Error(err)
@@ -50,30 +52,29 @@ func PatternHandler(pattern string) (string, http.Handler) {
 			return
 		}
 
-		if strings.Contains(sub, "/") {
-			msg := fmt.Sprintf("Invalid filename (%s).", sub)
-			logs.Warning(msg)
-			neko.BadRequest(w, msg)
+		if strings.Contains(p, "/") {
+			logs.Warning("Invalid filename.", p)
+			neko.BadRequest(w, "Invalid filename.")
 			return
 		}
 
-		logs.Info("(Get image.)", sub)
-		resp, err := c.DownloadStream(context.Background(), BlobContainerNachoImages, sub, nil)
+		logs.Info("Get image.", p)
+		resp, err := c.DownloadStream(context.Background(), BlobContainerNachoImages, p, nil)
 		if err != nil {
 			var re *azcore.ResponseError
 			if errors.As(err, &re) && re.StatusCode == http.StatusNotFound {
-				logs.Warning("(Not found.)", sub, err)
+				logs.Warning("Not found.", p, err)
 				kitsune.Teapot(w, nil)
 				return
 			}
 
-			logs.Error(sub, err)
+			logs.Error("Unknown error while downloading.", p, err)
 			kitsune.InternalServerError(w, nil)
 			return
 		}
 
 		if _, err := io.Copy(w, resp.Body); err != nil {
-			logs.Warning(err)
+			logs.Warning("Error while copying response.", err)
 		}
 	})
 }

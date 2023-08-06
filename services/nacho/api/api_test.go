@@ -12,7 +12,7 @@ import (
 )
 
 func TestHandler(t *testing.T) {
-	h := Handler()
+	h := RootHandler()
 	var w test.ResponseBuffer
 
 	h.ServeHTTP(&w, &http.Request{

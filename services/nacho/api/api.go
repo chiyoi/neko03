@@ -11,7 +11,7 @@ import (
 func Run() {
 	srv := &http.Server{
 		Addr:    Addr(),
-		Handler: neko.AllowCrossOrigin(Handler()),
+		Handler: neko.AllowCrossOrigin(RootHandler()),
 	}
 
 	go neko.StartServer(srv, false)
@@ -27,9 +27,11 @@ func Addr() string {
 	return ":7147"
 }
 
-func Handler() http.Handler {
+// RootHandler:
+// * /warmup
+// * /image/
+func RootHandler() http.Handler {
 	mux := http.NewServeMux()
-
 	mux.Handle("/warmup", neko.WarmupHandler())
 	mux.Handle(image.PatternHandler("/image/"))
 	mux.Handle("/", neko.TeapotHandler("Nyan~"))
