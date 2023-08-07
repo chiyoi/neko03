@@ -11,7 +11,7 @@ module.exports = function (api) {
       logTimings: true,
     }],
     ["transform-inline-environment-variables", {
-      include: ["TAMAGUI_TARGET", "ENV"],
+      "include": ["TAMAGUI_TARGET", "ENV", "ENDPOINT_NACHO"],
     }],
     ["babel-plugin-module-resolver", {
       "alias": {

@@ -17,6 +17,7 @@ ARTIFACT_NAME=nacho
 AZURE_CONTAINERS_GROUP=neko03_group
 
 export ENV=dev
+export ADDR=":7147"
 
 run() {
     go run .

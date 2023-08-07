@@ -7,9 +7,7 @@ import FlyingImage from "./FlyingImage"
 import BackButton from ".components/BackButton"
 import { ToastContext } from ".modules/toast"
 
-const ServiceEndpointNacho = process.env["ENV"] == "prod"
-  ? "https://nacho.greentree-6daa7305.japaneast.azurecontainerapps.io/"
-  : "http://silver.local:7147/"
+const EndpointNacho = process.env.ENDPOINT_NACHO
 
 export default function Nacho() {
   const toast = useContext(ToastContext)
@@ -51,7 +49,7 @@ export default function Nacho() {
 
     console.log("Fetching image list.")
     toast("Fetching image list~")
-    axios.get<string[]>(new URL("/image/list.json", ServiceEndpointNacho).href).then(resp => {
+    axios.get<string[]>(new URL("/image/list.json", EndpointNacho).href).then(resp => {
       setTimeout(() => {
         console.log("Image list fetched.")
         toast("Image list fetched~")
@@ -78,7 +76,7 @@ export default function Nacho() {
     <>
       <Stack height="100%" backgroundColor="$background">
         {images.map(image => (
-          <FlyingImage key={image} src={new URL(image, ServiceEndpointNacho).href} duration={duration} />
+          <FlyingImage key={image} src={new URL(image, EndpointNacho).href} duration={duration} />
         ))}
       </Stack>
 

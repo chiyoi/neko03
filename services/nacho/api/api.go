@@ -10,7 +10,7 @@ import (
 
 func Run() {
 	srv := &http.Server{
-		Addr:    Addr(),
+		Addr:    os.Getenv("ADDR"),
 		Handler: neko.AllowCrossOrigin(RootHandler()),
 	}
 
@@ -18,13 +18,6 @@ func Run() {
 	defer neko.StopServer(srv)
 
 	neko.Block()
-}
-
-func Addr() string {
-	if os.Getenv("ENV") == "prod" {
-		return ":http"
-	}
-	return ":7147"
 }
 
 // RootHandler:
