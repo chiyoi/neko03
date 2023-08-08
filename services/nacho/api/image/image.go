@@ -23,8 +23,8 @@ const (
 )
 
 // PatternHandler:
-// * /list.json
-// * /<filename>
+// GET /list.json
+// GET /<filename>
 func PatternHandler(pattern string) (string, http.Handler) {
 	if !neko.IsWildcard(pattern) {
 		logs.Panic(neko.ErrWildcardPatternNeeded)
@@ -36,6 +36,12 @@ func PatternHandler(pattern string) (string, http.Handler) {
 	}
 
 	return pattern, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			logs.Warning("Method not allowed.", r.Method)
+			neko.MethodNotAllowed(w, "")
+			return
+		}
+
 		p := neko.TrimPattern(r.URL.Path, pattern)
 		if p == "list.json" {
 			list, err := ListImages(pattern, c)
@@ -64,12 +70,12 @@ func PatternHandler(pattern string) (string, http.Handler) {
 			var re *azcore.ResponseError
 			if errors.As(err, &re) && re.StatusCode == http.StatusNotFound {
 				logs.Warning("Not found.", p, err)
-				kitsune.Teapot(w, nil)
+				neko.Teapot(w, "")
 				return
 			}
 
 			logs.Error("Unknown error while downloading.", p, err)
-			kitsune.InternalServerError(w, nil)
+			neko.InternalServerError(w, "")
 			return
 		}
 
