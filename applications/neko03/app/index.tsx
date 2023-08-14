@@ -2,18 +2,14 @@ import { useMemo } from "react"
 import { useAssets } from "expo-asset"
 import { Link } from "expo-router"
 
-import { Button, GetProps, ListItem, Popover, SizableText, Stack, XStack, YGroup, useMedia } from "tamagui"
+import { Button, GetProps, ListItem, Popover, SizableText, Stack, Theme, XGroup, XStack, YGroup, useMedia, Text, useTheme } from "tamagui"
 import { Flower2, Cherry, Citrus } from "@tamagui/lucide-icons"
 
 import { centralized, styleBounceDown, styleTopLeftIconButton } from ".assets/styles"
 import ColorAvatar from ".components/ColorAvatar"
 import ErrorDialog from ".components/ErrorDialog"
 import CenterSquare from ".components/CenterSquare"
-
-const styleCharacter: GetProps<typeof SizableText> = {
-  fontFamily: "$neko",
-  padding: 1,
-}
+import { useColorScheme } from "react-native"
 
 const styleListItem: GetProps<typeof ListItem> = {
   size: "$4",
@@ -29,7 +25,6 @@ export default function Neko03() {
     require(".assets/icons/chiyoi.png"),
     require(".assets/icons/nacho.png"),
     require(".assets/icons/shigure.png"),
-    require(".assets/icons/trinity.png"),
   ])
 
   const pages: Page[] = useMemo(() => [
@@ -50,6 +45,8 @@ export default function Neko03() {
 
   const media = useMedia()
 
+  const theme = useTheme()
+
   const title = colorLoopCharacters("neko03★moe")
 
   if (error !== undefined) {
@@ -63,9 +60,9 @@ export default function Neko03() {
   return (
     <>
       <Stack {...centralized} backgroundColor="$background">
-        <XStack alignItems="flex-end" scale={media.xs ? 0.3 : media.sm ? 0.8 : 1}>
+        <XStack alignItems="flex-end" scale={media.xs ? 0.3 : media.sm ? 0.6 : media.md ? 0.8 : 1}>
           {title.map((c, i) => (
-            <SizableText {...styleCharacter} color={`$${c.color}8`} size={i == 6 ? "$10" : "$16"} key={i}>
+            <SizableText fontFamily="$neko" padding={1} color={`$${c.color}8`} size={i == 6 ? "$10" : "$16"} key={i}>
               {c.char}
             </SizableText>
           ))}
@@ -84,27 +81,30 @@ export default function Neko03() {
             )
           } />
         </Popover.Trigger>
-
         <Popover.Content {...styleBounceDown} backgroundColor="$color4">
-          <YGroup>
+          <YGroup backgroundColor="$color5">
             {pages.map((page, i) => (
               <YGroup.Item key={i}>
                 <Popover.Close asChild>
                   <Link asChild href={page.href}>
-                    <ListItem {...styleListItem} icon={(
-                      <ColorAvatar size={25} uri={page.avatar} />
-                    )}>
-                      <SizableText color="$color7" fontFamily="$neko" size="$8">
-                        {page.title}
-                      </SizableText>
-                    </ListItem>
+                    <XGroup>
+                      <XGroup.Item>
+                        <ListItem size="$4" width={170} hoverTheme pressTheme backgroundColor="$color5" justifyContent="flex-start" icon={(
+                          <ColorAvatar size={25} uri={page.avatar} />
+                        )}>
+                          <SizableText color="$color7" fontFamily="$neko" size="$8">
+                            {page.title}
+                          </SizableText>
+                        </ListItem>
+                      </XGroup.Item>
+                    </XGroup>
                   </Link>
                 </Popover.Close>
               </YGroup.Item>
             ))}
           </YGroup>
         </Popover.Content>
-      </Popover>
+      </Popover >
     </>
   )
 }

@@ -26,7 +26,7 @@ export default function Layout() {
   const setToast = useCallback((toast: string) => setToasts(toasts => [...toasts, { str: toast, id: toastCount.current++ }]), [])
 
   const colorScheme = useColorScheme()
-  const isDark = useMemo(() => colorScheme === "dark", [colorScheme])
+  const isDark = colorScheme === "dark"
 
   if (!interLoaded || !hachiMaruPopLoaded) {
     return null

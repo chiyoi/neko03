@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useMemo } from "react"
+import { useCallback, } from "react"
 
-import { Button, GetProps, Paragraph, SizableText, Toast, ToastProvider, ToastViewport, XStack } from "tamagui"
+import { Toast, ToastProvider, ToastViewport } from '@tamagui/toast'
+import { GetProps, SizableText, XStack } from "tamagui"
 
-import { styleBounceDown, styleIconButton } from ".assets/styles"
-import { Circle } from "@tamagui/lucide-icons"
 import { IDString } from ".modules/toast"
 
 const styleToast: GetProps<typeof Toast> = {
