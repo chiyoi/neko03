@@ -2,6 +2,8 @@
 usage() {
     dirname $(realpath $0)
     echo "scripts:"
+    echo "./scripts.sh tidy"
+    echo "    Go mod tidy."
     echo "./scripts.sh run"
     echo "    Run the main package."
     echo "./scripts.sh build"
@@ -18,6 +20,10 @@ AZURE_CONTAINERS_GROUP=neko03_group
 
 export ENV=dev
 export ADDR=":7147"
+
+tidy() {
+    go mod tidy
+}
 
 run() {
     go run .
