@@ -2,23 +2,13 @@ import { useMemo } from "react"
 import { useAssets } from "expo-asset"
 import { Link } from "expo-router"
 
-import { Button, GetProps, ListItem, Popover, SizableText, Stack, Theme, XGroup, XStack, YGroup, useMedia, Text, useTheme } from "tamagui"
+import { Button, ListItem, Popover, SizableText, Stack, XGroup, XStack, YGroup, useMedia } from "tamagui"
 import { Flower2, Cherry, Citrus } from "@tamagui/lucide-icons"
 
 import { centralized, styleBounceDown, styleTopLeftIconButton } from ".assets/styles"
 import ColorAvatar from ".components/ColorAvatar"
 import ErrorDialog from ".components/ErrorDialog"
 import CenterSquare from ".components/CenterSquare"
-import { useColorScheme } from "react-native"
-
-const styleListItem: GetProps<typeof ListItem> = {
-  size: "$4",
-  width: 170,
-  hoverTheme: true,
-  pressTheme: true,
-  backgroundColor: "$color2",
-  justifyContent: "flex-start",
-}
 
 export default function Neko03() {
   const [assets, error] = useAssets([
@@ -44,8 +34,6 @@ export default function Neko03() {
   ], [assets])
 
   const media = useMedia()
-
-  const theme = useTheme()
 
   const title = colorLoopCharacters("neko03★moe")
 
@@ -81,6 +69,7 @@ export default function Neko03() {
             )
           } />
         </Popover.Trigger>
+
         <Popover.Content {...styleBounceDown} backgroundColor="$color4">
           <YGroup backgroundColor="$color5">
             {pages.map((page, i) => (

@@ -6,14 +6,18 @@ import { StatusBar } from "expo-status-bar"
 import { useFonts } from "expo-font"
 import { useFonts as useHachiMaruPopFonts, HachiMaruPop_400Regular } from "@expo-google-fonts/hachi-maru-pop"
 
-import { TamaguiProvider, Theme } from "tamagui"
+import { Theme } from "tamagui"
 import { tokens } from "@tamagui/themes"
 
-import tamaguiConfig from "../tamagui.config"
 import { IDString, ToastContext } from ".modules/toast"
 import { QuickToast } from ".components/QuickToast"
+import { TamaguiProvider } from ".components/TamaguiProvider"
 
-export default function Layout() {
+export default function Layout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const [interLoaded] = useFonts({
     Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
     InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
@@ -33,22 +37,15 @@ export default function Layout() {
   }
 
   return (
-    <TamaguiProvider config={tamaguiConfig}>
+    <TamaguiProvider>
       <ToastContext.Provider value={setToast}>
         <Theme name={isDark ? "dark" : "light"}>
           <Theme name="pink">
-            <SafeAreaView style={{ flex: 1, backgroundColor: isDark ? tokens.color.pink2Dark.val : tokens.color.pink2Light.val }}>
-              <Stack screenOptions={{
-                headerShown: false,
-              }} />
-
-              <StatusBar style="auto" />
-
-              <QuickToast toastsState={toastsState} />
-            </SafeAreaView>
+            {children}
+            <QuickToast toastsState={toastsState} />
           </Theme>
         </Theme>
-      </ToastContext.Provider >
+      </ToastContext.Provider>
     </TamaguiProvider>
   )
 }
