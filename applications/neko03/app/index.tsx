@@ -2,23 +2,13 @@ import { useMemo } from "react"
 import { useAssets } from "expo-asset"
 import { Link } from "expo-router"
 
-import { Button, GetProps, ListItem, Popover, SizableText, Stack, Theme, XGroup, XStack, YGroup, useMedia, Text, useTheme } from "tamagui"
+import { Button, GetProps, ListItem, Popover, SizableText, Stack, Theme, XGroup, XStack, YGroup, useMedia, Text, useTheme, YStack, Label, Input } from "tamagui"
 import { Flower2, Cherry, Citrus } from "@tamagui/lucide-icons"
 
 import { centralized, styleBounceDown, styleTopLeftIconButton } from ".assets/styles"
 import ColorAvatar from ".components/ColorAvatar"
 import ErrorDialog from ".components/ErrorDialog"
 import CenterSquare from ".components/CenterSquare"
-import { useColorScheme } from "react-native"
-
-const styleListItem: GetProps<typeof ListItem> = {
-  size: "$4",
-  width: 170,
-  hoverTheme: true,
-  pressTheme: true,
-  backgroundColor: "$color2",
-  justifyContent: "flex-start",
-}
 
 export default function Neko03() {
   const [assets, error] = useAssets([
@@ -82,22 +72,18 @@ export default function Neko03() {
           } />
         </Popover.Trigger>
         <Popover.Content {...styleBounceDown} backgroundColor="$color4">
-          <YGroup backgroundColor="$color5">
+          <YGroup borderRadius={0} backgroundColor="">
             {pages.map((page, i) => (
               <YGroup.Item key={i}>
                 <Popover.Close asChild>
                   <Link asChild href={page.href}>
-                    <XGroup>
-                      <XGroup.Item>
-                        <ListItem size="$4" width={170} hoverTheme pressTheme backgroundColor="$color5" justifyContent="flex-start" icon={(
-                          <ColorAvatar size={25} uri={page.avatar} />
-                        )}>
-                          <SizableText color="$color7" fontFamily="$neko" size="$8">
-                            {page.title}
-                          </SizableText>
-                        </ListItem>
-                      </XGroup.Item>
-                    </XGroup>
+                    <ListItem size="$4" width={170} hoverStyle={{ backgroundColor: theme.color6.val.toString() }} pressStyle={{ backgroundColor: theme.color3.val.toString() }} backgroundColor={theme.color5.val.toString()} justifyContent="flex-start" icon={(
+                      <ColorAvatar size={25} uri={page.avatar} />
+                    )}>
+                      <SizableText color={theme.color8.val.toString()} fontFamily="$neko" size="$8">
+                        {page.title}
+                      </SizableText>
+                    </ListItem>
                   </Link>
                 </Popover.Close>
               </YGroup.Item>

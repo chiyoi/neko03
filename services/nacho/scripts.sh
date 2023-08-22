@@ -47,4 +47,12 @@ usage
 exit
 fi
 
+case "$1" in
+tidy|run|build|deploy|update) ;;
+*)
+usage
+exit 1
+;;
+esac
+
 $@
