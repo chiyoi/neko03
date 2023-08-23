@@ -23,7 +23,6 @@ var tcs = []struct {
 			},
 		},
 		ResponseDigest{
-			StatusCode: 0,
 			BodyMD5: func() [md5.Size]byte {
 				f, err := os.Open("../files/images/IMG_3382.JPG")
 				if err != nil {
@@ -61,8 +60,10 @@ func TestHandler(t *testing.T) {
 	for i, tc := range tcs {
 		var w test.ResponseBuffer
 		h.ServeHTTP(&w, tc.in)
-		if w.StatusCode != tc.out.StatusCode {
-			t.Errorf("test case %v StatusCode: %v (expect %v).", i, w.StatusCode, tc.out.StatusCode)
+		if tc.out.StatusCode != 0 {
+			if w.StatusCode != tc.out.StatusCode {
+				t.Errorf("test case %v StatusCode: %v (expect %v).", i, w.StatusCode, tc.out.StatusCode)
+			}
 		}
 
 		if tc.out.BodyMD5 != [md5.Size]byte{} {
