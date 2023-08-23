@@ -27,6 +27,6 @@ func RootHandler() http.Handler {
 	mux := http.NewServeMux()
 	mux.Handle("/warmup", neko.WarmupHandler())
 	mux.Handle(image.PatternHandler("/image/"))
-	mux.Handle("/", neko.TeapotHandler("Nyan~"))
+	mux.Handle("/", neko.TeapotHandler(""))
 	return mux
 }

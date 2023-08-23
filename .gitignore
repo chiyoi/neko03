@@ -4,6 +4,7 @@
 *.swp
 
 local-*
+files
 
 node_modules
 

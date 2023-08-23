@@ -1,25 +1,20 @@
 package image
 
 import (
-	"context"
-	"errors"
 	"io"
 	"net/http"
+	"os"
 	"path"
+	"path/filepath"
 	"strings"
-	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/chiyoi/apricot/kitsune"
 	"github.com/chiyoi/apricot/logs"
 	"github.com/chiyoi/apricot/neko"
-	"github.com/chiyoi/neko03/services/nacho/blob"
 )
 
 const (
-	BlobContainerNachoImages = "neko03-nacho-images"
-	TimeoutBlobQuery         = time.Second * 25
+	DirImages = "files/images"
 )
 
 // PatternHandler:
@@ -28,11 +23,6 @@ const (
 func PatternHandler(pattern string) (string, http.Handler) {
 	if !neko.IsWildcard(pattern) {
 		logs.Panic(neko.ErrWildcardPatternNeeded)
-	}
-
-	c, err := blob.Client()
-	if err != nil {
-		logs.Panic(err)
 	}
 
 	return pattern, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -44,7 +34,7 @@ func PatternHandler(pattern string) (string, http.Handler) {
 
 		p := neko.TrimPattern(r.URL.Path, pattern)
 		if p == "list.json" {
-			list, err := ListImages(pattern, c)
+			list, err := ListImages(pattern)
 			if err != nil {
 				logs.Error(err)
 				kitsune.InternalServerError(w, nil)
@@ -65,10 +55,9 @@ func PatternHandler(pattern string) (string, http.Handler) {
 		}
 
 		logs.Info("Get image.", p)
-		resp, err := c.DownloadStream(context.Background(), BlobContainerNachoImages, p, nil)
+		f, err := os.Open(filepath.Join(DirImages, p))
 		if err != nil {
-			var re *azcore.ResponseError
-			if errors.As(err, &re) && re.StatusCode == http.StatusNotFound {
+			if os.IsNotExist(err) {
 				logs.Warning("Not found.", p, err)
 				neko.Teapot(w, "")
 				return
@@ -79,25 +68,20 @@ func PatternHandler(pattern string) (string, http.Handler) {
 			return
 		}
 
-		if _, err := io.Copy(w, resp.Body); err != nil {
+		if _, err := io.Copy(w, f); err != nil {
 			logs.Warning("Error while copying response.", err)
 		}
 	})
 }
 
-func ListImages(prefix string, c *azblob.Client) (list []string, err error) {
-	pager := c.NewListBlobsFlatPager(BlobContainerNachoImages, nil)
-	for pager.More() {
-		ctx, cancel := context.WithTimeout(context.Background(), TimeoutBlobQuery)
-		defer cancel()
-		resp, err := pager.NextPage(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, item := range resp.Segment.BlobItems {
-			list = append(list, path.Join(prefix, *item.Name))
-		}
+func ListImages(prefix string) (list []string, err error) {
+	fs, err := os.ReadDir(DirImages)
+	if err != nil {
+		return
+	}
+	list = make([]string, 0, len(fs))
+	for _, f := range fs {
+		list = append(list, path.Join(prefix, f.Name()))
 	}
 	return
 }

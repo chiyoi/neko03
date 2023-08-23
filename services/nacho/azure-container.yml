@@ -10,6 +10,13 @@ properties:
         resources:
           cpu: 0.25
           memory: 0.5Gi
+        volumeMounts:
+          - volumeName: azure-files-volume
+            mountPath: /nacho/files
+    volumes:
+      - name: azure-files-volume
+        storageType: AzureFile
+        storageName: nacho-files
     scale:
       minReplicas: 0
       maxReplicas: 1
