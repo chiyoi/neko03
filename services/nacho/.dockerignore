@@ -1,5 +1,7 @@
 scripts.sh
 azure-container.yml
+.git
+.gitignore
 
 .vscode
 
