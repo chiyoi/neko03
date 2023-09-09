@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 usage() {
     dirname $(realpath $0)
-    echo "scripts:"
+    echo "Scripts:"
     echo "./scripts.sh tidy"
     echo "    Go mod tidy."
     echo "./scripts.sh run"
@@ -18,7 +18,6 @@ DOCKER_SCOPE=chiyoi
 ARTIFACT_NAME=nacho
 AZURE_CONTAINERS_GROUP=neko03_group
 
-export ENV=dev
 export ADDR=":7147"
 
 tidy() {

@@ -1,7 +1,7 @@
 package main
 
-import "github.com/chiyoi/neko03/services/nacho/api"
+import "github.com/chiyoi/neko03/services/nacho/app"
 
 func main() {
-	api.Run()
+	app.Run()
 }
