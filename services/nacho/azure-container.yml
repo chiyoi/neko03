@@ -13,6 +13,11 @@ properties:
         volumeMounts:
           - volumeName: azure-files-volume
             mountPath: /nacho/files
+        probes:
+          - type: readiness
+            httpGet:
+              - path: /readiness
+                port: 80
     volumes:
       - name: azure-files-volume
         storageType: AzureFile
