@@ -1,6 +1,6 @@
 module github.com/chiyoi/neko03/services/nacho
 
-go 1.21
+go 1.21.0
 
 require (
 	github.com/chiyoi/apricot/kitsune v0.2.0
