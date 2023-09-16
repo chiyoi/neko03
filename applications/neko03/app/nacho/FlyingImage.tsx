@@ -2,19 +2,7 @@ import { useEffect, useRef, useState } from "react"
 
 import { useWindowDimensions, Square, GetProps, Image } from "tamagui"
 
-function styleSquare(duration: number, width: number, h: number, y: number): GetProps<typeof Square> {
-  return {
-    position: "absolute",
-    animation: ["move", { x: { duration } }],
-    enterStyle: { x: width },
-    height: h,
-    width: h,
-    x: -h,
-    y: y,
-  }
-}
-
-export default function FlyingImage({ src, duration }: Props) {
+export default function FlyingImage({ uri, duration }: Props) {
   const { width, height } = useWindowDimensions()
   const [isRerender, setIsRerender] = useState(false)
   useEffect(() => setIsRerender(true), [])
@@ -31,13 +19,13 @@ export default function FlyingImage({ src, duration }: Props) {
   }
 
   return (
-    <Square {...styleSquare(duration, width, h, y)}>
-      <Image resizeMode="contain" src={{ uri: src }} width={h} height={h} />
+    <Square position="absolute" animation={["move", { x: { duration } }]} enterStyle={{ x: width }} height={h} width={h} x={-h} y={y}>
+      <Image resizeMode="contain" source={{ uri, width: h, height: h }} />
     </Square>
   )
 }
 
 type Props = {
-  src: string
+  uri: string
   duration: number
 }
