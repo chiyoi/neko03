@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 
-import { useWindowDimensions, Square, GetProps, Image } from "tamagui"
+import { useWindowDimensions, Square, Image } from "tamagui"
 
 export default function FlyingImage({ uri, duration }: Props) {
   const { width, height } = useWindowDimensions()

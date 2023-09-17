@@ -76,7 +76,7 @@ export default function Nacho() {
     <>
       <Stack height="100%" backgroundColor="$background">
         {images.map(image => (
-          <FlyingImage key={image} src={new URL(image, EndpointNacho).href} duration={duration} />
+          <FlyingImage key={image} uri={new URL(image, EndpointNacho).href} duration={duration} />
         ))}
       </Stack>
 

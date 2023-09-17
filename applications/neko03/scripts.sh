@@ -19,15 +19,28 @@ usage() {
 
 native=false
 
-run() {
+common_env() {
+    export VERSION='v0.1.0'
+}
+
+dev_env() {
+    common_env
     export ENDPOINT_NACHO='http://booklet.local:7147/'
+}
+
+prod_env() {
+    common_env
+    export ENDPOINT_NACHO='https://nacho.greentree-6daa7305.japaneast.azurecontainerapps.io/'
+}
+
+run() {
+    dev_env
     shift
     npx expo start $@
 }
 
 build() {
-    export ENDPOINT_NACHO='https://nacho.greentree-6daa7305.japaneast.azurecontainerapps.io/'
-
+    prod_env
     if $native; then
     npx expo export -c -p ios
     else

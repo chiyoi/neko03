@@ -1,8 +1,8 @@
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { useAssets } from "expo-asset"
 import { Link } from "expo-router"
 
-import { Button, GetProps, ListItem, Popover, SizableText, Stack, Theme, XGroup, XStack, YGroup, useMedia, Text, useTheme, YStack, Label, Input } from "tamagui"
+import { Button, ListItem, Popover, SizableText, Stack, XStack, YGroup, useMedia, useTheme, } from "tamagui"
 import { Flower2, Cherry, Citrus } from "@tamagui/lucide-icons"
 
 import { centralized, styleBounceDown, styleTopLeftIconButton } from ".assets/styles"
@@ -11,6 +11,8 @@ import ErrorDialog from ".components/ErrorDialog"
 import CenterSquare from ".components/CenterSquare"
 
 export default function Neko03() {
+  useEffect(() => console.log(`Version: ${process.env.VERSION}`), [])
+
   const [assets, error] = useAssets([
     require(".assets/icons/chiyoi.png"),
     require(".assets/icons/nacho.png"),
@@ -34,7 +36,6 @@ export default function Neko03() {
   ], [assets])
 
   const media = useMedia()
-
   const theme = useTheme()
 
   const title = colorLoopCharacters("neko03★moe")
