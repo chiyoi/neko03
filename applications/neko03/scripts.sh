@@ -20,7 +20,7 @@ usage() {
 native=false
 
 common_env() {
-    export VERSION='v0.1.0'
+    export VERSION='v0.1.1'
 }
 
 dev_env() {

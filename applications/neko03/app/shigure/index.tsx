@@ -6,12 +6,7 @@ import { LinearGradient } from "tamagui/linear-gradient"
 import Message from "./Message"
 import { centralized } from ".assets/styles"
 
-const styleBackground: GetProps<typeof LinearGradient> = {
-  height: "100%",
-  colors: ["#EDF2F0", "#59F7B3"]
-}
-
-function styleMessageSquare(speed: number): GetProps<typeof Square> {
+function styleAnimeQuickMove(speed: number): GetProps<typeof Square> {
   return {
     animation: ["bouncy", {
       x: {
@@ -36,7 +31,7 @@ export default function Shigure() {
 
   const media = useMedia()
 
-  const { current: speed } = useRef(Math.random() * 100)
+  const { current: speed } = useRef(Math.random() * 40 + 10)
 
   const minY = 0.1 * height
   const maxY = 0.7 * height
@@ -55,9 +50,9 @@ export default function Shigure() {
   ), [state])
 
   return isRerender ? (
-    <LinearGradient {...styleBackground} onPress={pocchi}>
+    <LinearGradient height="100%" colors={["#EDF2F0", "#59F7B3"]} onPress={pocchi}>
       {[0, 1].includes(state) ? (
-        <Square {...styleMessageSquare(speed)} {...scaleMedia(media)} x={x} y={y}>
+        <Square {...styleAnimeQuickMove(speed)} {...scaleMedia(media)} x={x} y={y}>
           <Message />
         </Square>
       ) : [2].includes(state) && (
