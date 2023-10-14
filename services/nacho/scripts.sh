@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/sh
 usage() {
     dirname $(realpath $0)
     echo "Scripts:"
