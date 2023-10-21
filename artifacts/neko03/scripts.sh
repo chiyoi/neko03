@@ -3,6 +3,8 @@ cd $(dirname $(realpath $0))
 usage() {
     pwd
     echo "scripts:"
+    echo "$0 yarn"
+    echo "    Yarn!"
     echo "$0 run <platform> [options...]"
     echo "    Run the application locally."
     echo "    [options...]: options for expo."
