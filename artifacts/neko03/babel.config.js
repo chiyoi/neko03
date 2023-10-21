@@ -15,8 +15,6 @@ module.exports = function (api) {
     }],
     ["babel-plugin-module-resolver", {
       "alias": {
-        ".assets": "./assets",
-        ".components": "./components",
         ".modules": "./modules",
       },
     }],

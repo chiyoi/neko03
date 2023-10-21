@@ -3,7 +3,7 @@ import { Link } from "expo-router"
 import { Button } from "tamagui"
 import { ChevronLeft } from "@tamagui/lucide-icons"
 
-import { styleTopLeftIconButton } from ".assets/styles"
+import { styleTopLeftIconButton } from ".modules/assets/styles"
 
 export default function BackButton() {
   return (

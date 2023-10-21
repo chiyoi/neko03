@@ -5,18 +5,18 @@ import { Link } from "expo-router"
 import { Button, ListItem, Popover, SizableText, Stack, XStack, YGroup, useMedia, useTheme, } from "tamagui"
 import { Flower2, Cherry, Citrus } from "@tamagui/lucide-icons"
 
-import { centralized, styleBounceDown, styleTopLeftIconButton } from ".assets/styles"
-import ColorAvatar from ".components/ColorAvatar"
-import ErrorDialog from ".components/ErrorDialog"
-import CenterSquare from ".components/CenterSquare"
+import { centralized, styleBounceDown, styleTopLeftIconButton } from ".modules/assets/styles"
+import ColorAvatar from ".modules/components/ColorAvatar"
+import ErrorDialog from ".modules/components/ErrorDialog"
+import CenterSquare from ".modules/components/CenterSquare"
 
 export default function Neko03() {
   useEffect(() => console.log(`Version: ${process.env.VERSION}`), [])
 
   const [assets, error] = useAssets([
-    require(".assets/icons/chiyoi.png"),
-    require(".assets/icons/nacho.png"),
-    require(".assets/icons/shigure.png"),
+    require(".modules/assets/icons/chiyoi.png"),
+    require(".modules/assets/icons/nacho.png"),
+    require(".modules/assets/icons/shigure.png"),
   ])
 
   const pages: Page[] = useMemo(() => [

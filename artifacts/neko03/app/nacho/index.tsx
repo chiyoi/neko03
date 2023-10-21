@@ -4,7 +4,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { Stack } from "tamagui"
 
 import FlyingImage from "./FlyingImage"
-import BackButton from ".components/BackButton"
+import BackButton from ".modules/components/BackButton"
 import { ToastContext } from ".modules/toast"
 
 const EndpointNacho = process.env.ENDPOINT_NACHO

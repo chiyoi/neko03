@@ -3,7 +3,7 @@ import { useCallback, } from "react"
 import { Toast, ToastProvider, ToastViewport } from '@tamagui/toast'
 import { GetProps, SizableText, XStack } from "tamagui"
 
-import { IDString } from ".modules/toast"
+import { IDString } from "../toast"
 
 const styleToast: GetProps<typeof Toast> = {
   animation: ["bouncy", {

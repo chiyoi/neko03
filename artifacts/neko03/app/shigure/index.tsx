@@ -4,7 +4,7 @@ import { GetProps, Square, Stack, useMedia, useWindowDimensions } from "tamagui"
 import { LinearGradient } from "tamagui/linear-gradient"
 
 import Message from "./Message"
-import { centralized } from ".assets/styles"
+import { centralized } from ".modules/assets/styles"
 
 function styleAnimeQuickMove(speed: number): GetProps<typeof Square> {
   return {

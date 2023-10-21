@@ -1,6 +1,6 @@
 import { GetProps, Paragraph, Stack } from "tamagui"
 
-import { centralized } from ".assets/styles"
+import { centralized } from ".modules/assets/styles"
 
 const styleCenterSquare: GetProps<typeof Stack> = {
   minWidth: 300,

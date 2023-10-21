@@ -10,8 +10,8 @@ import { TamaguiProvider, Theme } from "tamagui"
 import { tokens } from "@tamagui/themes"
 
 import tamaguiConfig from "../tamagui.config"
-import { IDString, ToastContext } from ".modules/toast"
-import { QuickToast } from ".components/QuickToast"
+import { IDString, ToastContext } from "../modules/toast"
+import { QuickToast } from ".modules/components/QuickToast"
 
 export default function Layout() {
   const [interLoaded] = useFonts({
