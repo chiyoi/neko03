@@ -1,6 +1,7 @@
 #!/bin/sh
+cd $(dirname $(realpath $0)) || return
 usage() {
-    dirname $(realpath $0)
+    pwd
     echo "Scripts:"
     echo "./scripts.sh tidy"
     echo "    Go mod tidy."

@@ -1,17 +1,18 @@
-#!/usr/bin/env sh
+#!/bin/sh
+cd $(dirname $(realpath $0))
 usage() {
-    dirname $(realpath $0)
+    pwd
     echo "scripts:"
-    echo "./scripts.sh run <platform> [options...]"
+    echo "$0 run <platform> [options...]"
     echo "    Run the application locally."
     echo "    [options...]: options for expo."
-    echo "./scripts.sh build <platform>"
+    echo "$0 build <platform>"
     echo "    Export static page."
-    echo "./scripts.sh deploy <platform>"
+    echo "$0 deploy <platform>"
     echo "    Deploy the application."
     echo "    web: deploy to Static Web App."
     echo "    native: deploy to Expo App Service."
-    echo "./scripts.sh update <platform>"
+    echo "$0 update <platform>"
     echo "    Build and Deploy."
     echo
     echo "platform: (web|native)"
