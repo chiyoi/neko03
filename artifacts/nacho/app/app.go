@@ -9,9 +9,6 @@ import (
 	"github.com/chiyoi/neko03/services/nacho/app/image"
 )
 
-const StatusTmpl = `Nyan~
-Version: %s`
-
 func Run() {
 	srv := &http.Server{
 		Addr:    os.Getenv("ADDR"),
@@ -26,6 +23,7 @@ func Run() {
 
 // RootHandler:
 // * /status
+// * /readiness
 // * /image/
 func RootHandler() http.Handler {
 	mux := http.NewServeMux()

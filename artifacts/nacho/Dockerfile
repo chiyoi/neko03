@@ -12,5 +12,6 @@ WORKDIR /nacho
 COPY --from=0 /nacho/nacho /bin/nacho
 
 ENV VERSION="v0.1.1"
+
 EXPOSE 80
 CMD ["nacho"]

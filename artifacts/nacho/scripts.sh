@@ -3,15 +3,15 @@ cd $(dirname $(realpath $0)) || return
 usage() {
     pwd
     echo "Scripts:"
-    echo "./scripts.sh tidy"
+    echo "$0 tidy"
     echo "    Go mod tidy."
-    echo "./scripts.sh run"
+    echo "$0 run"
     echo "    Run the main package."
-    echo "./scripts.sh build"
+    echo "$0 build"
     echo "    Build image and push to Docker Hub."
-    echo "./scripts.sh deploy"
+    echo "$0 deploy"
     echo "    Deploy container to Azure Container Apps from Docker Hub."
-    echo "./scripts.sh update"
+    echo "$0 update"
     echo "    Build and Deploy."
 }
 
