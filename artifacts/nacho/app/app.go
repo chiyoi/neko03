@@ -22,17 +22,17 @@ func Run() {
 }
 
 // RootHandler:
-// * /status
+// * /ping
 // * /readiness
 // * /image/
 func RootHandler() http.Handler {
 	mux := http.NewServeMux()
-	mux.Handle("/status", neko.StatusHandler())
+	mux.Handle("/ping", neko.PingHandler())
 	mux.HandleFunc("/readiness", func(w http.ResponseWriter, r *http.Request) {
 		logs.Info("Readiness probe.")
 	})
 	mux.Handle(image.PatternHandler("/image/"))
 	mux.Handle("/image", neko.RedirectToSlashHandler())
-	mux.Handle("/", neko.TeapotHandler(""))
+	mux.Handle("/", neko.TeapotHandler())
 	return mux
 }

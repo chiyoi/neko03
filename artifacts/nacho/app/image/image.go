@@ -28,7 +28,7 @@ func PatternHandler(pattern string) (string, http.Handler) {
 	return pattern, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
 			logs.Warning("Method not allowed.", r.Method)
-			neko.MethodNotAllowed(w, "")
+			neko.MethodNotAllowed(w)
 			return
 		}
 
@@ -50,7 +50,7 @@ func PatternHandler(pattern string) (string, http.Handler) {
 
 		if strings.Contains(p, "/") {
 			logs.Warning("Invalid filename.", p)
-			neko.BadRequest(w, "Invalid filename.")
+			neko.BadRequest(w)
 			return
 		}
 
@@ -59,12 +59,12 @@ func PatternHandler(pattern string) (string, http.Handler) {
 		if err != nil {
 			if os.IsNotExist(err) {
 				logs.Warning("Not found.", p, err)
-				neko.Teapot(w, "")
+				neko.Teapot(w)
 				return
 			}
 
 			logs.Error("Unknown error while downloading.", p, err)
-			neko.InternalServerError(w, "")
+			neko.InternalServerError(w)
 			return
 		}
 
