@@ -3,8 +3,7 @@ WORKDIR /nacho
 COPY go.mod go.sum ./
 RUN go mod download
 
-COPY main.go ./
-COPY app ./app
+COPY . .
 RUN CGO_ENABLED=0 go build -o out .
 
 FROM alpine:3.18
