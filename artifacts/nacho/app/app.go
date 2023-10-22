@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 
@@ -29,7 +30,8 @@ func RootHandler() http.Handler {
 	mux := http.NewServeMux()
 	mux.Handle("/ping", neko.PingHandler())
 	mux.HandleFunc("/readiness", func(w http.ResponseWriter, r *http.Request) {
-		logs.Info("Readiness probe.")
+		logs.Info("Service OK.")
+		fmt.Fprintln(w, "Service OK.")
 	})
 	mux.Handle(image.PatternHandler("/image/"))
 	mux.Handle("/image", neko.RedirectToSlashHandler())
