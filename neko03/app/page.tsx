@@ -1,20 +1,56 @@
-import { Button, Container, Flex, Text } from '@radix-ui/themes'
+'use client'
+import { Flex, Heading, Theme, Text, Box, Card, Button } from '@radix-ui/themes'
 import { Hachi_Maru_Pop } from 'next/font/google'
+import { ThemeProvider } from 'next-themes'
 
-const hachiMaruPop = Hachi_Maru_Pop({
+const fontHachiMaruPop = Hachi_Maru_Pop({
   subsets: ['latin'],
   display: 'swap',
   weight: '400',
 })
 
-export default function Home() {
+export default function Page() {
+  const title = colorLoopCharacters("neko03★moe")
+  const pages: Page[] = [
+    {
+      title: "chiyoi",
+      href: "/chiyoi",
+    }, {
+      title: "nacho",
+      href: "/nacho",
+    }, {
+      title: "shigure",
+      href: "/shigure",
+    },
+  ]
   return (
-    <Container size='1'>
-      <Flex direction='column' gap='2'>
-        <Text className={hachiMaruPop.className}>Hello from Radix Themes :)</Text>
-        <Button>Let's go</Button>
-      </Flex>
-    </Container>
+    <ThemeProvider attribute='class'>
+      <Theme accentColor='pink'>
+        <Flex p='3' style={{ height: '100vh', backgroundColor: 'var(--accent-4)' }}>
+          <Flex direction='column'>
+            {/* Navigation Menu */}
+            <Button>
+              <Text>Nyan</Text>
+            </Button>
+          </Flex>
+          <Flex m='auto'>
+            <Heading>
+              {title.map((c, i) => (
+                <Text className={fontHachiMaruPop.className} style={{ color: `var(--${c.color}-8)` }} key={i} size={c.char === '★' ? {
+                  initial: '1',
+                  sm: '3',
+                } : {
+                  initial: '7',
+                  sm: '9',
+                }}>
+                  {c.char}
+                </Text>
+              ))}
+            </Heading>
+          </Flex>
+        </Flex>
+      </Theme>
+    </ThemeProvider>
   )
 }
 
@@ -29,7 +65,7 @@ function colorLoopCharacters(s: string): ColoredCharacter[] {
 
 type ColoredCharacter = {
   char: string,
-  color: string,
+  color: 'pink' | 'blue' | 'yellow' | 'green',
 
   star?: boolean,
 }
