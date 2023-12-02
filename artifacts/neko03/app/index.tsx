@@ -97,12 +97,12 @@ export default function Neko03() {
 }
 
 function colorLoopCharacters(s: string): ColoredCharacter[] {
+  function loop(a: any[], i: number) {
+    return () => a[i++ % a.length]
+  }
+
   const color = loop(["pink", "blue", "yellow", "green"], 1)
   return [...s].map(c => { return { char: c, color: color() } })
-}
-
-function loop(a: any[], i: number) {
-  return () => a[i++ % a.length]
 }
 
 type ColoredCharacter = {

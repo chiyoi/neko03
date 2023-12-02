@@ -1,13 +1,20 @@
 .vscode
-
 .DS_Store
 *.swp
 
 local-*
 files
 
+# Pages
 node_modules
+yarn-debug.log*
+yarn-error.log*
+*.tsbuildinfo
+
+out
+build
+.next
+next-env.d.ts
 
 .expo
 dist
-yarn-error.log
