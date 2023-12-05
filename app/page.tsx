@@ -1,5 +1,5 @@
 'use client'
-import { Flex, Heading, Theme, Text, Box, Card, Button } from '@radix-ui/themes'
+import { Flex, Heading, Theme, Text, Button } from '@radix-ui/themes'
 import { Hachi_Maru_Pop } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
 
@@ -13,14 +13,14 @@ export default function Page() {
   const title = colorLoopCharacters("neko03★moe")
   const pages: Page[] = [
     {
-      title: "chiyoi",
-      href: "/chiyoi",
+      title: 'chiyoi',
+      href: '/chiyoi',
     }, {
-      title: "nacho",
-      href: "/nacho",
+      title: 'nacho',
+      href: '/nacho',
     }, {
-      title: "shigure",
-      href: "/shigure",
+      title: 'shigure',
+      href: '/shigure',
     },
   ]
   return (

@@ -1,20 +1,17 @@
-.vscode
 .DS_Store
+.vscode
 *.swp
 
-local-*
-files
-
-# Pages
-node_modules
+# yarn
+/node_modules
 yarn-debug.log*
 yarn-error.log*
+
+# next
+.next
+out
+next-env.d.ts
 *.tsbuildinfo
 
-out
-build
-.next
-next-env.d.ts
-
-.expo
-dist
+# wrangler
+.wrangler
