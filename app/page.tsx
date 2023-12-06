@@ -1,56 +1,81 @@
 'use client'
-import { Flex, Heading, Theme, Text, Button } from '@radix-ui/themes'
-import { Hachi_Maru_Pop } from 'next/font/google'
-import { ThemeProvider } from 'next-themes'
+import Image from 'next/image'
+import { Flex, Heading, Text, Button } from '@radix-ui/themes'
+import Link from 'next/link'
+import { FontHachiMaruPop } from '@/fonts'
+import { StyleButtonColor } from '@/styles'
 
-const fontHachiMaruPop = Hachi_Maru_Pop({
-  subsets: ['latin'],
-  display: 'swap',
-  weight: '400',
-})
+const title = colorLoopCharacters("neko03★moe")
+const pages: Page[] = [
+  {
+    title: 'Chiyoi',
+    href: '/chiyoi',
+    avatarSrc: 'https://files.neko03.moe/assets/IMG_0306.jpeg',
+  }, {
+    title: 'Nacho',
+    href: '/nacho',
+    avatarSrc: 'https://files.neko03.moe/assets/nacho.png',
+  }, {
+    title: 'Shigure',
+    href: '/shigure',
+    avatarSrc: 'https://files.neko03.moe/assets/shigure.png',
+  },
+]
 
 export default function Page() {
-  const title = colorLoopCharacters("neko03★moe")
-  const pages: Page[] = [
-    {
-      title: 'chiyoi',
-      href: '/chiyoi',
-    }, {
-      title: 'nacho',
-      href: '/nacho',
-    }, {
-      title: 'shigure',
-      href: '/shigure',
-    },
-  ]
   return (
-    <ThemeProvider attribute='class'>
-      <Theme accentColor='pink'>
-        <Flex p='3' style={{ height: '100vh', backgroundColor: 'var(--accent-4)' }}>
-          <Flex direction='column'>
-            {/* Navigation Menu */}
-            <Button>
-              <Text>Nyan</Text>
+    <>
+      <Flex m='3' position='fixed' gap='1' direction='column' style={{ width: '20vh' }}>
+        {pages.map(page =>
+          <Link href={page.href}>
+            <Button key={page.title}
+              style={{
+                ...StyleButtonColor,
+                borderRadius: 'var(--radius-6)'
+              }}>
+              {page.avatarSrc !== undefined && <Image src={page.avatarSrc}
+                alt={page.title}
+                width='20'
+                height='20'
+                style={{
+                  borderRadius: 'var(--radius-5)'
+                }}
+              />}
+              <Text color='pink' className={FontHachiMaruPop.className}>{page.title}</Text>
             </Button>
-          </Flex>
-          <Flex m='auto'>
-            <Heading>
-              {title.map((c, i) => (
-                <Text className={fontHachiMaruPop.className} style={{ color: `var(--${c.color}-8)` }} key={i} size={c.char === '★' ? {
-                  initial: '1',
-                  sm: '3',
-                } : {
-                  initial: '7',
-                  sm: '9',
-                }}>
-                  {c.char}
-                </Text>
-              ))}
-            </Heading>
-          </Flex>
-        </Flex>
-      </Theme>
-    </ThemeProvider>
+          </Link>
+        )}
+      </Flex>
+
+      <Flex gap='2' align='center' direction='column' m='auto'>
+        <Image src='https://files.neko03.moe/assets/cat_girl__cute__loli_1231998692.png'
+          alt='Neko03'
+          width='320'
+          height='160'
+          style={{
+            maskImage: 'linear-gradient(transparent, black, transparent)',
+            WebkitMaskImage: 'linear-gradient(transparent, black, transparent)',
+            borderRadius: 'var(--radius-2)'
+          }}
+        />
+        <Heading>
+          {title.map((c, i) => (
+            <Text key={i}
+              className={FontHachiMaruPop.className}
+              style={{ color: `var(--${c.color}-8)` }}
+              size={c.char === '★' ? {
+                initial: '1',
+                sm: '3',
+              } : {
+                initial: '8',
+                sm: '9',
+              }}>
+              {c.char}
+            </Text>
+          ))}
+        </Heading>
+      </Flex>
+    </>
   )
 }
 
@@ -58,7 +83,6 @@ function colorLoopCharacters(s: string): ColoredCharacter[] {
   function loop(a: any[], i: number) {
     return () => a[i++ % a.length]
   }
-
   const color = loop(["pink", "blue", "yellow", "green"], 1)
   return [...s].map(c => { return { char: c, color: color() } })
 }
@@ -66,12 +90,10 @@ function colorLoopCharacters(s: string): ColoredCharacter[] {
 type ColoredCharacter = {
   char: string,
   color: 'pink' | 'blue' | 'yellow' | 'green',
-
-  star?: boolean,
 }
 
 type Page = {
   title: string,
   href: string,
-  avatar?: string,
+  avatarSrc?: string,
 }

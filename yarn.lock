@@ -466,6 +466,11 @@
     "@radix-ui/react-primitive" "1.0.3"
     "@radix-ui/react-use-controllable-state" "1.0.1"
 
+"@radix-ui/react-icons@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-icons/-/react-icons-1.3.0.tgz#c61af8f323d87682c5ca76b856d60c2312dbcb69"
+  integrity sha512-jQxj/0LKgp+j9BiTXz3O3sgs26RNet2iLWmsPyRz2SIcR4q/4SbazXfnYwbAr+vLYKSfc7qxzyGQA1HLlYiuNw==
+
 "@radix-ui/react-id@1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@radix-ui/react-id/-/react-id-1.0.1.tgz#73cdc181f650e4df24f0b6a5b7aa426b912c88c0"
@@ -1396,6 +1401,11 @@ to-regex-range@^5.0.1:
   integrity sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==
   dependencies:
     is-number "^7.0.0"
+
+totp-basic@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/totp-basic/-/totp-basic-0.0.9.tgz#f8ec42c8f840d7cfa9cf7585fc2aaf9d6da758d7"
+  integrity sha512-mpuZW/Sqkai9Gu+uqeHTETxRvALRPFV0rlARh3u40CP2RH2YcgHAP6/iMCHhXIDXGwBJSOBlcKwGjD4jHAZvlw==
 
 tslib@^2.0.0, tslib@^2.1.0, tslib@^2.2.0, tslib@^2.4.0:
   version "2.6.2"
