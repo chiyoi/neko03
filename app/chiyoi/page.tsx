@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import { Box, Button, Container, Flex, Heading, IconButton } from "@radix-ui/themes"
+import { Button, Flex, Heading, IconButton } from "@radix-ui/themes"
 import { ChevronLeftIcon, GitHubLogoIcon, TwitterLogoIcon } from '@radix-ui/react-icons'
 import { FontHachiMaruPop } from '@/fonts'
 import Link from 'next/link'
