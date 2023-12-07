@@ -836,6 +836,11 @@
     "@radix-ui/react-visually-hidden" "^1.0.3"
     classnames "^2.3.2"
 
+"@stitches/react@^1.2.8":
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/@stitches/react/-/react-1.2.8.tgz#954f8008be8d9c65c4e58efa0937f32388ce3a38"
+  integrity sha512-9g9dWI4gsSVe8bNLlb+lMkBYsnIKCZTmvqvDG+Avnn69XfmHZKiaMrx7cgTaddq7aTPPmXiTsbFcUy0xgI4+wA==
+
 "@swc/helpers@0.5.2":
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/@swc/helpers/-/helpers-0.5.2.tgz#85ea0c76450b61ad7d10a37050289eded783c27d"
@@ -883,6 +888,11 @@
   resolved "https://registry.yarnpkg.com/@types/scheduler/-/scheduler-0.16.8.tgz#ce5ace04cfeabe7ef87c0091e50752e36707deff"
   integrity sha512-WZLiwShhwLRmeV6zH+GkbOFT6Z6VklCItrDioxUnv+u4Ll+8vKeFySoFyK/0ctcRpOmwAicELfmys1sDc/Rw+A==
 
+"@uidotdev/usehooks@^2.4.1-experimental.1":
+  version "2.4.1-experimental.1"
+  resolved "https://registry.yarnpkg.com/@uidotdev/usehooks/-/usehooks-2.4.1-experimental.1.tgz#019edbcb042c4b669195fe5a277fc7594a25b33c"
+  integrity sha512-rcDUGS2Cpw6fTkdvYAytK+ej2nW0/ZNTAVvN9Eyj1Fu5XshsZPjnstDCDjkO/J6w7W9cwPWPoj4q4iiYW2seZA==
+
 acorn-walk@^8.2.0:
   version "8.3.1"
   resolved "https://registry.yarnpkg.com/acorn-walk/-/acorn-walk-8.3.1.tgz#2f10f5b69329d90ae18c58bf1fa8fccd8b959a43"
@@ -924,6 +934,11 @@ blake3-wasm@^2.1.5:
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/blake3-wasm/-/blake3-wasm-2.1.5.tgz#b22dbb84bc9419ed0159caa76af4b1b132e6ba52"
   integrity sha512-F1+K8EbfOZE49dtoPtmxUQrpXaBIl3ICvasLh+nJta0xkz+9kF/7uet9fLnwKqhDrmj6g+6K3Tw9yQPUg2ka5g==
+
+blurhash@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/blurhash/-/blurhash-2.0.5.tgz#efde729fc14a2f03571a6aa91b49cba80d1abe4b"
+  integrity sha512-cRygWd7kGBQO3VEhPiTgq4Wc43ctsM+o46urrmPOiuAe+07fzlSB9OJVdpgDL0jPqXUVQ9ht7aq7kxOeJHRK+w==
 
 braces@~3.0.2:
   version "3.0.2"
@@ -1249,13 +1264,13 @@ printable-characters@^1.0.42:
   resolved "https://registry.yarnpkg.com/printable-characters/-/printable-characters-1.0.42.tgz#3f18e977a9bd8eb37fcc4ff5659d7be90868b3d8"
   integrity sha512-dKp+C4iXWK4vVYZmYSd0KBH5F/h1HoZRsbJ82AVKRO3PEo8L4lBS/vLwhVtpwwuYcoIsVY+1JYKR268yn480uQ==
 
-react-dom@^18:
-  version "18.2.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"
-  integrity sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==
+react-dom@^0.0.0-experimental-aba93acb6-20231205:
+  version "0.0.0-experimental-aba93acb6-20231205"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-0.0.0-experimental-aba93acb6-20231205.tgz#21637fc8f962e1d89a55a4d175b458921013bf7c"
+  integrity sha512-pGVOkMyxS9Cc+7pnMXDkwOiLBN50Hslaai7vSU90FH/KQutws32f/0EdW5WhbnfgJBNVemtPnpSnXaiZZpa1lA==
   dependencies:
     loose-envify "^1.1.0"
-    scheduler "^0.23.0"
+    scheduler "0.0.0-experimental-aba93acb6-20231205"
 
 react-remove-scroll-bar@^2.3.3:
   version "2.3.4"
@@ -1285,10 +1300,10 @@ react-style-singleton@^2.2.1:
     invariant "^2.2.4"
     tslib "^2.0.0"
 
-react@^18:
-  version "18.2.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-18.2.0.tgz#555bd98592883255fa00de14f1151a917b5d77d5"
-  integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
+react@^0.0.0-experimental-aba93acb6-20231205:
+  version "0.0.0-experimental-aba93acb6-20231205"
+  resolved "https://registry.yarnpkg.com/react/-/react-0.0.0-experimental-aba93acb6-20231205.tgz#f054a854135f87b8fcea6519d92d7c600e59a74b"
+  integrity sha512-KPtXnZEkFtjvv83yEvGK3kvEqfk5zvHW7OVoX4EPe3mVDfXiKdQg+0sU3/utGyil72989RrHVQulecGsxoDXjA==
   dependencies:
     loose-envify "^1.1.0"
 
@@ -1332,10 +1347,10 @@ rollup-pluginutils@^2.8.1:
   dependencies:
     estree-walker "^0.6.1"
 
-scheduler@^0.23.0:
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.23.0.tgz#ba8041afc3d30eb206a487b6b384002e4e61fdfe"
-  integrity sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==
+scheduler@0.0.0-experimental-aba93acb6-20231205:
+  version "0.0.0-experimental-aba93acb6-20231205"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.0.0-experimental-aba93acb6-20231205.tgz#cef77b21c674c5032385e77ce4b29d5b2bedfc59"
+  integrity sha512-9O/3G3iiUEy26gIdzV+vv0NVkEZA2n1IEX8IYWmiKfTw+aXeiGh05gsawz4m+sipmfC7Qh5H1cuNzYOMKV31dg==
   dependencies:
     loose-envify "^1.1.0"
 
@@ -1401,11 +1416,6 @@ to-regex-range@^5.0.1:
   integrity sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==
   dependencies:
     is-number "^7.0.0"
-
-totp-basic@^0.0.9:
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/totp-basic/-/totp-basic-0.0.9.tgz#f8ec42c8f840d7cfa9cf7585fc2aaf9d6da758d7"
-  integrity sha512-mpuZW/Sqkai9Gu+uqeHTETxRvALRPFV0rlARh3u40CP2RH2YcgHAP6/iMCHhXIDXGwBJSOBlcKwGjD4jHAZvlw==
 
 tslib@^2.0.0, tslib@^2.1.0, tslib@^2.2.0, tslib@^2.4.0:
   version "2.6.2"
