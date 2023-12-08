@@ -11,7 +11,7 @@ const pages: Page[] = [
     title: 'Chiyoi',
     href: '/chiyoi',
     avatar: {
-      src: 'https://files.neko03.moe/assets/IMG_0306.jpeg',
+      src: 'IMG_0306.jpeg',
       blurhash: 'eDS_$1s:.#nlJ$-4fiK7e=v}z4f6P^kAsDIge=,*f~KRy2f7M,fkxa', // cspell: disable-line
     }
   },
@@ -61,7 +61,7 @@ export default function Page() {
       </Flex>
 
       <Flex gap='2' align='center' direction='column' m='auto'>
-        <Image src='https://files.neko03.moe/assets/cat_girl__cute__loli_1231998692.png'
+        <Image src='cat_girl__cute__loli_1231998692.png'
           alt='Neko03'
           width='640'
           height='320'

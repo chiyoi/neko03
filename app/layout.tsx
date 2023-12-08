@@ -5,9 +5,9 @@ export const metadata: Metadata = {
   title: 'Neko03',
   description: 'にゃん〜',
   icons: {
-    icon: 'https://files.neko03.moe/assets/cat_girl__cute__loli_2979261983.png',
-    shortcut: 'https://files.neko03.moe/assets/cat_girl__cute__loli_2979261983.png',
-    apple: 'https://files.neko03.moe/assets/cat_girl__cute__loli_2979261983.png',
+    icon: 'https://morph.neko03.moe/assets/cat_girl__cute__loli_2979261983.png',
+    shortcut: 'https://morph.neko03.moe/assets/cat_girl__cute__loli_2979261983.png',
+    apple: 'https://morph.neko03.moe/assets/cat_girl__cute__loli_2979261983.png',
   }
 }
 

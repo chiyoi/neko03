@@ -1,3 +1,4 @@
+// cspell: disable
 import { decode } from "blurhash"
 
 export function blurHashToDataURL(hash: string | undefined): string | undefined {
