@@ -12,4 +12,4 @@
 Serve at Cloudflare Pages.
 
 ### License
-BSD-2-Clause
+SPDX-License-Identifier: BSD-2-Clause
