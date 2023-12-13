@@ -10,7 +10,3 @@
 - Radix UI Themes
 
 Serve at Cloudflare Pages.
-
-### License
-This project is licensed under the BSD 2-Clause "Simplified" License.
-SPDX-License-Identifier: BSD-2-Clause
