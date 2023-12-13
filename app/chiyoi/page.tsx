@@ -13,7 +13,7 @@ export default function Page() {
       <BackButton />
       <Flex gap='4' align='center' direction='column' m='auto'>
         <Flex gap='2' align='center' direction='column'>
-          <Image src='IMG_0306.jpeg'
+          <Image src='dotpict.png'
             alt='CHIYOI'
             placeholder='blur'
             blurDataURL={blurHashToDataURL('eDS_$1s:.#nlJ$-4fiK7e=v}z4f6P^kAsDIge=,*f~KRy2f7M,fkxa')} // cspell: disable-line

@@ -11,7 +11,7 @@ const pages: Page[] = [
     title: 'Chiyoi',
     href: '/chiyoi',
     avatar: {
-      src: 'IMG_0306.jpeg',
+      src: 'dotpict.png',
       blurhash: 'eDS_$1s:.#nlJ$-4fiK7e=v}z4f6P^kAsDIge=,*f~KRy2f7M,fkxa', // cspell: disable-line
     }
   },
