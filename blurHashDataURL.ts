@@ -1,4 +1,5 @@
 // cspell: disable
+// https://gist.github.com/mattiaz9/53cb67040fa135cb395b1d015a200aff
 import { decode } from "blurhash"
 
 export function blurHashToDataURL(hash: string | undefined): string | undefined {
