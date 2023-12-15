@@ -5,9 +5,7 @@ export const metadata: Metadata = {
   title: 'Neko03',
   description: 'にゃん〜',
   icons: {
-    shortcut: 'https://neko03.moe/favicon.ico',
     icon: 'https://neko03.moe/favicon.ico',
-    apple: 'https://neko03.moe/favicon.ico',
   }
 }
 
