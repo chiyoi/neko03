@@ -16,7 +16,7 @@ export default function Page() {
           <Image src='dotpict.png'
             alt='CHIYOI'
             placeholder='blur'
-            blurDataURL={blurHashToDataURL('eDS_$1s:.#nlJ$-4fiK7e=v}z4f6P^kAsDIge=,*f~KRy2f7M,fkxa')} // cspell: disable-line
+            blurDataURL={blurHashToDataURL('e8T5rnsD.%owGi${bHRqjZsQ*YbYHInmzzZ[jZ$[X8NiU4jIq+bYX%')} // cspell: disable-line
             width='366'
             height='366'
             style={{

@@ -8,27 +8,13 @@ import { blurHashToDataURL } from '@/blurHashDataURL'
 const title = colorLoopCharacters("neko03★moe")
 const pages: Page[] = [
   {
-    title: 'Chiyoi',
+    title: 'CHIYOI',
     href: '/chiyoi',
     avatar: {
       src: 'dotpict.png',
-      blurhash: 'eDS_$1s:.#nlJ$-4fiK7e=v}z4f6P^kAsDIge=,*f~KRy2f7M,fkxa', // cspell: disable-line
+      blurhash: 'e8T5rnsD.%owGi${bHRqjZsQ*YbYHInmzzZ[jZ$[X8NiU4jIq+bYX%', // cspell: disable-line
     }
   },
-  // {
-  //   title: 'Nacho',
-  //   href: '/nacho',
-  //   avatar: {
-  //     src: 'https://files.neko03.moe/assets/nacho.png',
-  //   }
-  // },
-  // {
-  //   title: 'Shigure',
-  //   href: '/shigure',
-  //   avatar: {
-  //     src: 'https://files.neko03.moe/assets/shigure.png',
-  //   }
-  // },
 ]
 
 export default function Page() {
