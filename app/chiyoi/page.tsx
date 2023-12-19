@@ -2,10 +2,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Button, Flex, Heading, IconButton } from "@radix-ui/themes"
 import { GitHubLogoIcon, TwitterLogoIcon } from '@radix-ui/react-icons'
-import { FontHachiMaruPop } from '@/fonts'
-import { StyleIconButton, StyleTextColor } from '@/styles'
 import BackButton from '@/components/BackButton'
-import { blurHashToDataURL } from '@/blurHashDataURL'
+import { FontHachiMaruPop } from '@/modules/fonts'
+import { StyleIconButton, StyleTextColor } from '@/modules/styles'
+import { blurHashToDataURL } from '@/modules/blurHashDataURL'
 
 export default function Page() {
   return (

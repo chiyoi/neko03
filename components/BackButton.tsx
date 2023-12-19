@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { ChevronLeftIcon } from "@radix-ui/react-icons"
 import { IconButton } from "@radix-ui/themes"
-import { StyleIconButton, StyleTextColor } from "@/styles"
+import { StyleIconButton, StyleTextColor } from "@/modules/styles"
 
 export default function BackButton() {
   return (

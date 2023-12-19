@@ -1,9 +1,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Flex, Heading, Text, Button } from '@radix-ui/themes'
-import { FontHachiMaruPop } from '@/fonts'
-import { StyleButtonColor } from '@/styles'
-import { blurHashToDataURL } from '@/blurHashDataURL'
+import { FontHachiMaruPop } from '@/modules/fonts'
+import { StyleButtonColor } from '@/modules/styles'
+import { blurHashToDataURL } from '@/modules/blurHashDataURL'
 
 const title = colorLoopCharacters("neko03★moe")
 const pages: Page[] = [
