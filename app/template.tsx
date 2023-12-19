@@ -6,7 +6,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider attribute='class'>
       <Theme accentColor='pink'>
-        <Flex style={{ height: '100vh', backgroundColor: 'var(--accent-4)' }}>
+        <Flex style={{ height: '100vh', backgroundColor: 'var(--accent-2)' }}>
           {children}
         </Flex>
       </Theme>
