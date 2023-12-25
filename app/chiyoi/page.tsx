@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Button, Flex, Heading, IconButton } from "@radix-ui/themes"
+import { Flex, Heading, IconButton } from "@radix-ui/themes"
 import { GitHubLogoIcon, TwitterLogoIcon } from '@radix-ui/react-icons'
 import BackButton from '@/components/BackButton'
 import { FontHachiMaruPop } from '@/modules/fonts'
