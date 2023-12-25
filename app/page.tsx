@@ -2,7 +2,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Flex, Heading, Text, Button } from '@radix-ui/themes'
 import { FontHachiMaruPop } from '@/modules/fonts'
-import { StyleButtonColor } from '@/modules/styles'
 import { blurHashToDataURL } from '@/modules/blurHashDataURL'
 
 const title = colorLoopCharacters("neko03★moe")
@@ -23,11 +22,7 @@ export default function Page() {
       <Flex m='3' position='fixed' gap='1' direction='column' style={{ width: '20vh' }}>
         {pages.map(page =>
           <Link key={page.title} href={page.href}>
-            <Button key={page.title}
-              style={{
-                ...StyleButtonColor,
-                borderRadius: 'var(--radius-6)'
-              }}>
+            <Button variant='soft' radius='full' key={page.title}>
               {page.avatar !== undefined && <Image src={page.avatar.src}
                 alt={page.title}
                 placeholder='blur'
@@ -37,7 +32,7 @@ export default function Page() {
                 style={{
                   width: '20px',
                   height: '20px',
-                  borderRadius: 'var(--radius-5)'
+                  borderRadius: '100%'
                 }}
               />}
               <Text color='pink' className={FontHachiMaruPop.className}>{page.title}</Text>
@@ -58,14 +53,15 @@ export default function Page() {
             height: '160px',
             maskImage: 'linear-gradient(transparent, black, transparent)',
             WebkitMaskImage: 'linear-gradient(transparent, black, transparent)',
-            borderRadius: 'var(--radius-2)'
           }}
         />
         <Heading>
           {title.map((c, i) => (
             <Text key={i}
-              className={FontHachiMaruPop.className}
-              style={{ color: `var(--${c.color}-8)` }}
+              style={{
+                ...FontHachiMaruPop.style,
+                color: `var(--${c.color}-8)`,
+              }}
               size={c.char === '★' ? {
                 initial: '1',
                 sm: '3',

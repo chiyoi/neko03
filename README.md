@@ -1,12 +1,12 @@
 # Neko03
-[neko03.moe](https://neko03.moe)
-
+[neko03.moe](https://neko03.moe)\
 にゃん〜
 
----
-### Development
-- React (TypeScript)
-- Next.js
-- Radix UI Themes
-
-Serve at Cloudflare Pages.
+## Development
+- Static page:
+  - TypeScript
+  - React
+  - Next.js
+  - Radix UI
+  - Stitches
+- Serve with Cloudflare Pages.
