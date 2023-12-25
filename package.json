@@ -4,20 +4,19 @@
   "private": true,
   "dependencies": {
     "@radix-ui/react-icons": "^1.3.0",
-    "@radix-ui/themes": "^2.0.2",
-    "@stitches/react": "^1.2.8",
+    "@radix-ui/themes": "^2.0.3",
     "@uidotdev/usehooks": "^2.4.1-experimental.1",
     "blurhash": "^2.0.5",
-    "next": "14.0.3",
+    "next": "14.0.4",
     "next-themes": "^0.2.1",
-    "react": "^0.0.0-experimental-aba93acb6-20231205",
-    "react-dom": "^0.0.0-experimental-aba93acb6-20231205"
+    "react": "^0.0.0-experimental-c5b937576-20231219",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "typescript": "^5",
-    "wrangler": "^3.19.0"
+    "wrangler": "^3.22.1"
   }
 }
