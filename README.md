@@ -8,5 +8,4 @@
   - React
   - Next.js
   - Radix UI
-  - Stitches
 - Serve with Cloudflare Pages.
