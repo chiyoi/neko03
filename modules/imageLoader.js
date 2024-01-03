@@ -1,5 +1,5 @@
 'use client'
 
-export default function imageLoader({ src, width, quality }) {
+export default ({ src, width, quality }) => {
   return `/assets/${src}`
 }

@@ -2,7 +2,7 @@ import Link from "next/link"
 import { ChevronLeftIcon } from "@radix-ui/react-icons"
 import { IconButton } from "@radix-ui/themes"
 
-export default function BackButton() {
+export default () => {
   return (
     <Link href='/'>
       <IconButton variant='soft' m='3' style={{

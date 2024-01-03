@@ -6,7 +6,7 @@ import BackButton from '@/components/BackButton'
 import { FontHachiMaruPop } from '@/modules/fonts'
 import { blurHashToDataURL } from '@/modules/blurHashDataURL'
 
-export default function Page() {
+export default () => {
   return (
     <>
       <BackButton />

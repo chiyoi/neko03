@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useInterval } from "@uidotdev/usehooks"
 import { useMemo, useState } from "react"
 
-export default function FlyingImage({ windowSize, src, alt, destroy }: Props) {
+export default ({ windowSize, src, alt, destroy }: Props) => {
   const { width, height } = windowSize
 
   const minY = 0.05 * height

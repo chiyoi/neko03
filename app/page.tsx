@@ -4,19 +4,7 @@ import { Flex, Heading, Text, Button } from '@radix-ui/themes'
 import { FontHachiMaruPop } from '@/modules/fonts'
 import { blurHashToDataURL } from '@/modules/blurHashDataURL'
 
-const title = colorLoopCharacters("neko03★moe")
-const pages: Page[] = [
-  {
-    title: 'CHIYOI',
-    href: '/chiyoi',
-    avatar: {
-      src: 'dotpict.png',
-      blurhash: 'e8T5rnsD.%owGi${bHRqjZsQ*YbYHInmzzZ[jZ$[X8NiU4jIq+bYX%', // cspell: disable-line
-    }
-  },
-]
-
-export default function Page() {
+export default () => {
   return (
     <>
       <Flex m='3' position='fixed' gap='1' direction='column' style={{ width: '20vh' }}>
@@ -78,13 +66,26 @@ export default function Page() {
   )
 }
 
-function colorLoopCharacters(s: string): ColoredCharacter[] {
-  function loop(a: any[], i: number) {
+const colorLoopCharacters = (s: string): ColoredCharacter[] => {
+  const loop = (a: any[], i: number) => {
     return () => a[i++ % a.length]
   }
   const color = loop(["pink", "blue", "yellow", "green"], 1)
   return [...s].map(c => { return { char: c, color: color() } })
 }
+
+const title = colorLoopCharacters("neko03★moe")
+
+const pages: Page[] = [
+  {
+    title: 'CHIYOI',
+    href: '/chiyoi',
+    avatar: {
+      src: 'dotpict.png',
+      blurhash: 'e8T5rnsD.%owGi${bHRqjZsQ*YbYHInmzzZ[jZ$[X8NiU4jIq+bYX%', // cspell: disable-line
+    }
+  },
+]
 
 type ColoredCharacter = {
   char: string,
