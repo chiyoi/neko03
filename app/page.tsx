@@ -79,8 +79,8 @@ const pages: Page[] = [
     title: 'CHIYOI',
     href: '/chiyoi',
     avatar: {
-      src: 'dotpict.png',
-      blurhash: 'e8T5rnsD.%owGi${bHRqjZsQ*YbYHInmzzZ[jZ$[X8NiU4jIq+bYX%', // cspell: disable-line
+      src: 'CHIYOI.png',
+      blurhash: 'eDMaC7of}%t6r=_4oeD%Rkf5=sayI=WVSNs#WCIut6-pnybZkEnlRo', // cspell: disable-line
     }
   },
 ]

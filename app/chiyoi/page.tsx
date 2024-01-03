@@ -11,10 +11,10 @@ export default () => (
     <BackButton />
     <Flex gap='4' align='center' direction='column' m='auto'>
       <Flex gap='2' align='center' direction='column'>
-        <Image src='dotpict.png'
+        <Image src='CHIYOI.png'
           alt='CHIYOI'
           placeholder='blur'
-          blurDataURL={blurHashToDataURL('e8T5rnsD.%owGi${bHRqjZsQ*YbYHInmzzZ[jZ$[X8NiU4jIq+bYX%')} // cspell: disable-line
+          blurDataURL={blurHashToDataURL('eDMaC7of}%t6r=_4oeD%Rkf5=sayI=WVSNs#WCIut6-pnybZkEnlRo')} // cspell: disable-line
           width='366'
           height='366'
           style={{
