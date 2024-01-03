@@ -16,12 +16,10 @@ export const viewport: Viewport = {
   ],
 }
 
-export default ({ children }: { children: React.ReactNode }) => {
-  return (
-    <html lang="en">
-      <body style={{ margin: 0 }}>
-        {children}
-      </body>
-    </html>
-  )
-}
+export default ({ children }: { children: React.ReactNode }) => (
+  <html lang="en">
+    <body style={{ margin: 0 }}>
+      {children}
+    </body>
+  </html>
+)
